@@ -1,0 +1,152 @@
+---
+/**
+ * Курсор-шлейф: цепочка кружков тянется за указателем и сливается
+ * в каплю за счёт SVG-фильтра размытия с усилением контраста.
+ *
+ * Оригинал (блок rec4107223601) использовал стороннюю библиотеку
+ * и GSAP с чужого домена — здесь собственная реализация без
+ * внешних зависимостей, на requestAnimationFrame.
+ *
+ * Не показывается на сенсорных экранах и при отключённой анимации.
+ */
+const DOTS = 20;
+---
+
+<svg class="df-cursor-filter" aria-hidden="true">
+  <defs>
+    <filter id="df-cursor-goo">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur" />
+      <feColorMatrix
+        in="blur"
+        mode="matrix"
+        values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 35 -15"
+      />
+    </filter>
+  </defs>
+</svg>
+
+<div class="df-cursor" data-cursor aria-hidden="true">
+  {Array.from({ length: DOTS }, () => <span class="df-cursor__dot" />)}
+</div>
+
+<style>
+  .df-cursor-filter {
+    position: absolute;
+    width: 0;
+    height: 0;
+  }
+
+  .df-cursor {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1000;
+    display: none;
+    filter: url('#df-cursor-goo');
+    mix-blend-mode: difference;
+    pointer-events: none;
+  }
+
+  .df-cursor.is-active {
+    display: block;
+  }
+
+  .df-cursor__dot {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: block;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: #fff;
+    transform: translate(-50%, -50%);
+    will-change: transform;
+  }
+
+  /* На сенсорных экранах курсора нет */
+  @media (hover: none), (pointer: coarse), (max-width: 480px) {
+    .df-cursor {
+      display: none !important;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .df-cursor {
+      display: none !important;
+    }
+  }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-cursor]');
+  const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (root && fine && !calm) {
+    const dots = [...root.querySelectorAll<HTMLElement>('.df-cursor__dot')].map(
+      (el) => ({ el, x: 0, y: 0, scale: 1 }),
+    );
+
+    const pointer = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+
+    let visible = false;
+    let idleTimer: ReturnType<typeof setTimeout>;
+    let idle = false;
+
+    /* В покое хвост собирается в точку, при движении — вытягивается */
+    const goIdle = () => {
+      idle = true;
+    };
+
+    document.addEventListener(
+      'mousemove',
+      (event) => {
+        pointer.x = event.clientX;
+        pointer.y = event.clientY;
+        idle = false;
+
+        if (!visible) {
+          visible = true;
+          root.classList.add('is-active');
+          dots.forEach((dot) => {
+            dot.x = pointer.x;
+            dot.y = pointer.y;
+          });
+        }
+
+        clearTimeout(idleTimer);
+        idleTimer = setTimeout(goIdle, 150);
+      },
+      { passive: true },
+    );
+
+    document.addEventListener('mouseleave', () => {
+      visible = false;
+      root.classList.remove('is-active');
+    });
+
+    const render = () => {
+      let { x, y } = pointer;
+
+      dots.forEach((dot, i) => {
+        /* Каждый следующий кружок догоняет предыдущий чуть медленнее */
+        dot.x += (x - dot.x) * 0.35;
+        dot.y += (y - dot.y) * 0.35;
+
+        /* Хвост сужается к концу, в покое кружки стягиваются друг к другу */
+        const taper = 1 - i / dots.length;
+        const scale = idle ? taper * 0.45 + 0.25 : taper * 0.75 + 0.25;
+
+        dot.el.style.transform = `translate(${dot.x}px, ${dot.y}px) translate(-50%, -50%) scale(${scale})`;
+
+        x = dot.x;
+        y = dot.y;
+      });
+
+      requestAnimationFrame(render);
+    };
+
+    requestAnimationFrame(render);
+  }
+</script>

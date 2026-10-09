@@ -46,9 +46,16 @@ for (const width of widths) {
   await page.waitForTimeout(1500);
 
   const height = await page.evaluate(() => document.body.scrollHeight);
+
+  /* Вся страница: fixed-элементы в такой кадр не попадают */
   await page.screenshot({
     path: new URL(`${prefix}-${width}.png`, outDir).pathname,
     fullPage: true,
+  });
+
+  /* Первый экран: нужен, чтобы видеть фиксированную шапку и виджеты */
+  await page.screenshot({
+    path: new URL(`${prefix}-${width}-top.png`, outDir).pathname,
   });
 
   console.log(`${prefix} ${width}px → высота страницы ${height}px`);

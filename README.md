@@ -23,7 +23,7 @@ node scripts/shots.mjs http://localhost:4321/     new   # копия
 
 | Блок Тильды | Компонент | Статус |
 |---|---|---|
-| rec4116082401 | Nav | — |
+| rec4116082401 | Nav | ✅ |
 | rec4140995301 | Hero | — |
 | rec4124751801 | System | — |
 | rec4126606901 | Practice | — |

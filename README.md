@@ -33,7 +33,7 @@ node scripts/shots.mjs http://localhost:4321/     new   # копия
 | rec4136994401 | Consult | ✅ |
 | rec4137240201 | Faq | ✅ |
 | rec4137897301 | Footer | ✅ |
-| rec4107223701 | Preloader | — |
+| rec4107223701 | Preloader | ✅ |
 | rec4107223601 | Курсор | — |
 | rec4107224201 | Виджет связи | — |
 | rec4107224301 | Cookie-баннер | — |

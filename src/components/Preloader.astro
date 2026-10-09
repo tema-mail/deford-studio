@@ -1,0 +1,1151 @@
+---
+/** Оригинал: rec4107223701_t131 */
+---
+
+<div
+  class="df-wow-loader"
+  id="dfWowLoader"
+> <div class="df-wow-scene">  <div class="df-wow-kicker">
+      инструментов много,<br>
+      а как их связать непонятно
+    </div>  <div class="df-wow-dot"></div>  <div class="df-wow-tags"> <div
+        class="df-wow-tag"
+        style="
+          --x: -34vw;
+          --y: -24vh;
+          --r: -7deg;
+        "
+      >
+        crm
+      </div> <div
+        class="df-wow-tag is-blue"
+        style="
+          --x: -13vw;
+          --y: -18vh;
+          --r: 3deg;
+        "
+      >
+        geo
+      </div> <div
+        class="df-wow-tag"
+        style="
+          --x: 27vw;
+          --y: -26vh;
+          --r: 5deg;
+        "
+      >
+        идея
+      </div> <div
+        class="df-wow-tag"
+        style="
+          --x: -31vw;
+          --y: 3vh;
+          --r: 5deg;
+        "
+      >
+        serp
+      </div> <div
+        class="df-wow-tag is-blue"
+        style="
+          --x: -18vw;
+          --y: 13vh;
+          --r: -16deg;
+        "
+      >
+        бренд
+      </div> <div
+        class="df-wow-tag"
+        style="
+          --x: 34vw;
+          --y: -7vh;
+          --r: -5deg;
+        "
+      >
+        структура
+      </div> <div
+        class="df-wow-tag is-blue"
+        style="
+          --x: 30vw;
+          --y: 3vh;
+          --r: -14deg;
+        "
+      >
+        сайт
+      </div> <div
+        class="df-wow-tag"
+        style="
+          --x: 23vw;
+          --y: 13vh;
+          --r: 0deg;
+        "
+      >
+        контент
+      </div> <div
+        class="df-wow-tag"
+        style="
+          --x: -16vw;
+          --y: 28vh;
+          --r: 0deg;
+        "
+      >
+        ai
+      </div> <div
+        class="df-wow-tag is-blue"
+        style="
+          --x: 0vw;
+          --y: 30vh;
+          --r: 0deg;
+        "
+      >
+        seo
+      </div> </div>  <div class="df-wow-main"> <span>
+        мы собираем
+      </span> <span>
+        все это в
+      </span> <span>
+        систему
+      </span> </div>  <div class="df-wow-bottom">
+      где каждый элемент маркетинга<br>
+      на своем месте
+    </div> </div>  <div class="df-wow-blue"></div>  <div class="df-wow-final-text"> <strong>
+      в единую систему,<br>
+      которая работает<br>
+      на ваш бизнес
+    </strong> <span>
+      Расскажу подробнее
+    </span> </div> </div>
+
+<style is:global>
+/* ===== слой 1 из Тильды ===== */
+html.df-preload-lock,
+html.df-preload-lock body {
+  overflow: hidden !important;
+}
+
+
+/* =========================================================
+   LOADER
+   ========================================================= */
+
+.df-wow-loader {
+  position: fixed;
+  inset: 0;
+
+  z-index: 9999999;
+
+  background: #191919;
+  color: #ffffff;
+
+  overflow: hidden;
+  pointer-events: none;
+
+  font-family: Arial, Helvetica, sans-serif;
+
+  opacity: 1;
+  visibility: visible;
+}
+
+
+/* плавное закрытие */
+
+.df-wow-loader.is-hide {
+  opacity: 0;
+  visibility: hidden;
+
+  transition:
+    opacity .9s cubic-bezier(.16, 1, .3, 1),
+    visibility .9s;
+}
+
+
+/* =========================================================
+   MAIN SCENE
+   ========================================================= */
+
+.df-wow-scene {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  width: calc(100vw - 96px);
+  height: calc(100vh - 96px);
+
+  max-width: 1640px;
+  max-height: 880px;
+
+  transform: translate(-50%, -50%);
+
+  overflow: hidden;
+
+  border-radius: 34px;
+
+  background: rgba(255,255,255,.025);
+
+  box-shadow:
+    0 0 120px rgba(47,102,255,.08);
+}
+
+
+/* =========================================================
+   TOP TEXT
+   ========================================================= */
+
+.df-wow-kicker {
+  position: absolute;
+
+  left: 50%;
+  top: 54px;
+
+  transform: translateX(-50%);
+
+  width: max-content;
+  max-width: 80%;
+
+  font-size: clamp(12px, .9vw, 15px);
+  line-height: 1.15;
+
+  font-weight: 400;
+
+  letter-spacing: .055em;
+  text-transform: uppercase;
+
+  text-align: center;
+
+  color: rgba(255,255,255,.46);
+
+  opacity: 0;
+
+  animation:
+    dfFadeUp
+    .7s
+    cubic-bezier(.16, 1, .3, 1)
+    .35s
+    forwards;
+}
+
+
+/* =========================================================
+   START DOT
+   ========================================================= */
+
+.df-wow-dot {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  width: 18px;
+  height: 18px;
+
+  border-radius: 999px;
+
+  background: #1768ff;
+
+  transform:
+    translate(-50%, -50%)
+    scale(0);
+
+  box-shadow:
+    0 0 64px rgba(23,104,255,.85);
+
+  animation:
+    dfDotBirthAndHide
+    1.35s
+    cubic-bezier(.16, 1, .3, 1)
+    .45s
+    forwards;
+
+  z-index: 1;
+}
+
+
+/* =========================================================
+   MAIN CENTER TEXT
+   ========================================================= */
+
+.df-wow-main {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  width: min(1100px, 86vw);
+
+  transform:
+    translate(-50%, -50%);
+
+  text-align: center;
+
+  z-index: 4;
+}
+
+.df-wow-main span {
+  display: block;
+
+  font-size: clamp(48px, 7.4vw, 126px);
+
+  line-height: .78;
+
+  font-weight: 800;
+
+  letter-spacing: -0.08em;
+
+  opacity: 0;
+
+  transform: translateY(46px);
+
+  animation:
+    dfMainTextIn
+    .8s
+    cubic-bezier(.16, 1, .3, 1)
+    forwards;
+}
+
+
+/* чуть медленнее, чем раньше */
+
+.df-wow-main span:nth-child(1) {
+  animation-delay: 1.85s;
+}
+
+.df-wow-main span:nth-child(2) {
+  animation-delay: 2.08s;
+}
+
+.df-wow-main span:nth-child(3) {
+  animation-delay: 2.31s;
+}
+
+
+/* =========================================================
+   TAGS
+   ========================================================= */
+
+.df-wow-tags {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 2;
+}
+
+.df-wow-tag {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  padding: 12px 20px;
+
+  border-radius: 999px;
+
+  background: rgba(255,255,255,.075);
+
+  color: rgba(255,255,255,.76);
+
+  font-size: clamp(13px, 1vw, 17px);
+
+  line-height: 1;
+
+  letter-spacing: -.02em;
+
+  white-space: nowrap;
+
+  opacity: 0;
+
+  transform:
+    translate(
+      calc(-50% + var(--x)),
+      calc(-50% + var(--y))
+    )
+    rotate(var(--r))
+    scale(.86);
+
+  animation:
+    dfTagIn
+      .7s
+      cubic-bezier(.16, 1, .3, 1)
+      forwards,
+
+    dfTagFloat
+      2.8s
+      ease-in-out
+      1.2s
+      infinite
+      alternate,
+
+    dfTagCollect
+      .95s
+      cubic-bezier(.16, 1, .3, 1)
+      4.2s
+      forwards;
+}
+
+.df-wow-tag.is-blue {
+  background: #1768ff;
+  color: #ffffff;
+
+  box-shadow:
+    0 0 54px rgba(23,104,255,.38);
+}
+
+
+/* tag entrance */
+
+.df-wow-tag:nth-child(1) {
+  animation-delay:
+    .65s,
+    1.2s,
+    4.10s;
+}
+
+.df-wow-tag:nth-child(2) {
+  animation-delay:
+    .75s,
+    1.3s,
+    4.15s;
+}
+
+.df-wow-tag:nth-child(3) {
+  animation-delay:
+    .85s,
+    1.4s,
+    4.20s;
+}
+
+.df-wow-tag:nth-child(4) {
+  animation-delay:
+    .95s,
+    1.5s,
+    4.25s;
+}
+
+.df-wow-tag:nth-child(5) {
+  animation-delay:
+    1.05s,
+    1.6s,
+    4.30s;
+}
+
+.df-wow-tag:nth-child(6) {
+  animation-delay:
+    1.15s,
+    1.7s,
+    4.35s;
+}
+
+.df-wow-tag:nth-child(7) {
+  animation-delay:
+    1.25s,
+    1.8s,
+    4.40s;
+}
+
+.df-wow-tag:nth-child(8) {
+  animation-delay:
+    1.35s,
+    1.9s,
+    4.45s;
+}
+
+.df-wow-tag:nth-child(9) {
+  animation-delay:
+    1.45s,
+    2s,
+    4.50s;
+}
+
+.df-wow-tag:nth-child(10) {
+  animation-delay:
+    1.55s,
+    2.1s,
+    4.55s;
+}
+
+
+/* =========================================================
+   BOTTOM TEXT
+   ========================================================= */
+
+.df-wow-bottom {
+  position: absolute;
+
+  left: 50%;
+  bottom: 54px;
+
+  width: max-content;
+  max-width: 80%;
+
+  transform: translateX(-50%);
+
+  text-align: center;
+
+  font-size: clamp(11px, .8vw, 13px);
+
+  line-height: 1.2;
+
+  letter-spacing: .06em;
+
+  text-transform: uppercase;
+
+  color: rgba(255,255,255,.42);
+
+  opacity: 0;
+
+  animation:
+    dfBottomIn
+    .7s
+    cubic-bezier(.16, 1, .3, 1)
+    1.45s
+    forwards;
+}
+
+
+/* =========================================================
+   FINAL BLUE SCREEN
+   ========================================================= */
+
+.df-wow-blue {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  width: 22px;
+  height: 22px;
+
+  border-radius: 999px;
+
+  background: #1768ff;
+
+  transform:
+    translate(-50%, -50%)
+    scale(0);
+
+  box-shadow:
+    0 0 140px rgba(23,104,255,.6);
+
+  animation:
+    dfBlueOpen
+    1.25s
+    cubic-bezier(.16, 1, .3, 1)
+    5.05s
+    forwards;
+
+  z-index: 5;
+}
+
+
+/* =========================================================
+   FINAL TEXT
+   ========================================================= */
+
+.df-wow-final-text {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  z-index: 6;
+
+  width: min(1100px, 86vw);
+
+  text-align: center;
+
+  opacity: 0;
+
+  transform:
+    translate(-50%, -44%);
+
+  animation:
+    dfFinalText
+    .75s
+    cubic-bezier(.16, 1, .3, 1)
+    5.65s
+    forwards;
+}
+
+
+.df-wow-final-text strong {
+  display: block;
+
+  font-size: clamp(48px, 6.8vw, 112px);
+
+  line-height: .78;
+
+  font-weight: 800;
+
+  letter-spacing: -.08em;
+
+  color: #ffffff;
+}
+
+
+.df-wow-final-text span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 22px;
+
+  padding:
+    13px
+    21px;
+
+  border-radius: 999px;
+
+  background: #191919;
+
+  font-size: 12px;
+  font-weight: 400;
+
+  line-height: 1;
+
+  color: rgba(255,255,255,.8);
+
+  letter-spacing: .01em;
+
+  text-transform: none;
+}
+
+
+/* =========================================================
+   ANIMATIONS
+   ========================================================= */
+
+@keyframes dfFadeUp {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translate(-50%, 16px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translate(-50%, 0);
+  }
+
+}
+
+
+@keyframes dfDotBirthAndHide {
+
+  0% {
+    opacity: 0;
+
+    transform:
+      translate(-50%, -50%)
+      scale(0);
+  }
+
+  35% {
+    opacity: 1;
+
+    transform:
+      translate(-50%, -50%)
+      scale(1);
+  }
+
+  70% {
+    opacity: 1;
+
+    transform:
+      translate(-50%, -50%)
+      scale(1.6);
+  }
+
+  100% {
+    opacity: 0;
+
+    transform:
+      translate(-50%, -50%)
+      scale(2.4);
+  }
+
+}
+
+
+@keyframes dfTagIn {
+
+  to {
+    opacity: 1;
+
+    transform:
+      translate(
+        calc(-50% + var(--x)),
+        calc(-50% + var(--y))
+      )
+      rotate(var(--r))
+      scale(1);
+  }
+
+}
+
+
+@keyframes dfTagFloat {
+
+  from {
+    margin-top: 0;
+  }
+
+  to {
+    margin-top: -14px;
+  }
+
+}
+
+
+@keyframes dfTagCollect {
+
+  0% {
+    opacity: 1;
+
+    transform:
+      translate(
+        calc(-50% + var(--x)),
+        calc(-50% + var(--y))
+      )
+      rotate(var(--r))
+      scale(1);
+  }
+
+  100% {
+    opacity: 0;
+
+    transform:
+      translate(-50%, -50%)
+      rotate(0deg)
+      scale(.15);
+  }
+
+}
+
+
+@keyframes dfMainTextIn {
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0);
+  }
+
+}
+
+
+@keyframes dfBottomIn {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translate(-50%, 14px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translate(-50%, 0);
+  }
+
+}
+
+
+@keyframes dfBlueOpen {
+
+  0% {
+    width: 22px;
+    height: 22px;
+
+    border-radius: 999px;
+
+    transform:
+      translate(-50%, -50%)
+      scale(0);
+  }
+
+  30% {
+    width: 22px;
+    height: 22px;
+
+    border-radius: 999px;
+
+    transform:
+      translate(-50%, -50%)
+      scale(1);
+  }
+
+  100% {
+    width: calc(100vw - 96px);
+    height: calc(100vh - 96px);
+
+    border-radius: 34px;
+
+    transform:
+      translate(-50%, -50%)
+      scale(1);
+  }
+
+}
+
+
+@keyframes dfFinalText {
+
+  to {
+    opacity: 1;
+
+    transform:
+      translate(-50%, -50%);
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE 300–640
+   ========================================================= */
+
+@media (max-width: 640px) {
+
+  .df-wow-scene {
+    width: calc(100vw - 28px);
+    height: calc(100vh - 28px);
+
+    border-radius: 24px;
+  }
+
+
+  /* TOP */
+
+  .df-wow-kicker {
+    top: 34px;
+
+    width: 82%;
+    max-width: 82%;
+
+    font-size: clamp(9px, 2.8vw, 11px);
+
+    line-height: 1.25;
+
+    white-space: normal;
+  }
+
+
+  /* MAIN */
+
+  .df-wow-main {
+    width: 88vw;
+  }
+
+  .df-wow-main span {
+    font-size: clamp(42px, 14vw, 76px);
+
+    line-height: .82;
+  }
+
+
+  /* TAGS */
+
+  .df-wow-tag {
+    padding:
+      10px
+      14px;
+
+    font-size:
+      clamp(10px, 3.2vw, 13px);
+  }
+
+
+  .df-wow-tag:nth-child(1) {
+    --x: -31vw !important;
+    --y: -26vh !important;
+  }
+
+  .df-wow-tag:nth-child(2) {
+    --x: 24vw !important;
+    --y: -24vh !important;
+  }
+
+  .df-wow-tag:nth-child(3) {
+    --x: -18vw !important;
+    --y: -16vh !important;
+  }
+
+  .df-wow-tag:nth-child(4) {
+    --x: 28vw !important;
+    --y: -9vh !important;
+  }
+
+  .df-wow-tag:nth-child(5) {
+    --x: -29vw !important;
+    --y: 2vh !important;
+  }
+
+  .df-wow-tag:nth-child(6) {
+    --x: 25vw !important;
+    --y: 7vh !important;
+  }
+
+  .df-wow-tag:nth-child(7) {
+    --x: -24vw !important;
+    --y: 16vh !important;
+  }
+
+  .df-wow-tag:nth-child(8) {
+    --x: 23vw !important;
+    --y: 19vh !important;
+  }
+
+  .df-wow-tag:nth-child(9) {
+    --x: -18vw !important;
+    --y: 27vh !important;
+  }
+
+  .df-wow-tag:nth-child(10) {
+    --x: 18vw !important;
+    --y: 29vh !important;
+  }
+
+
+  /* BOTTOM */
+
+  .df-wow-bottom {
+    bottom: 42px;
+
+    width: 82%;
+    max-width: 82%;
+
+    font-size:
+      clamp(9px, 2.8vw, 11px);
+
+    line-height: 1.25;
+  }
+
+
+  /* FINAL */
+
+  .df-wow-final-text {
+    width: 90%;
+  }
+
+  .df-wow-final-text strong {
+    font-size:
+      clamp(42px, 13.5vw, 68px);
+
+    line-height: .82;
+  }
+
+  .df-wow-final-text span {
+    margin-top: 18px;
+
+    padding:
+      11px
+      16px;
+
+    font-size:
+      clamp(10px, 3vw, 12px);
+  }
+
+
+  @keyframes dfBlueOpen {
+
+    0% {
+      width: 22px;
+      height: 22px;
+
+      border-radius: 999px;
+
+      transform:
+        translate(-50%, -50%)
+        scale(0);
+    }
+
+    30% {
+      width: 22px;
+      height: 22px;
+
+      border-radius: 999px;
+
+      transform:
+        translate(-50%, -50%)
+        scale(1);
+    }
+
+    100% {
+      width: calc(100vw - 28px);
+      height: calc(100vh - 28px);
+
+      border-radius: 24px;
+
+      transform:
+        translate(-50%, -50%)
+        scale(1);
+    }
+
+  }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .df-wow-loader * {
+    animation-duration: .01ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: .01ms !important;
+  }
+
+}
+</style>
+
+<script is:inline>
+document.documentElement.classList.add('df-preload-lock');
+
+(function () {
+
+  const loader =
+    document.getElementById('dfWowLoader');
+
+  const html =
+    document.documentElement;
+
+
+  if (!loader) {
+
+    html.classList.remove(
+      'df-preload-lock'
+    );
+
+    return;
+
+  }
+
+
+  /*
+   * false = показывать при каждом заходе
+   * true = только один раз за сессию
+   */
+
+  const SHOW_ONCE = false;
+
+  const KEY =
+    'df-wow-loader-seen';
+
+
+  if (
+    SHOW_ONCE &&
+    sessionStorage.getItem(KEY)
+  ) {
+
+    loader.remove();
+
+    html.classList.remove(
+      'df-preload-lock'
+    );
+
+    return;
+
+  }
+
+
+  let finished = false;
+
+
+  function finishLoader() {
+
+    if (finished) return;
+
+    finished = true;
+
+
+    loader.classList.add(
+      'is-hide'
+    );
+
+
+    html.classList.remove(
+      'df-preload-lock'
+    );
+
+
+    if (SHOW_ONCE) {
+
+      sessionStorage.setItem(
+        KEY,
+        '1'
+      );
+
+    }
+
+
+    setTimeout(
+      function () {
+
+        if (loader.parentNode) {
+          loader.remove();
+        }
+
+      },
+      950
+    );
+
+  }
+
+
+  /*
+   * Основная длительность.
+   *
+   * Было: 5050 мс.
+   * Теперь: 8200 мс.
+   *
+   * Финальный синий экран появляется
+   * примерно на 5.6 секунде и остается
+   * на экране ещё около 2.6 секунды.
+   */
+
+  window.addEventListener(
+    'load',
+    function () {
+
+      setTimeout(
+        finishLoader,
+        8200
+      );
+
+    }
+  );
+
+
+  /*
+   * Страховочный таймер,
+   * если window.load по какой-то причине
+   * зависнет или отработает нестандартно.
+   */
+
+  setTimeout(
+    function () {
+
+      if (
+        document.body.contains(loader)
+      ) {
+
+        finishLoader();
+
+      }
+
+    },
+    10000
+  );
+
+})();
+</script>

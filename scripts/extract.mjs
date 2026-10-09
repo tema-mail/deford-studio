@@ -35,9 +35,32 @@ let markup = html
   .replace(/<style[^>]*>[\s\S]*?<\/style>/g, '')
   .replace(/<script[^>]*>[\s\S]*?<\/script>/g, '')
   .replace(/<!--[\s\S]*?-->/g, '')
-  .replace(/^[\s\S]*?<div class="t1370">/, '')
-  .replace(/<\/div>\s*<\/div>\s*$/, '')
   .trim();
+
+/* Снимаем обёртки Тильды: t1370 — блок с кодом, t123 — блок HTML.
+   Сколько открывающих div сняли слева, столько закрывающих снимаем справа. */
+const openerRe = /^[\s\S]*?<div class="(?:t1370|t-width t-width_100\s*)">/;
+const opener = markup.match(openerRe)?.[0];
+
+if (opener) {
+  const wrappers = (opener.match(/<div\b/g) ?? []).length;
+  markup = markup.replace(openerRe, '').trim();
+
+  for (let i = 0; i < wrappers; i += 1) {
+    markup = markup.replace(/<\/div>\s*$/, '').trim();
+  }
+}
+
+/* Контроль: открывающих и закрывающих div должно быть поровну */
+const opened = (markup.match(/<div\b/g) ?? []).length;
+const closed = (markup.match(/<\/div>/g) ?? []).length;
+
+if (opened !== closed) {
+  console.error(
+    `ОШИБКА: баланс div нарушен — открыто ${opened}, закрыто ${closed}`,
+  );
+  process.exit(1);
+}
 
 /* Astro трактует {} в тексте как выражение — такие места правим руками */
 if (/[{}]/.test(markup)) {

@@ -28,11 +28,11 @@ node scripts/shots.mjs http://localhost:4321/     new   # копия
 | rec4124751801 | System | ✅ |
 | rec4126606901 | Practice | ✅ |
 | rec4135167301 | Cases | ✅ |
-| rec4135627701 | About | — |
-| rec4135871501 | WhenToCome | — |
-| rec4136994401 | Consult | — |
-| rec4137240201 | Faq | — |
-| rec4137897301 | Footer | — |
+| rec4135627701 | About | ✅ |
+| rec4135871501 | WhenToCome | ✅ |
+| rec4136994401 | Consult | ✅ |
+| rec4137240201 | Faq | ✅ |
+| rec4137897301 | Footer | ✅ |
 | rec4107223701 | Preloader | — |
 | rec4107223601 | Курсор | — |
 | rec4107224201 | Виджет связи | — |

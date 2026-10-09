@@ -1,0 +1,834 @@
+---
+/**
+ * Первый экран: заголовок, CTA и анимированная схема
+ * «Сайт → Реклама → Контент → Аналитика → CRM».
+ * Оригинал: блок rec4140995301 (Тильда).
+ */
+
+/* Пять линий схемы: серый каркас и синяя «прогресс»-линия рисуются
+   по одной и той же геометрии, стрелка ставится в конце линии. */
+const lines = [
+  'M-58 287 C38 287 83 287 118 253 C157 216 169 167 207 124 C249 77 299 62 350 58',
+  'M-64 292 C40 292 91 292 132 267 C180 238 205 207 244 190 C282 173 317 168 350 166',
+  'M-70 297 C43 297 102 297 160 289 C221 281 286 276 350 275',
+  'M-64 302 C40 302 91 302 132 327 C180 356 205 369 244 381 C282 393 317 385 350 383',
+  'M-58 307 C38 307 83 307 118 341 C157 378 169 427 207 452 C249 480 299 489 350 491',
+];
+
+/* Остриё стрелки заканчивается на x=372, карточки начинаются около x=380 */
+const arrows = [58, 166, 275, 383, 491];
+---
+
+<section id="deford-hero-v5">
+  <div class="dfh-content">
+    <h1 class="dfh-title">
+      Создаём рекламу<br class="desktop-break" />
+      и&nbsp;сайты, которые<br class="desktop-break" />
+      работают вместе<br class="desktop-break" />
+      на&nbsp;ваш бизнес
+    </h1>
+
+    <p class="dfh-description">
+      Помогаем бизнесу понятно рассказать о себе клиентам. И&nbsp;выстраиваем
+      систему маркетинга, в которой сайт, продвижение и аналитика работают
+      вместе, чтобы привлекать из поиска и рекламы тех, кому реально
+      нужны&nbsp;ваши товары или услуги.
+    </p>
+
+    <div class="dfh-actions">
+      <a class="dfh-primary" href="#zeropopup">
+        <span class="dfh-primary-text">Обсудить проект</span>
+        <span class="dfh-primary-icon">
+          <svg viewBox="0 0 12 12" aria-hidden="true">
+            <path d="M2 10L10 2"></path>
+            <path d="M4.5 2H10V7.5"></path>
+          </svg>
+        </span>
+      </a>
+
+      <a class="dfh-video" href="#zeropopup">
+        <span class="dfh-video-circle">
+          <svg viewBox="0 0 18 21" aria-hidden="true">
+            <path d="M17 10.5 L1.5 19.5 V1.5 Z"></path>
+          </svg>
+        </span>
+        <span class="dfh-video-text">Смотреть<br />видео о нас</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="dfh-system" aria-hidden="true">
+    <svg class="dfh-svg" viewBox="0 0 600 570" preserveAspectRatio="none">
+      <defs>
+        <linearGradient
+          id="dfHeroBaseV5"
+          gradientUnits="userSpaceOnUse"
+          x1="-60"
+          y1="0"
+          x2="375"
+          y2="0"
+        >
+          <stop offset="0%" stop-color="#65717f" stop-opacity="0"></stop>
+          <stop offset="23%" stop-color="#65717f" stop-opacity="0"></stop>
+          <stop offset="38%" stop-color="#65717f" stop-opacity=".07"></stop>
+          <stop offset="58%" stop-color="#697582" stop-opacity=".26"></stop>
+          <stop offset="78%" stop-color="#77828e" stop-opacity=".58"></stop>
+          <stop offset="100%" stop-color="#8a949f" stop-opacity=".78"></stop>
+        </linearGradient>
+
+        <linearGradient
+          id="dfHeroBlueV5"
+          gradientUnits="userSpaceOnUse"
+          x1="-60"
+          y1="0"
+          x2="375"
+          y2="0"
+        >
+          <stop offset="0%" stop-color="#0f68ff" stop-opacity="0"></stop>
+          <stop offset="22%" stop-color="#0f68ff" stop-opacity="0"></stop>
+          <stop offset="36%" stop-color="#0f68ff" stop-opacity=".08"></stop>
+          <stop offset="54%" stop-color="#0f68ff" stop-opacity=".32"></stop>
+          <stop offset="72%" stop-color="#0f76ff" stop-opacity=".70"></stop>
+          <stop offset="88%" stop-color="#1685ff" stop-opacity=".95"></stop>
+          <stop offset="100%" stop-color="#2b91ff" stop-opacity="1"></stop>
+        </linearGradient>
+      </defs>
+
+      {lines.map((d) => <path class="dfh-base-line" d={d} />)}
+
+      {
+        lines.map((d, i) => (
+          <path pathLength="1" class={`dfh-progress line-${i + 1}`} d={d} />
+        ))
+      }
+
+      {
+        arrows.map((y, i) => (
+          <path
+            class={`dfh-arrow arrow-${i + 1}`}
+            d={`M348 ${y - 8} L372 ${y} L348 ${y + 8} Z`}
+          />
+        ))
+      }
+    </svg>
+
+    <div class="dfh-node node-1">
+      <span class="dfh-node-icon">
+        <svg viewBox="0 0 32 32">
+          <rect x="4" y="5" width="24" height="17" rx="1"></rect>
+          <path d="M12 27H20"></path>
+          <path d="M16 22V27"></path>
+        </svg>
+      </span>
+      <span class="dfh-node-label">Сайт</span>
+    </div>
+
+    <div class="dfh-node node-2">
+      <span class="dfh-node-icon">
+        <svg viewBox="0 0 32 32">
+          <path d="M5 16 H9 L22 10 V22 L9 17 H5 Z"></path>
+          <path d="M10 18L12 25"></path>
+          <path d="M24 13V19"></path>
+        </svg>
+      </span>
+      <span class="dfh-node-label">Реклама</span>
+    </div>
+
+    <div class="dfh-node node-3">
+      <span class="dfh-node-icon">
+        <svg viewBox="0 0 32 32">
+          <rect x="7" y="4" width="18" height="24" rx="2"></rect>
+          <path d="M11 10H21"></path>
+          <path d="M11 15H21"></path>
+          <path d="M11 20H18"></path>
+        </svg>
+      </span>
+      <span class="dfh-node-label">Контент</span>
+    </div>
+
+    <div class="dfh-node node-4">
+      <span class="dfh-node-icon">
+        <svg viewBox="0 0 32 32">
+          <rect x="5" y="18" width="5" height="9" rx="1"></rect>
+          <rect x="14" y="12" width="5" height="15" rx="1"></rect>
+          <rect x="23" y="6" width="5" height="21" rx="1"></rect>
+        </svg>
+      </span>
+      <span class="dfh-node-label">Аналитика</span>
+    </div>
+
+    <div class="dfh-node node-5">
+      <span class="dfh-node-icon">
+        <svg viewBox="0 0 32 32">
+          <ellipse cx="16" cy="8" rx="10" ry="4"></ellipse>
+          <path d="M6 8 V16 C6 18.2 10.5 20 16 20 C21.5 20 26 18.2 26 16 V8"
+          ></path>
+          <path d="M6 16 V24 C6 26.2 10.5 28 16 28 C21.5 28 26 26.2 26 24 V16"
+          ></path>
+        </svg>
+      </span>
+      <span class="dfh-node-label">CRM</span>
+    </div>
+  </div>
+</section>
+
+<style>
+  #deford-hero-v5 {
+    --blue: #0f68ff;
+    --blue-light: #2b91ff;
+    --bg: #1a1a1c;
+    --pill: #272729;
+    --white: #ffffff;
+    --grey: #a9a9a9;
+
+    position: relative;
+    width: 100%;
+    height: min(805px, 55.9028vw);
+    min-height: 620px;
+    overflow: hidden;
+    background: var(--bg);
+    border-radius: 0 0 min(40px, 2.7778vw) min(40px, 2.7778vw);
+    isolation: isolate;
+    font-family: Inter, Arial, sans-serif;
+  }
+
+  /* Мягкое синее свечение за схемой */
+  #deford-hero-v5::before {
+    content: '';
+    position: absolute;
+    right: 2%;
+    top: 6%;
+    width: 48%;
+    height: 88%;
+    background: radial-gradient(
+      ellipse at 55% 50%,
+      rgba(15, 104, 255, 0.065) 0%,
+      rgba(15, 104, 255, 0.018) 42%,
+      rgba(26, 26, 28, 0) 74%
+    );
+    pointer-events: none;
+  }
+
+  /* ===== Левая колонка ===== */
+
+  #deford-hero-v5 .dfh-content {
+    position: relative;
+    z-index: 10;
+    width: min(650px, 45.1389vw);
+    height: 100%;
+    margin-left: min(60px, 4.1667vw);
+    padding-top: min(154px, 10.6944vw);
+  }
+
+  #deford-hero-v5 .dfh-title {
+    width: min(641px, 44.5139vw);
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: min(75px, 5.2083vw);
+    font-weight: 700;
+    line-height: 0.895;
+    letter-spacing: -0.06em;
+    color: var(--white);
+  }
+
+  #deford-hero-v5 .dfh-description {
+    width: min(432px, 30vw);
+    margin: min(20px, 1.3889vw) 0 0;
+    font-family: Inter, Arial, sans-serif;
+    font-size: min(15px, 1.0417vw);
+    font-weight: 100;
+    line-height: 1.2;
+    color: var(--grey);
+  }
+
+  #deford-hero-v5 .dfh-actions {
+    display: flex;
+    align-items: center;
+    gap: min(17px, 1.1806vw);
+    margin-top: min(31px, 2.1528vw);
+  }
+
+  /* ===== Главная кнопка ===== */
+
+  #deford-hero-v5 .dfh-primary {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: min(239px, 16.5972vw);
+    height: min(64px, 4.4444vw);
+    padding-left: min(25px, 1.7361vw);
+    border-radius: 999px;
+    background: var(--blue);
+    color: #fff;
+    text-decoration: none;
+    transition:
+      transform 0.25s ease,
+      filter 0.25s ease;
+  }
+
+  #deford-hero-v5 .dfh-primary-text {
+    font-size: min(16px, 1.1111vw);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  #deford-hero-v5 .dfh-primary-icon {
+    position: absolute;
+    top: min(7px, 0.4861vw);
+    right: min(7px, 0.4861vw);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: min(50px, 3.4722vw);
+    height: min(50px, 3.4722vw);
+    border-radius: 50%;
+    background: #fff;
+    transition: transform 0.3s ease;
+  }
+
+  #deford-hero-v5 .dfh-primary-icon svg {
+    width: 12px;
+    height: 12px;
+    fill: none;
+    stroke: #111;
+    stroke-width: 1.5;
+  }
+
+  /* ===== Ссылка на видео ===== */
+
+  #deford-hero-v5 .dfh-video {
+    display: flex;
+    align-items: center;
+    gap: min(13px, 0.9028vw);
+    color: var(--grey);
+    text-decoration: none;
+  }
+
+  #deford-hero-v5 .dfh-video-circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: min(64px, 4.4444vw);
+    height: min(64px, 4.4444vw);
+    flex-shrink: 0;
+    border: 1px solid rgba(255, 255, 255, 0.38);
+    border-radius: 50%;
+    transition:
+      border-color 0.25s ease,
+      background-color 0.25s ease,
+      transform 0.25s ease;
+  }
+
+  #deford-hero-v5 .dfh-video-circle svg {
+    width: min(18px, 1.25vw);
+    height: min(21px, 1.4583vw);
+    margin-left: 3px;
+    fill: #fff;
+  }
+
+  #deford-hero-v5 .dfh-video-text {
+    width: min(110px, 7.6389vw);
+    font-size: min(15px, 1.0417vw);
+    font-weight: 600;
+    line-height: 1.15;
+  }
+
+  @media (hover: hover) {
+    #deford-hero-v5 .dfh-primary:hover {
+      transform: translateY(-2px);
+      filter: brightness(0.94);
+    }
+
+    #deford-hero-v5 .dfh-primary:hover .dfh-primary-icon {
+      transform: rotate(45deg);
+    }
+
+    #deford-hero-v5 .dfh-video {
+      transition: color 0.25s ease;
+    }
+
+    #deford-hero-v5 .dfh-video:hover,
+    #deford-hero-v5 .dfh-video:hover .dfh-video-text {
+      color: #fff;
+    }
+
+    #deford-hero-v5 .dfh-video:hover .dfh-video-circle {
+      background: #1768ff;
+      border-color: #1768ff;
+      transform: scale(1.06);
+    }
+  }
+
+  /* ===== Схема ===== */
+
+  #deford-hero-v5 .dfh-system {
+    position: absolute;
+    z-index: 4;
+    right: min(200px, 9.72vw);
+    top: 50%;
+    width: min(600px, 41.6667vw);
+    height: min(570px, 39.5833vw);
+    transform: translate(-50px, -44%);
+    opacity: 0;
+    transition: opacity 0.9s ease;
+  }
+
+  #deford-hero-v5.is-started .dfh-system {
+    opacity: 1;
+  }
+
+  #deford-hero-v5 .dfh-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  /* Серый каркас */
+
+  #deford-hero-v5 .dfh-base-line {
+    fill: none;
+    stroke: url(#dfHeroBaseV5);
+    stroke-width: 3;
+    stroke-linecap: round;
+    opacity: 0;
+  }
+
+  #deford-hero-v5.is-running .dfh-base-line {
+    animation: dfBaseAppear 1s ease 0.12s forwards;
+  }
+
+  @keyframes dfBaseAppear {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 0.34;
+    }
+  }
+
+  /* Синяя линия. При pathLength=1: offset 1 — скрыта, 0 — видна целиком,
+     -1 — уходит от конца пути к началу. */
+
+  #deford-hero-v5 .dfh-progress {
+    fill: none;
+    stroke: url(#dfHeroBlueV5);
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 1 1;
+    stroke-dashoffset: 1;
+    opacity: 0;
+    filter: drop-shadow(0 0 6px rgba(15, 104, 255, 0.32));
+  }
+
+  #deford-hero-v5.is-running .dfh-progress {
+    animation: dfDrawLine 1.15s cubic-bezier(0.22, 0.04, 0.15, 1) forwards;
+  }
+
+  #deford-hero-v5.is-running .line-1 {
+    animation-delay: 0.4s;
+  }
+  #deford-hero-v5.is-running .line-2 {
+    animation-delay: 1.75s;
+  }
+  #deford-hero-v5.is-running .line-3 {
+    animation-delay: 3.1s;
+  }
+  #deford-hero-v5.is-running .line-4 {
+    animation-delay: 4.45s;
+  }
+  #deford-hero-v5.is-running .line-5 {
+    animation-delay: 5.8s;
+  }
+
+  @keyframes dfDrawLine {
+    0% {
+      opacity: 0;
+      stroke-dashoffset: 1;
+    }
+    12% {
+      opacity: 0.25;
+    }
+    25% {
+      opacity: 0.7;
+    }
+    100% {
+      opacity: 1;
+      stroke-dashoffset: 0;
+    }
+  }
+
+  /* Стрелки */
+
+  #deford-hero-v5 .dfh-arrow {
+    fill: var(--blue-light);
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+    transform: translateX(-6px) scale(0.45);
+    filter: drop-shadow(0 0 4px rgba(15, 104, 255, 0.42));
+  }
+
+  #deford-hero-v5.is-running .dfh-arrow {
+    animation: dfArrowIn 0.32s ease forwards;
+  }
+
+  #deford-hero-v5.is-running .arrow-1 {
+    animation-delay: 1.43s;
+  }
+  #deford-hero-v5.is-running .arrow-2 {
+    animation-delay: 2.78s;
+  }
+  #deford-hero-v5.is-running .arrow-3 {
+    animation-delay: 4.13s;
+  }
+  #deford-hero-v5.is-running .arrow-4 {
+    animation-delay: 5.48s;
+  }
+  #deford-hero-v5.is-running .arrow-5 {
+    animation-delay: 6.83s;
+  }
+
+  @keyframes dfArrowIn {
+    to {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+    }
+  }
+
+  /* Карточки */
+
+  #deford-hero-v5 .dfh-node {
+    position: absolute;
+    right: 0;
+    display: flex;
+    align-items: center;
+    width: min(220px, 15.2778vw);
+    height: min(72px, 5vw);
+    padding: 0 min(24px, 1.6667vw);
+    gap: min(18px, 1.25vw);
+    border-radius: 999px;
+    background: var(--pill);
+    color: rgba(255, 255, 255, 0.76);
+    opacity: 0;
+    transform: translateX(8px) scale(0.985);
+    box-shadow: 0 0 0 rgba(15, 104, 255, 0);
+  }
+
+  #deford-hero-v5 .node-1 {
+    top: 3%;
+  }
+  #deford-hero-v5 .node-2 {
+    top: 22%;
+  }
+  #deford-hero-v5 .node-3 {
+    top: 41%;
+  }
+  #deford-hero-v5 .node-4 {
+    top: 60%;
+  }
+  #deford-hero-v5 .node-5 {
+    top: 79%;
+  }
+
+  /* Сначала все карточки проявляются серыми, затем каждая
+     по очереди загорается синим вслед за своей линией. */
+
+  #deford-hero-v5.is-running .dfh-node {
+    animation:
+      dfNodeBase 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards,
+      dfNodeBlue 0.55s cubic-bezier(0.16, 1, 0.3, 1) var(--blue-delay) forwards;
+  }
+
+  #deford-hero-v5 .node-1 {
+    --blue-delay: 1.65s;
+  }
+  #deford-hero-v5 .node-2 {
+    --blue-delay: 3s;
+  }
+  #deford-hero-v5 .node-3 {
+    --blue-delay: 4.35s;
+  }
+  #deford-hero-v5 .node-4 {
+    --blue-delay: 5.7s;
+  }
+  #deford-hero-v5 .node-5 {
+    --blue-delay: 7.05s;
+  }
+
+  @keyframes dfNodeBase {
+    to {
+      opacity: 0.76;
+      transform: translateX(0) scale(0.985);
+    }
+  }
+
+  @keyframes dfNodeBlue {
+    from {
+      background: var(--pill);
+      color: rgba(255, 255, 255, 0.76);
+      opacity: 0.76;
+      transform: scale(0.985);
+      box-shadow: 0 0 0 rgba(15, 104, 255, 0);
+    }
+    to {
+      background: var(--blue);
+      color: #fff;
+      opacity: 1;
+      transform: scale(1);
+      box-shadow: 0 0 28px rgba(15, 104, 255, 0.2);
+    }
+  }
+
+  /* Разбор схемы: справа налево — карточки, стрелки,
+     синяя линия втягивается к началу, последним гаснет каркас. */
+
+  #deford-hero-v5.is-clearing .dfh-node {
+    animation: dfNodeOut 0.55s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+  }
+
+  @keyframes dfNodeOut {
+    0% {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: translateX(12px) scale(0.97);
+    }
+  }
+
+  #deford-hero-v5.is-clearing .dfh-arrow {
+    animation: dfArrowOut 0.42s ease 0.2s forwards !important;
+  }
+
+  @keyframes dfArrowOut {
+    from {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: translateX(-7px) scale(0.55);
+    }
+  }
+
+  #deford-hero-v5.is-clearing .dfh-progress {
+    animation: dfLineBack 1.05s cubic-bezier(0.55, 0.02, 0.35, 1) 0.38s forwards !important;
+  }
+
+  @keyframes dfLineBack {
+    0% {
+      opacity: 1;
+      stroke-dashoffset: 0;
+    }
+    80% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      stroke-dashoffset: -1;
+    }
+  }
+
+  #deford-hero-v5.is-clearing .dfh-base-line {
+    animation: dfBaseOut 0.85s ease 0.62s forwards !important;
+  }
+
+  @keyframes dfBaseOut {
+    from {
+      opacity: 0.34;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+  /* Иконки карточек */
+
+  #deford-hero-v5 .dfh-node-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: min(32px, 2.2222vw);
+    height: min(32px, 2.2222vw);
+    flex-shrink: 0;
+  }
+
+  #deford-hero-v5 .dfh-node-icon svg {
+    width: 100%;
+    height: 100%;
+    fill: none;
+    stroke: #fff;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  #deford-hero-v5 .dfh-node-label {
+    font-size: min(19px, 1.3194vw);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  /* ===== Мобильные 300–640 ===== */
+
+  @media screen and (max-width: 640px) {
+    #deford-hero-v5 {
+      height: auto;
+      min-height: 0;
+      border-radius: 0 0 24px 24px;
+    }
+
+    #deford-hero-v5 .dfh-content {
+      width: 100%;
+      height: auto;
+      margin: 0;
+      padding: 112px 20px 0;
+    }
+
+    #deford-hero-v5 .dfh-title {
+      width: 100%;
+      font-size: clamp(32px, 9vw, 38px);
+      line-height: 0.94;
+      letter-spacing: -0.055em;
+    }
+
+    #deford-hero-v5 .desktop-break {
+      display: none;
+    }
+
+    #deford-hero-v5 .dfh-description {
+      width: 100%;
+      max-width: 470px;
+      margin-top: 16px;
+      font-size: 14px;
+      line-height: 1.22;
+    }
+
+    #deford-hero-v5 .dfh-actions {
+      flex-direction: row;
+      flex-wrap: nowrap;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    #deford-hero-v5 .dfh-actions > * {
+      min-width: 0;
+    }
+
+    #deford-hero-v5 .dfh-primary {
+      width: 229px;
+      height: 60px;
+      padding-left: 22px;
+    }
+
+    #deford-hero-v5 .dfh-primary-text {
+      font-size: 15px;
+    }
+
+    #deford-hero-v5 .dfh-primary-icon {
+      width: 46px;
+      height: 46px;
+      top: 7px;
+      right: 7px;
+    }
+
+    #deford-hero-v5 .dfh-video-circle {
+      width: 58px;
+      height: 58px;
+    }
+
+    #deford-hero-v5 .dfh-video-text {
+      width: 100px;
+      font-size: 14px;
+    }
+
+    #deford-hero-v5 .dfh-system {
+      position: relative;
+      top: auto;
+      right: auto;
+      width: calc(100% - 40px);
+      height: clamp(310px, 84vw, 400px);
+      margin: 42px 20px -48px;
+      transform: translateY(8px) scale(0.78);
+      transform-origin: 50% 0;
+    }
+
+    #deford-hero-v5 .dfh-node {
+      width: clamp(142px, 43vw, 195px);
+      height: clamp(50px, 14vw, 64px);
+      padding: 0 clamp(15px, 4.5vw, 21px);
+      gap: 11px;
+    }
+
+    #deford-hero-v5 .dfh-node-icon {
+      width: clamp(23px, 6.5vw, 29px);
+      height: clamp(23px, 6.5vw, 29px);
+    }
+
+    #deford-hero-v5 .dfh-node-label {
+      font-size: clamp(14px, 4vw, 17px);
+    }
+  }
+</style>
+
+<script>
+  const hero = document.getElementById('deford-hero-v5');
+
+  if (hero) {
+    /* Схема собирается, держится на экране, разбирается и собирается снова */
+    const CLEAR_AT = 8650;
+    const RESET_AT = 10250;
+    const NEW_CYCLE_AT = 10650;
+
+    let timers: ReturnType<typeof setTimeout>[] = [];
+    let started = false;
+
+    const runCycle = () => {
+      timers.forEach(clearTimeout);
+      timers = [];
+
+      hero.classList.remove('is-running', 'is-clearing');
+      /* Пересчёт раскладки сбрасывает CSS-анимации */
+      void hero.offsetWidth;
+      hero.classList.add('is-running');
+
+      timers.push(
+        setTimeout(() => hero.classList.add('is-clearing'), CLEAR_AT),
+        setTimeout(
+          () => hero.classList.remove('is-running', 'is-clearing'),
+          RESET_AT,
+        ),
+        setTimeout(runCycle, NEW_CYCLE_AT),
+      );
+    };
+
+    const startHero = () => {
+      if (started) return;
+      started = true;
+      hero.classList.add('is-started');
+      timers.push(setTimeout(runCycle, 550));
+    };
+
+    /* Схема стартует после того, как уйдёт прелоадер */
+    const loader = document.getElementById('dfWowLoader');
+
+    if (!loader) {
+      if (document.readyState === 'complete') startHero();
+      else window.addEventListener('load', startHero, { once: true });
+    } else if (loader.classList.contains('is-hide')) {
+      setTimeout(startHero, 250);
+    } else {
+      const observer = new MutationObserver(() => {
+        if (loader.classList.contains('is-hide')) {
+          observer.disconnect();
+          setTimeout(startHero, 250);
+        }
+      });
+      observer.observe(loader, { attributes: true, attributeFilter: ['class'] });
+    }
+  }
+</script>

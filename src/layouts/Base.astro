@@ -46,5 +46,42 @@ const {
 
   <body>
     <slot />
+
+    <script>
+      /* Плавный переход по якорям внутри страницы.
+         Заменяет служебный блок Тильды rec4271444901. */
+      const OFFSET = 3;
+
+      const scrollToHash = (hash: string, smooth = true) => {
+        if (!hash || hash === '#') return false;
+
+        const target = document.querySelector(hash);
+        if (!target) return false;
+
+        const top = target.getBoundingClientRect().top + window.scrollY - OFFSET;
+        window.scrollTo({ top, behavior: smooth ? 'smooth' : 'auto' });
+        return true;
+      };
+
+      document.addEventListener('click', (event) => {
+        const link = (event.target as HTMLElement)?.closest?.('a[href^="#"]');
+        if (!link) return;
+
+        const hash = link.getAttribute('href') ?? '';
+        /* Попап и пустые якоря обрабатываются своими скриптами */
+        if (hash === '#' || hash.startsWith('#zeropopup')) return;
+
+        if (scrollToHash(hash)) event.preventDefault();
+      });
+
+      /* Переход по ссылке с якорем извне */
+      window.addEventListener('load', () => {
+        if (location.hash) setTimeout(() => scrollToHash(location.hash, false), 300);
+      });
+
+      window.addEventListener('popstate', () => {
+        if (location.hash) scrollToHash(location.hash);
+      });
+    </script>
   </body>
 </html>

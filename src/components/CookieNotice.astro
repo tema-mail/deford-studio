@@ -1,0 +1,121 @@
+---
+/**
+ * Уведомление о cookie. Заменяет служебный блок Тильды rec4107224301:
+ * собственная реализация с теми же размерами, цветами и поведением.
+ * Согласие запоминается в браузере посетителя.
+ */
+const POLICY_URL =
+  'https://docs.google.com/document/d/1hnAOsaf_BQqOzmchkIH32dDg-KjXoHJBiIAjGEZiIF4/edit?tab=t.0#heading=h.80fxieud3f51';
+---
+
+<div class="df-cookie" data-cookie-notice hidden>
+  <div class="df-cookie__box">
+    <p class="df-cookie__text">
+      Мы используем файлы cookie и рекомендательные технологии. Пользуясь
+      сайтом, вы соглашаетесь с <a
+        href={POLICY_URL}
+        target="_blank"
+        rel="noopener noreferrer">Политикой обработки персональных данных</a
+      >
+    </p>
+    <button class="df-cookie__btn" type="button" data-cookie-accept>
+      Согласен
+    </button>
+  </div>
+</div>
+
+<style>
+  .df-cookie {
+    position: fixed;
+    right: 20px;
+    bottom: 30px;
+    z-index: 100001;
+    width: 600px;
+    max-width: calc(100% - 40px);
+  }
+
+  .df-cookie[hidden] {
+    display: none;
+  }
+
+  .df-cookie__box {
+    display: flex;
+    align-items: center;
+    padding: 15px 25px;
+    border-radius: 5px;
+    background: #ebebeb;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .df-cookie__text {
+    flex: 1 1 auto;
+    padding-right: 10px;
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 23.25px;
+    color: #000;
+  }
+
+  .df-cookie__text a {
+    color: #e4a022;
+  }
+
+  .df-cookie__btn {
+    flex: 0 0 auto;
+    padding: 4.2px 20px;
+    border: 1px solid #999;
+    border-radius: 5px;
+    background: #ebebeb;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 19.6px;
+    text-align: center;
+    color: #555;
+    cursor: pointer;
+  }
+
+  /* На узких экранах плашка занимает всю ширину внизу */
+  @media (max-width: 640px) {
+    .df-cookie {
+      right: 0;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      max-width: 100%;
+    }
+
+    .df-cookie__box {
+      border-radius: 0;
+    }
+  }
+</style>
+
+<script>
+  const KEY = 'df-cookie-accepted';
+  const notice = document.querySelector<HTMLElement>('[data-cookie-notice]');
+  const accept = notice?.querySelector<HTMLButtonElement>('[data-cookie-accept]');
+
+  /* В приватном окне доступ к хранилищу может быть закрыт */
+  const read = () => {
+    try {
+      return localStorage.getItem(KEY);
+    } catch {
+      return null;
+    }
+  };
+
+  const write = () => {
+    try {
+      localStorage.setItem(KEY, '1');
+    } catch {}
+  };
+
+  if (notice && accept && !read()) {
+    notice.hidden = false;
+
+    accept.addEventListener('click', () => {
+      notice.hidden = true;
+      write();
+    });
+  }
+</script>

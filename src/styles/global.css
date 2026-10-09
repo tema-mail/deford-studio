@@ -1,0 +1,84 @@
+/* ==========================================================
+   DEFORD — глобальная база
+   Секции самодостаточны: у каждой свой scoped-CSS внутри
+   компонента. Здесь только сброс, шрифт и общие токены.
+   ========================================================== */
+
+:root {
+  --df-blue: #0f68ff;
+  --df-blue-light: #2b91ff;
+  --df-bg: #1a1a1c;
+  --df-pill: #272729;
+  --df-white: #ffffff;
+  --df-grey: #a9a9a9;
+
+  --df-page: #ffffff;
+  --df-font: 'Inter', Arial, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--df-page);
+  color: #111;
+  font-family: var(--df-font);
+  font-size: 16px;
+  line-height: 1.4;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img,
+svg,
+video {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+}
+
+h1, h2, h3, h4, h5, h6, p, figure, blockquote {
+  margin: 0;
+}
+
+ul, ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+/* Блокировка скролла при открытом попапе / прелоадере */
+body.df-noscroll {
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

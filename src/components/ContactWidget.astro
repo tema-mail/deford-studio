@@ -1,0 +1,201 @@
+---
+/**
+ * Плавающая кнопка связи. Заменяет служебный блок Тильды rec4107224201:
+ * собственная реализация с теми же размерами и раскрытием вверх.
+ */
+const contacts = [
+  { href: 'tel:89537777891', label: 'Позвонить', icon: 'phone' },
+  { href: 'https://t.me/Artem1Galimov', label: 'Telegram', icon: 'send' },
+  { href: 'https://wa.me/79537777891', label: 'WhatsApp', icon: 'chat' },
+];
+---
+
+<div class="df-contact" data-contact-widget>
+  <ul class="df-contact__list">
+    {
+      contacts.map((contact, i) => (
+        <li class="df-contact__item" style={`--shift: ${67.5 + i * 60}px`}>
+          <a
+            class="df-contact__link"
+            href={contact.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={contact.label}
+          >
+            {contact.icon === 'phone' && (
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6.6 3h3l1.5 4-2.1 1.5a12 12 0 0 0 5.5 5.5L16 11.9l4 1.5v3a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 4 7.2 2 2 0 0 1 6.6 3Z" />
+              </svg>
+            )}
+            {contact.icon === 'send' && (
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M21 3 2.5 10.6c-.6.2-.6 1 0 1.2l5 1.6 1.7 5.4c.2.6 1 .7 1.3.2l2.6-3.3 4.5 3.3c.5.4 1.2.1 1.3-.5L21.9 4c.1-.7-.5-1.2-1-1Zm-3.6 3.1-8 6.4-.5 3.2-1.3-4 9.8-5.6Z" />
+              </svg>
+            )}
+            {contact.icon === 'chat' && (
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 3a9 9 0 0 0-7.8 13.4L3 21l4.8-1.2A9 9 0 1 0 12 3Zm0 2a7 7 0 1 1-3.5 13l-.5-.3-2.4.6.6-2.3-.3-.5A7 7 0 0 1 12 5Z" />
+              </svg>
+            )}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+
+  <button
+    class="df-contact__toggle"
+    type="button"
+    aria-label="Открыть способы связи"
+    aria-expanded="false"
+    data-contact-toggle
+  >
+    <svg class="df-contact__icon-open" viewBox="0 0 35 32" aria-hidden="true">
+      <path
+        d="M11.3 12.7h12.1M11.3 16.5h12.1M4.8 23.6C2.4 21.2 1 18.1 1 14.8 1 7.2 8.4 1 17.5 1S34 7.2 34 14.8s-7.4 13.8-16.5 13.8c-1.9 0-3.7-.3-5.3-.8l-.2-.1L5 31v-7.2l-.2-.2Z"
+      ></path>
+    </svg>
+
+    <svg class="df-contact__icon-close" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M5 5l14 14M19 5L5 19"></path>
+    </svg>
+  </button>
+</div>
+
+<style>
+  .df-contact {
+    position: fixed;
+    right: 65px;
+    bottom: 50px;
+    z-index: 1000;
+    width: 60px;
+    height: 60px;
+  }
+
+  .df-contact__toggle {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #2b66f6;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    transition: transform 0.25s ease;
+  }
+
+  .df-contact__toggle svg {
+    width: 26px;
+    height: 24px;
+    fill: none;
+    stroke: #fff;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .df-contact__icon-close {
+    display: none;
+    width: 20px;
+    height: 20px;
+  }
+
+  .df-contact.is-open .df-contact__icon-open {
+    display: none;
+  }
+
+  .df-contact.is-open .df-contact__icon-close {
+    display: block;
+  }
+
+  /* Иконки лежат под кнопкой и выезжают вверх */
+  .df-contact__item {
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+    width: 50px;
+    height: 50px;
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      transform 0.3s cubic-bezier(0.2, 0.75, 0.25, 1),
+      opacity 0.25s ease;
+  }
+
+  .df-contact.is-open .df-contact__item {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(calc(-1 * var(--shift)));
+  }
+
+  .df-contact__link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    transition: transform 0.25s ease;
+  }
+
+  .df-contact__link svg {
+    width: 24px;
+    height: 24px;
+    fill: #2b66f6;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .df-contact__toggle:hover,
+    .df-contact__link:hover {
+      transform: scale(1.06);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .df-contact {
+      right: 20px;
+      bottom: 20px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .df-contact__item,
+    .df-contact__link,
+    .df-contact__toggle {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const widget = document.querySelector<HTMLElement>('[data-contact-widget]');
+  const toggle = widget?.querySelector<HTMLButtonElement>('[data-contact-toggle]');
+
+  if (widget && toggle) {
+    const setOpen = (open: boolean) => {
+      widget.classList.toggle('is-open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute(
+        'aria-label',
+        open ? 'Закрыть способы связи' : 'Открыть способы связи',
+      );
+    };
+
+    toggle.addEventListener('click', (event) => {
+      event.stopPropagation();
+      setOpen(!widget.classList.contains('is-open'));
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!widget.contains(event.target as Node)) setOpen(false);
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') setOpen(false);
+    });
+  }
+</script>

@@ -120,8 +120,10 @@ const MAX = 'https://max.ru/u/f9LHodD0cOLcKLkeG8Hr_oFXFF0snzqnNOGgHN2cX0meUwSiov
   .tfcontact__btn:hover { transform: translateY(-2px); }
   .tfcontact__btn img { width: calc(44 * var(--u)); height: calc(44 * var(--u)); }
 
-  .tfcontact__btn--tg { background: linear-gradient(270deg, #0a76b8 0%, #24a1de 100%); box-shadow: 0 10px 30px rgba(36, 161, 222, 0.25); }
-  .tfcontact__btn--max { background: linear-gradient(270deg, #3d0bb3 0%, #e00 100%); box-shadow: 0 10px 30px rgba(120, 20, 180, 0.25); }
+  /* в палитре страницы: белая главная и тёмная вторая — без синего и фиолетового */
+  .tfcontact__btn--tg { background: #fff; color: var(--tf-ink); }
+  .tfcontact__btn--max { border: 1px solid rgba(255, 255, 255, 0.18); background: rgba(255, 255, 255, 0.06); }
+  .tfcontact__btn img { border-radius: 50%; background: var(--tf-red); }
 
   .tfcontact__phones { width: 100%; height: auto; margin-top: calc(-10 * var(--u)); filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.5)); }
 

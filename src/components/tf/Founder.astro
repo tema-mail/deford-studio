@@ -142,24 +142,21 @@ const stats = [
 
   .tffounder__stat {
     padding: calc(24 * var(--u));
-    border-radius: calc(24 * var(--u));
-    background: linear-gradient(180deg, #ffffff 0%, #f6f6f6 100%);
+    border-radius: calc(20 * var(--u));
+    border: 1px solid var(--tf-line);
+    background: linear-gradient(180deg, #1f1f23 0%, #19191c 100%);
+    color: var(--tf-text);
   }
 
   .tffounder__value {
-    background: var(--tf-grad);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    font-size: calc(38 * var(--u));
+    color: var(--tf-red);
+    font-size: calc(44 * var(--u));
     line-height: 1;
-    font-weight: 600;
-    letter-spacing: -1.2px;
   }
 
   .tffounder__label {
     margin-top: calc(12 * var(--u));
-    color: var(--tf-muted);
+    color: var(--tf-muted-light);
     font-size: calc(13 * var(--u));
     line-height: calc(18 * var(--u));
     font-weight: 500;

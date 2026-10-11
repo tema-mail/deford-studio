@@ -123,20 +123,21 @@ const plans = [
     display: flex;
     flex-direction: column;
     padding: calc(28 * var(--u));
-    border-radius: calc(27 * var(--u));
-    background: linear-gradient(180deg, #ffffff 0%, #f6f6f6 100%);
-    color: var(--tf-ink);
+    border-radius: calc(24 * var(--u));
+    border: 1px solid var(--tf-line);
+    background: linear-gradient(180deg, #1f1f23 0%, #19191c 100%);
+    color: var(--tf-text);
   }
 
   .tfplans__card--red {
     background:
       radial-gradient(circle at 100% 0%, rgba(255, 255, 255, 0.18), transparent 45%),
       var(--tf-grad);
+    border-color: transparent;
     color: #fff;
-    box-shadow: 0 24px 60px rgba(238, 0, 0, 0.25);
   }
 
-  .tfplans__card--dark { background: linear-gradient(180deg, #232323 0%, #161616 100%); color: #fff; }
+  .tfplans__card--dark { background: linear-gradient(180deg, #19191c 0%, #131315 100%); }
 
   .tfplans__top { display: flex; align-items: flex-start; gap: calc(16 * var(--u)); }
 
@@ -151,7 +152,7 @@ const plans = [
 
   .tfplans__sub {
     margin-top: calc(8 * var(--u));
-    color: var(--tf-muted);
+    color: var(--tf-muted-light);
     font-size: calc(12 * var(--u));
     line-height: calc(16 * var(--u));
     font-weight: 500;
@@ -216,7 +217,7 @@ const plans = [
 
   .tfplans__bottom { margin-top: auto; padding-top: calc(28 * var(--u)); }
 
-  .tfplans__from { color: var(--tf-muted); font-size: calc(12 * var(--u)); font-weight: 500; }
+  .tfplans__from { color: var(--tf-muted-light); font-size: calc(12 * var(--u)); font-weight: 500; }
   .tfplans__card--red .tfplans__from,
   .tfplans__card--dark .tfplans__from { color: rgba(255, 255, 255, 0.65); }
 

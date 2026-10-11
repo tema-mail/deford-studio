@@ -1,7 +1,7 @@
 ---
 /* Оболочка главной Target Factory в стилистике лендинга /flowers.
    Метаданные — с targetfactory.ru. Шрифты загружаются явно:
-   Inter Tight — основной, Montserrat — для мелкого служебного текста.
+   Inter Tight — текст, Oswald — узкие заголовки капсом, как у оригинала.
    Здесь же общие скрипты страницы: появление блоков при прокрутке
    и плавный переход по якорям меню. */
 import '../styles/tf.css';
@@ -20,6 +20,7 @@ const canonical = 'https://targetfactory.ru';
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0b0b0c" />
 
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -36,7 +37,7 @@ const canonical = 'https://targetfactory.ru';
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap&subset=cyrillic"
+      href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Oswald:wght@500;600&display=swap&subset=cyrillic"
     />
   </head>
 

@@ -45,12 +45,15 @@ import faq from '../../data/tf-faq.json';
 
   .tffaq__item {
     overflow: hidden;
-    border-radius: calc(22 * var(--u));
-    background: #fff;
-    transition: box-shadow 0.3s ease;
+    border-radius: calc(20 * var(--u));
+    border: 1px solid var(--tf-line);
+    background: linear-gradient(180deg, #1f1f23 0%, #19191c 100%);
+    color: var(--tf-text);
+    transition: border-color 0.3s ease;
   }
 
-  .tffaq__item[open] { box-shadow: 0 16px 40px rgba(0, 0, 0, 0.06); }
+  .tffaq__item:hover { border-color: rgba(255, 255, 255, 0.14); }
+  .tffaq__item[open] { border-color: rgba(227, 19, 27, 0.4); }
 
   .tffaq__q {
     display: flex;
@@ -75,7 +78,7 @@ import faq from '../../data/tf-faq.json';
     height: calc(36 * var(--u));
     flex: 0 0 auto;
     border-radius: 50%;
-    background: var(--tf-grad);
+    background: var(--tf-red);
     transition: transform 0.3s ease;
   }
 
@@ -102,7 +105,7 @@ import faq from '../../data/tf-faq.json';
 
   .tffaq__a-in {
     padding: 0 calc(28 * var(--u)) calc(26 * var(--u));
-    color: var(--tf-muted);
+    color: var(--tf-muted-light);
     font-size: calc(14 * var(--u));
     line-height: calc(21 * var(--u));
     font-weight: 500;

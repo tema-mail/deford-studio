@@ -54,12 +54,13 @@ const whyIcons: Record<string, string> = why.icons;
   }
 
   .tfwhy1__title { margin-top: calc(24 * var(--u)); }
-  .tfwhy1__btn { margin-top: auto; }
+  /* кнопка под заголовком с отступом, а не прижата к низу ряда — не налезает */
+  .tfwhy1__btn { margin-top: calc(32 * var(--u)); }
 
   .tfwhy1__card {
     display: flex;
     flex-direction: column;
-    min-height: calc(220 * var(--u));
+    min-height: calc(180 * var(--u));
     padding: calc(26 * var(--u));
   }
 
@@ -70,8 +71,9 @@ const whyIcons: Record<string, string> = why.icons;
     height: calc(46 * var(--u));
     margin-bottom: auto;
     border-radius: 50%;
-    background: var(--tf-grad);
-    color: #fff;
+    border: 1px solid rgba(227, 19, 27, 0.35);
+    background: rgba(227, 19, 27, 0.1);
+    color: #ff4a4f;
   }
 
   .tfwhy1__icon svg {
@@ -85,8 +87,8 @@ const whyIcons: Record<string, string> = why.icons;
   }
 
   .tfwhy1__card-title {
-    margin-top: calc(36 * var(--u));
-    font-size: calc(21 * var(--u));
+    margin-top: calc(26 * var(--u));
+    font-size: calc(20 * var(--u));
     line-height: 1.08;
     font-weight: 600;
     letter-spacing: -0.5px;
@@ -94,7 +96,7 @@ const whyIcons: Record<string, string> = why.icons;
 
   .tfwhy1__card-text {
     margin-top: calc(10 * var(--u));
-    color: var(--tf-muted);
+    color: var(--tf-muted-light);
     font-size: calc(13 * var(--u));
     line-height: calc(18 * var(--u));
     font-weight: 500;

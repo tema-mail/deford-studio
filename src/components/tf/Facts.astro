@@ -58,17 +58,16 @@ const icons: Record<string, string> = {
   .tffacts__card {
     display: flex;
     flex-direction: column;
-    min-height: calc(230 * var(--u));
-    padding: calc(28 * var(--u));
+    min-height: calc(190 * var(--u));
+    padding: calc(26 * var(--u)) calc(28 * var(--u));
   }
 
   .tffacts__card--wide { grid-column: span 2; }
 
   .tffacts__card--dark {
     background:
-      radial-gradient(circle at 100% 0%, rgba(238, 0, 0, 0.22), transparent 55%),
-      linear-gradient(180deg, #232323 0%, #161616 100%);
-    color: #fff;
+      radial-gradient(80% 90% at 100% 0%, rgba(227, 19, 27, 0.2), transparent 60%),
+      linear-gradient(180deg, #1f1f23 0%, #18181b 100%);
   }
 
   .tffacts__card--red { background: var(--tf-grad); color: #fff; }
@@ -80,11 +79,12 @@ const icons: Record<string, string> = {
     height: calc(46 * var(--u));
     margin-bottom: auto;
     border-radius: 50%;
-    background: var(--tf-grad);
-    color: #fff;
+    border: 1px solid rgba(227, 19, 27, 0.35);
+    background: rgba(227, 19, 27, 0.1);
+    color: #ff4a4f;
   }
 
-  .tffacts__card--red .tffacts__icon { background: #fff; color: var(--tf-red); }
+  .tffacts__card--red .tffacts__icon { border-color: transparent; background: #fff; color: var(--tf-red); }
 
   .tffacts__icon svg {
     width: 48%;
@@ -97,19 +97,19 @@ const icons: Record<string, string> = {
   }
 
   .tffacts__title {
-    margin-top: calc(40 * var(--u));
-    font-size: calc(24 * var(--u));
+    margin-top: calc(28 * var(--u));
+    font-size: calc(22 * var(--u));
     line-height: 1.05;
     font-weight: 600;
     letter-spacing: -0.6px;
   }
 
-  .tffacts__card--wide .tffacts__title { font-size: calc(30 * var(--u)); }
+  .tffacts__card--wide .tffacts__title { font-size: calc(28 * var(--u)); }
 
   .tffacts__text {
     margin-top: calc(10 * var(--u));
-    max-width: calc(320 * var(--u));
-    color: var(--tf-muted);
+    max-width: calc(340 * var(--u));
+    color: var(--tf-muted-light);
     font-size: calc(13 * var(--u));
     line-height: calc(18 * var(--u));
     font-weight: 500;

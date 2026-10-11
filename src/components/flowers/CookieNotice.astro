@@ -4,7 +4,9 @@
     из общих стилей Тильды. Повторено собственным кодом по
     параметрам, снятым с живой страницы: карточка 340×164
     в правом нижнем углу, текст Montserrat 12/18.6, кнопка
-    #ceff31 с радиусом 30. Согласие запоминается в браузере. */
+    #ceff31 с радиусом 30. До 960 — полоса на всю ширину внизу
+    без крестика, до 480 — текст 10/15.5 и кнопка выше.
+    Согласие запоминается в браузере. */
 ---
 
 <div class="fm-cookie" data-fm-cookie hidden>
@@ -84,6 +86,7 @@
     font-size: 13px;
     font-weight: 600;
     line-height: 1.4;
+    text-transform: uppercase;
     cursor: pointer;
     transition: background-color 0.2s ease-in-out;
   }
@@ -105,6 +108,34 @@
     border: 0;
     background: none;
     cursor: pointer;
+  }
+  @media screen and (max-width: 960px) {
+    .fm-cookie {
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      max-width: 100%;
+    }
+
+    .fm-cookie__card {
+      padding: 20px 10px;
+    }
+
+    .fm-cookie__close {
+      display: none;
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    .fm-cookie__text {
+      font-size: 10px;
+      line-height: 15.5px;
+    }
+
+    .fm-cookie__accept {
+      padding: 10.9px 15px;
+    }
   }
 </style>
 

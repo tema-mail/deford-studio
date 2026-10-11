@@ -1,0 +1,379 @@
+---
+/** Квиз «Расчёт продвижения» — 5 шагов, как на оригинале: ниша, бюджет,
+    что важнее, опыт с рекламой VK и контакты. Вопросы и варианты —
+    с targetfactory.ru (поправлены только пробелы и регистр «СТО»).
+    Открывается ссылками #sendkviz. На оригинале каждый шаг — отдельный
+    Zero Block; здесь одна форма, ответы уходят одной заявкой
+    с номером формы и полями оригинала (Niche, Budget, Important, Work,
+    Name, Phone, Mail, Tg, Vk, Site, Agree). */
+
+const FORM_ACTION = 'https://forms.tildacdn.com/procces/';
+const SERVICE = '024d230ccd0bacf66604d31c1ce9caf2';
+
+const steps = [
+  {
+    q: 'В какой нише работает ваш бизнес?',
+    type: 'checkbox',
+    field: 'Niche',
+    options: [
+      'Замерные ниши (потолки и т. д.)', 'Магазины цветов', 'Магазины одежды и обуви',
+      'Импорт авто из Кореи, Китая', 'Детейлинг / СТО (плёнка и т. д.)', 'Детские центры',
+      'Карго / Логистика из Китая', 'Доставка еды / Кафе, рестораны', 'Бьюти услуги',
+      'Товарный бизнес', 'Онлайн школы и курсы', 'Фитнес / спортивные секции', 'Другое',
+    ],
+  },
+  {
+    q: 'Какой планируемый рекламный бюджет в месяц?',
+    type: 'radio',
+    field: 'Budget',
+    options: ['30–50 тыс. ₽', '50–100 тыс. ₽', '100–300 тыс. ₽', '300+ тыс. ₽'],
+  },
+  {
+    q: 'Что для вас важнее?',
+    type: 'checkbox',
+    field: 'Important',
+    options: ['Больше заявок', 'Увеличение продаж', 'Рост аудитории', 'Узнаваемость бренда'],
+  },
+  {
+    q: 'Работали ли вы с рекламой ВК раньше?',
+    type: 'radio',
+    field: 'Work',
+    options: [
+      'Да, есть опыт', 'Нет, первый раз', 'Пробовал, но без результата',
+      'Сейчас работает реклама, хочу бесплатный аудит рекламного кабинета',
+    ],
+  },
+];
+
+const contacts = [
+  { name: 'Name', type: 'text', placeholder: 'Ваше имя', required: true },
+  { name: 'Phone', type: 'tel', placeholder: '+7 (000) 000-00-00', required: true },
+  { name: 'Mail', type: 'email', placeholder: 'Ваша почта' },
+  { name: 'Tg', type: 'text', placeholder: 'Ник в Telegram' },
+  { name: 'Vk', type: 'url', placeholder: 'Ссылка на группу VK' },
+  { name: 'Site', type: 'url', placeholder: 'Ссылка на сайт (если есть)' },
+];
+
+const total = steps.length + 1;
+---
+
+<div class="tfquiz" data-tfquiz hidden>
+  <div class="tfquiz__bg" data-tfquiz-close></div>
+
+  <form class="tfquiz__card" action={FORM_ACTION} method="POST" role="dialog" aria-modal="true" aria-label="Расчёт продвижения" novalidate>
+    <input type="hidden" name="formservices[]" value={SERVICE} />
+    <input type="hidden" name="tildaspec-elemid" value="1761654826966" />
+    <input type="hidden" name="formid" value="form1490157151" />
+    <input type="hidden" name="Niche" value="" data-tfquiz-join="Niche" />
+    <input type="hidden" name="Important" value="" data-tfquiz-join="Important" />
+
+    <button class="tfquiz__close" type="button" aria-label="Закрыть" data-tfquiz-close><span></span><span></span></button>
+
+    <div class="tfquiz__progress" aria-hidden="true">
+      {Array.from({ length: total }, () => <span></span>)}
+    </div>
+
+    {
+      steps.map((step, i) => (
+        <fieldset class="tfquiz__step" data-step={i} hidden={i !== 0}>
+          <div class="tfquiz__count">Шаг {i + 1}/{total}</div>
+          <h3 class="tfquiz__q">{step.q}</h3>
+          <div class={`tfquiz__options${step.options.length > 6 ? ' tfquiz__options--many' : ''}`}>
+            {step.options.map((opt) => (
+              <label class="tfquiz__opt">
+                {step.type === 'radio' ? (
+                  <input type="radio" name={step.field} value={opt} />
+                ) : (
+                  <input type="checkbox" data-group={step.field} value={opt} />
+                )}
+                <span class={`tfquiz__mark tfquiz__mark--${step.type}`} aria-hidden="true" />
+                <span>{opt}</span>
+              </label>
+            ))}
+          </div>
+          <div class="tfquiz__nav">
+            {i > 0 && <button class="tfquiz__back" type="button" data-tfquiz-back>Назад</button>}
+            <button class="tf-btn tf-btn--red tfquiz__next" type="button" data-tfquiz-next disabled>
+              <span>Далее</span>
+              <span class="tf-btn__arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span>
+            </button>
+          </div>
+        </fieldset>
+      ))
+    }
+
+    <fieldset class="tfquiz__step" data-step={steps.length} hidden>
+      <div class="tfquiz__count">Шаг {total}/{total}</div>
+      <h3 class="tfquiz__q">Оставьте контакты для получения персонального расчёта</h3>
+      <div class="tfquiz__fields">
+        {contacts.map((c) => (
+          <input class="tfquiz__input" type={c.type} name={c.name} placeholder={c.placeholder} aria-label={c.placeholder} required={c.required} />
+        ))}
+      </div>
+      <label class="tfquiz__agree">
+        <input type="checkbox" name="Agree" value="yes" required />
+        <span class="tfquiz__mark tfquiz__mark--checkbox" aria-hidden="true"></span>
+        <span>
+          Я согласен с <a href="https://targetfactory.ru/policy" target="_blank" rel="noopener">политикой конфиденциальности</a>{' '}и{' '}<a href="https://targetfactory.ru/agreement" target="_blank" rel="noopener">пользовательским соглашением</a>
+        </span>
+      </label>
+      <div class="tfquiz__nav">
+        <button class="tfquiz__back" type="button" data-tfquiz-back>Назад</button>
+        <button class="tf-btn tf-btn--red tfquiz__next" type="submit" data-tfquiz-send disabled>
+          <span>Получить расчёт</span>
+          <span class="tf-btn__arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"></path></svg></span>
+        </button>
+      </div>
+    </fieldset>
+  </form>
+</div>
+
+<style is:global>
+  .tfquiz {
+    --u: 1px;
+    position: fixed;
+    z-index: 10000;
+    inset: 0;
+    display: flex;
+    padding: 20px;
+    overflow-y: auto;
+    font-family: var(--tf-font);
+  }
+
+  .tfquiz[hidden] { display: none; }
+
+  .tfquiz__bg {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 10, 10, 0.55);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+  }
+
+  .tfquiz__card {
+    position: relative;
+    width: 100%;
+    max-width: 680px;
+    margin: auto;
+    padding: 40px 44px 36px;
+    border-radius: 28px;
+    background: #fff;
+    color: var(--tf-ink);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+  }
+
+  .tfquiz__close {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: #f1f1f1;
+    cursor: pointer;
+  }
+
+  .tfquiz__close span { position: absolute; top: 50%; left: 50%; width: 14px; height: 2px; border-radius: 2px; background: var(--tf-ink); }
+  .tfquiz__close span:first-child { transform: translate(-50%, -50%) rotate(45deg); }
+  .tfquiz__close span:last-child { transform: translate(-50%, -50%) rotate(-45deg); }
+
+  .tfquiz__progress { display: flex; gap: 6px; margin-right: 52px; }
+  .tfquiz__progress span { flex: 1 1 0; height: 4px; border-radius: 4px; background: #ececec; transition: background-color 0.3s ease; }
+  .tfquiz__progress span.is-done { background: var(--tf-grad); }
+
+  .tfquiz__step { margin: 0; padding: 0; border: 0; min-width: 0; }
+  .tfquiz__step[hidden] { display: none; }
+
+  .tfquiz__count { margin-top: 22px; color: var(--tf-muted); font-size: 13px; font-weight: 600; }
+
+  .tfquiz__q {
+    display: block;
+    margin-top: 8px;
+    padding: 0;
+    font-size: 26px;
+    line-height: 1.1;
+    font-weight: 600;
+    letter-spacing: -0.6px;
+  }
+
+  .tfquiz__options { display: grid; gap: 8px; margin-top: 22px; }
+  .tfquiz__options--many { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  .tfquiz__opt,
+  .tfquiz__agree {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+  }
+
+  .tfquiz__opt {
+    min-height: 52px;
+    padding: 12px 16px;
+    border: 1px solid #e2e2e2;
+    border-radius: 14px;
+    font-size: 15px;
+    line-height: 1.25;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+  }
+
+  .tfquiz__opt:hover { border-color: #c9c9c9; }
+  .tfquiz__opt:has(input:checked) { border-color: var(--tf-red); background: rgba(238, 0, 0, 0.04); }
+
+  .tfquiz__opt input,
+  .tfquiz__agree input { position: absolute; opacity: 0; width: 0; height: 0; }
+
+  .tfquiz__mark {
+    flex: 0 0 auto;
+    width: 20px;
+    height: 20px;
+    border: 1.5px solid #c8c8c8;
+    background: #fff;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .tfquiz__mark--checkbox { border-radius: 6px; }
+  .tfquiz__mark--radio { border-radius: 50%; }
+
+  input:checked + .tfquiz__mark--checkbox {
+    border-color: var(--tf-red);
+    background: var(--tf-red) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 12px no-repeat;
+  }
+
+  input:checked + .tfquiz__mark--radio { border: 6px solid var(--tf-red); }
+  input:focus-visible + .tfquiz__mark { outline: 2px solid var(--tf-red); outline-offset: 2px; }
+
+  .tfquiz__fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 22px; }
+
+  .tfquiz__input {
+    width: 100%;
+    height: 54px;
+    padding: 0 18px;
+    border: 1px solid #d6d6d6;
+    border-radius: 14px;
+    color: var(--tf-ink);
+    font-family: inherit;
+    font-size: 15px;
+  }
+
+  .tfquiz__input:focus { outline: none; border-color: var(--tf-red); }
+
+  .tfquiz__agree { margin-top: 16px; color: var(--tf-muted); font-size: 12px; line-height: 16px; }
+  .tfquiz__agree a { color: var(--tf-red-deep); text-decoration: none; }
+
+  .tfquiz__nav { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 26px; }
+
+  .tfquiz__back {
+    padding: 0 6px;
+    border: 0;
+    background: none;
+    color: var(--tf-muted);
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .tfquiz__next { margin-left: auto; }
+  .tfquiz__next:disabled { opacity: 0.35; cursor: not-allowed; transform: none; box-shadow: none; }
+
+  @media (max-width: 640px) {
+    .tfquiz { padding: 10px; }
+    .tfquiz__card { padding: 26px 18px 20px; border-radius: 24px; }
+    .tfquiz__close { top: 14px; right: 14px; }
+    .tfquiz__q { font-size: 22px; }
+    .tfquiz__options--many,
+    .tfquiz__fields { grid-template-columns: 1fr; }
+    .tfquiz__opt { min-height: 48px; padding: 10px 14px; font-size: 14px; }
+    .tfquiz__next { width: auto; min-width: 160px; }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    var quiz = document.querySelector('[data-tfquiz]');
+    if (!quiz) return;
+
+    var form = quiz.querySelector('form');
+    var steps = Array.prototype.slice.call(quiz.querySelectorAll('[data-step]'));
+    var bars = quiz.querySelectorAll('.tfquiz__progress span');
+    var current = 0;
+
+    function filled(step) {
+      if (step.querySelector('.tfquiz__fields')) {
+        return Array.prototype.every.call(step.querySelectorAll('[required]'), function (el) {
+          return el.type === 'checkbox' ? el.checked : el.value.trim() !== '';
+        });
+      }
+      return !!step.querySelector('input:checked');
+    }
+
+    function refresh() {
+      steps.forEach(function (step, i) {
+        step.hidden = i !== current;
+        var next = step.querySelector('[data-tfquiz-next], [data-tfquiz-send]');
+        if (next) next.disabled = !filled(step);
+      });
+      Array.prototype.forEach.call(bars, function (bar, i) {
+        bar.classList.toggle('is-done', i <= current);
+      });
+    }
+
+    function open() {
+      current = 0;
+      refresh();
+      quiz.hidden = false;
+      document.body.classList.add('tf-noscroll');
+    }
+
+    function close() {
+      quiz.hidden = true;
+      document.body.classList.remove('tf-noscroll');
+    }
+
+    document.addEventListener('click', function (event) {
+      var link = event.target.closest && event.target.closest('a[href="#sendkviz"]');
+      if (!link) return;
+      event.preventDefault();
+      open();
+    });
+
+    quiz.addEventListener('input', refresh);
+    quiz.addEventListener('change', refresh);
+
+    quiz.addEventListener('click', function (event) {
+      if (event.target.closest('[data-tfquiz-close]')) return close();
+      if (event.target.closest('[data-tfquiz-next]') && filled(steps[current])) {
+        current = Math.min(current + 1, steps.length - 1);
+        refresh();
+      }
+      if (event.target.closest('[data-tfquiz-back]')) {
+        current = Math.max(current - 1, 0);
+        refresh();
+      }
+    });
+
+    /* мультивыбор уходит одним полем, как на оригинале */
+    form.addEventListener('submit', function (event) {
+      if (!filled(steps[current])) {
+        event.preventDefault();
+        return;
+      }
+      quiz.querySelectorAll('[data-tfquiz-join]').forEach(function (hidden) {
+        var group = hidden.dataset.tfquizJoin;
+        hidden.value = Array.prototype.map
+          .call(quiz.querySelectorAll('input[data-group="' + group + '"]:checked'), function (el) {
+            return el.value;
+          })
+          .join(', ');
+      });
+    });
+
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && !quiz.hidden) close();
+    });
+  })();
+</script>

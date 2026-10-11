@@ -2,6 +2,16 @@
 
 Перенос главной страницы deford-studio.ru с Тильды на код (Astro + чистый CSS).
 
+## Где смотреть
+
+Рабочая копия: **https://tema-mail.github.io/deford-studio/** — пересобирается
+автоматически при каждом пуше в `main` (`.github/workflows/deploy.yml`).
+Копия закрыта от поисковиков через `robots.txt`, canonical ведёт на боевой домен.
+
+Пути в разметке корневые, под будущий переезд на `deford-studio.ru`; префикс
+подпапки `/deford-studio` проставляет `scripts/rebase-dist.mjs` уже в `dist`,
+исходники остаются нетронутыми.
+
 ## Запуск
 
 ```bash
@@ -56,3 +66,9 @@ node scripts/shots.mjs http://localhost:4321/     new   # копия
 node scripts/compare.mjs "#deford-hero-v5" hero 375   # одна секция на обоих сайтах
 node scripts/shots.mjs http://localhost:4322/ new     # вся страница
 ```
+
+## Чего на странице ещё нет
+
+Ссылки «Пользовательское соглашение» и «Политика конфиденциальности» в подвале
+и попапе ведут на `/agreement` и `/policy` — эти страницы ещё не перенесены,
+на копии отдают 404.

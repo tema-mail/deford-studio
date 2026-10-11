@@ -1,0 +1,232 @@
+---
+/** Всплывающие документы: согласие на обработку данных, политика
+    и реквизиты. Оригиналы — служебные блоки платформы
+    (rec4195333501, rec4195491501, rec4195566101), которые
+    собираются из её общих стилей. Повторены своим кодом
+    по этим стилям и по замерам открытых окон:
+    затемнение 60%, карточка 960 (до 1200 — 780) с радиусом 20,
+    отступы 40/45 → 30 → 20, заголовок 32 → 30 → 26,
+    текст 16 → 14 → 12. Короткий документ стоит по центру
+    экрана, длинный прокручивается с отступом 65 сверху и снизу.
+
+    Тексты сняты со страницы без правок и лежат в данных. */
+import docs from '../../data/flowers-docs.json';
+---
+
+{
+  docs.map((doc) => (
+    <div class="fmdoc" data-fmdoc={doc.hook} hidden>
+      <button type="button" class="fmdoc__exit" aria-label="Закрыть диалоговое окно">
+        <svg viewBox="0 0 23 23" width="23" height="23" aria-hidden="true">
+          <g fill="#fff" fill-rule="evenodd">
+            <rect
+              transform="translate(11.3137, 11.3137) rotate(-45) translate(-11.3137, -11.3137)"
+              x="10.3137"
+              y="-3.6863"
+              width="2"
+              height="30"
+            />
+            <rect
+              transform="translate(11.3137, 11.3137) rotate(-315) translate(-11.3137, -11.3137)"
+              x="10.3137"
+              y="-3.6863"
+              width="2"
+              height="30"
+            />
+          </g>
+        </svg>
+      </button>
+
+      <div class="fmdoc__card" role="dialog" aria-modal="true" aria-label={doc.title}>
+        <div class="fmdoc__title" set:html={doc.title} />
+        <div class="fmdoc__text" set:html={doc.html} />
+      </div>
+    </div>
+  ))
+}
+
+<style>
+  .fmdoc {
+    position: fixed;
+    inset: 0;
+    z-index: 10000003;
+    padding: 0 20px;
+    overflow-y: auto;
+    background: rgba(0, 0, 0, 0.6);
+    cursor: pointer;
+    box-sizing: border-box;
+  }
+
+  .fmdoc[hidden] {
+    display: none;
+  }
+
+  .fmdoc__exit {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 9;
+    width: 43px;
+    height: 43px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  .fmdoc__exit:hover {
+    opacity: 0.7;
+  }
+
+  /* По центру экрана, пока документ помещается целиком. */
+  .fmdoc__card {
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    right: 20px;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 40px 45px;
+    background: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    transform: translateY(-50%);
+    cursor: default;
+    /* отступы внутри ширины карточки, как у обёртки на оригинале */
+    box-sizing: border-box;
+  }
+
+  /* Длинный документ: обычный поток с прокруткой подложки. */
+  .fmdoc.is-long .fmdoc__card {
+    position: relative;
+    top: 0;
+    left: auto;
+    right: auto;
+    width: 100%;
+    margin: 65px auto;
+    transform: none;
+  }
+
+  .fmdoc__title {
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 1.17;
+    color: #000;
+  }
+
+  .fmdoc__text {
+    margin-top: 17px;
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1.55;
+    color: #000;
+  }
+
+  @media screen and (max-width: 1200px) {
+    .fmdoc__card {
+      max-width: 780px;
+    }
+
+    .fmdoc__title {
+      font-size: 30px;
+    }
+
+    .fmdoc__text {
+      font-size: 14px;
+    }
+  }
+
+  @media screen and (max-width: 960px) {
+    .fmdoc__card {
+      padding: 30px;
+    }
+  }
+
+  @media screen and (max-width: 640px) {
+    .fmdoc__card {
+      padding: 20px;
+    }
+
+    .fmdoc__title {
+      font-size: 26px;
+    }
+
+    .fmdoc__text {
+      margin-top: 8px;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    var popups = document.querySelectorAll('[data-fmdoc]');
+    if (!popups.length) return;
+
+    var opened = null;
+
+    function fit(popup) {
+      /* длинный документ уходит в поток, короткий остаётся по центру */
+      popup.classList.remove('is-long');
+      var card = popup.querySelector('.fmdoc__card');
+      if (card.offsetHeight > window.innerHeight - 130) popup.classList.add('is-long');
+    }
+
+    function close() {
+      if (!opened) return;
+      opened.hidden = true;
+      opened = null;
+      /* попап заявки может быть открыт под документом — ему прокрутка
+         страницы по-прежнему не нужна */
+      if (!document.querySelector('[data-fmpopup]:not([hidden])')) {
+        document.body.classList.remove('fm-noscroll');
+      }
+    }
+
+    function open(hook) {
+      var popup = document.querySelector('[data-fmdoc="' + hook + '"]');
+      if (!popup) return false;
+      close();
+      popup.hidden = false;
+      popup.scrollTop = 0;
+      fit(popup);
+      opened = popup;
+      document.body.classList.add('fm-noscroll');
+      return true;
+    }
+
+    document.addEventListener('click', function (event) {
+      var link = event.target.closest && event.target.closest('a[href^="#popup:infoblock"]');
+      if (!link) return;
+      var hook = link.getAttribute('href').slice('#popup:'.length);
+      if (open(hook)) event.preventDefault();
+    });
+
+    popups.forEach(function (popup) {
+      popup.querySelector('.fmdoc__exit').addEventListener('click', close);
+      /* клик по затемнению вокруг карточки закрывает документ */
+      popup.addEventListener('click', function (event) {
+        if (!popup.querySelector('.fmdoc__card').contains(event.target)) close();
+      });
+    });
+
+    /* Esc закрывает только верхний документ, а не попап заявки под ним:
+       перехватываем раньше его обработчика */
+    document.addEventListener('keydown', function (event) {
+      if (event.key !== 'Escape' || !opened) return;
+      event.stopPropagation();
+      close();
+    }, true);
+
+    window.addEventListener('resize', function () {
+      if (opened) fit(opened);
+    }, { passive: true });
+  })();
+</script>

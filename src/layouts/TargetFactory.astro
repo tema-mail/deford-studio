@@ -1,0 +1,94 @@
+---
+/* Оболочка главной Target Factory в стилистике лендинга /flowers.
+   Метаданные — с targetfactory.ru. Шрифты загружаются явно:
+   Inter Tight — основной, Montserrat — для мелкого служебного текста.
+   Здесь же общие скрипты страницы: появление блоков при прокрутке
+   и плавный переход по якорям меню. */
+import '../styles/tf.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = '' } = Astro.props;
+const canonical = 'https://targetfactory.ru';
+---
+
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+
+    <link rel="shortcut icon" href="/img/flowers/32353231-Frame_708.png" type="image/x-icon" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap&subset=cyrillic"
+    />
+  </head>
+
+  <body>
+    <slot />
+
+    <script is:inline>
+      (function () {
+        /* Появление блоков с [data-reveal] при прокрутке */
+        if ('IntersectionObserver' in window) {
+          document.documentElement.classList.add('tf-anim');
+          var io = new IntersectionObserver(
+            function (entries) {
+              entries.forEach(function (entry) {
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add('is-in');
+                io.unobserve(entry.target);
+              });
+            },
+            { threshold: 0.15, rootMargin: '0px 0px -40px 0px' },
+          );
+          document.querySelectorAll('[data-reveal]').forEach(function (el) {
+            io.observe(el);
+          });
+        }
+
+        /* Плавный переход по якорям: цель — элемент с id, с поправкой
+           на высоту фиксированной шапки. Попапы обрабатываются сами. */
+        var OFFSET = 90;
+
+        function scrollToHash(hash, smooth) {
+          var name = decodeURIComponent((hash || '').slice(1));
+          if (!name || /^(zeropopup|sendkviz|popup|menuopen)/.test(name)) return false;
+          var el = document.getElementById(name);
+          if (!el) return false;
+          var top = el.getBoundingClientRect().top + window.scrollY - OFFSET;
+          window.scrollTo({ top: top, behavior: smooth ? 'smooth' : 'auto' });
+          return true;
+        }
+
+        document.addEventListener('click', function (event) {
+          var link = event.target.closest && event.target.closest('a[href*="#"]');
+          if (!link || link.target === '_blank') return;
+          var href = link.getAttribute('href');
+          var hash = href.slice(href.indexOf('#'));
+          if (scrollToHash(hash, true)) event.preventDefault();
+        });
+
+        window.addEventListener('load', function () {
+          if (location.hash) setTimeout(function () { scrollToHash(location.hash, false); }, 300);
+        });
+      })();
+    </script>
+  </body>
+</html>

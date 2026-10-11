@@ -1,0 +1,275 @@
+/* ==========================================================
+   Target Factory — система стилей главной.
+   Устройство — как у лендинга /flowers: секции-подложки со
+   скруглением, пилюли-теги, заголовки 33/600, кнопки-пилюли
+   с кругом-стрелкой, масштаб от макета 1200 (планшет — 800,
+   телефон — в пикселях). Цвета — с targetfactory.ru:
+   красный градиент #ee0000 → #810005, графит, серый #dbdbdb.
+   ========================================================== */
+
+:root {
+  --tf-red: #ee0000;
+  --tf-red-deep: #810005;
+  --tf-grad: linear-gradient(275.76deg, #810005 0%, #ee0000 100%);
+  --tf-dark: #141414;
+  --tf-ink: #202020;
+  --tf-bg: #dbdbdb;
+  --tf-muted: rgba(32, 32, 32, 0.6);
+  --tf-muted-light: rgba(255, 255, 255, 0.6);
+  --tf-font: 'Inter Tight', Inter, Arial, sans-serif;
+  --tf-radius: clamp(42px, 6.25vw, 120px);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: #fff;
+  color: var(--tf-ink);
+  font-family: var(--tf-font);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+p,
+ul {
+  margin: 0;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+}
+
+/* ---------- Секция и подложка ---------- */
+
+.tf-section {
+  position: relative;
+  width: 100%;
+  padding-top: 15px;
+  container-type: inline-size;
+}
+
+.tf-panel {
+  --u: calc(100cqw / 1200);
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--tf-radius);
+}
+
+.tf-panel--light { background: var(--tf-bg); }
+
+.tf-panel--dark {
+  background:
+    radial-gradient(circle at 88% -10%, rgba(238, 0, 0, 0.28), transparent 42%),
+    var(--tf-dark);
+  color: #fff;
+}
+
+.tf-panel--red {
+  background:
+    radial-gradient(circle at 85% 10%, rgba(255, 255, 255, 0.18), transparent 38%),
+    var(--tf-grad);
+  color: #fff;
+}
+
+.tf-wrap {
+  width: calc(1080 * var(--u));
+  margin: 0 auto;
+}
+
+/* ---------- Шапка секции ---------- */
+
+.tf-head {
+  width: calc(720 * var(--u));
+  margin: 0 auto;
+  text-align: center;
+}
+
+.tf-tag {
+  display: inline-block;
+  width: max-content;
+  padding: calc(7 * var(--u)) calc(10 * var(--u));
+  border: 1px solid #ededee;
+  border-radius: 100px;
+  background: #fff;
+  color: var(--tf-ink);
+  font-size: calc(11 * var(--u));
+  line-height: calc(13 * var(--u));
+  font-weight: 400;
+}
+
+.tf-tag--red { border-color: transparent; background: var(--tf-grad); color: #fff; font-weight: 600; }
+.tf-tag--dark { border-color: transparent; background: var(--tf-ink); color: #fff; }
+
+.tf-head .tf-tag { margin-bottom: calc(27 * var(--u)); }
+
+.tf-h2 {
+  font-size: calc(33 * var(--u));
+  line-height: calc(33 * var(--u));
+  font-weight: 600;
+  letter-spacing: -1px;
+}
+
+.tf-lead {
+  margin-top: calc(16 * var(--u));
+  color: var(--tf-muted);
+  font-size: calc(13 * var(--u));
+  line-height: calc(17 * var(--u));
+  font-weight: 500;
+}
+
+.tf-panel--dark .tf-lead,
+.tf-panel--red .tf-lead { color: var(--tf-muted-light); }
+
+/* ---------- Кнопки ---------- */
+
+.tf-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(13 * var(--u));
+  min-height: calc(55 * var(--u));
+  padding: calc(5 * var(--u)) calc(5 * var(--u)) calc(5 * var(--u)) calc(25 * var(--u));
+  border: 0;
+  border-radius: 100px;
+  font-family: inherit;
+  font-size: calc(14.8 * var(--u));
+  line-height: calc(16 * var(--u));
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.tf-btn:hover { transform: translateY(-2px); }
+
+.tf-btn__arrow {
+  display: grid;
+  place-items: center;
+  width: calc(44 * var(--u));
+  height: calc(44 * var(--u));
+  flex: 0 0 auto;
+  border-radius: 50%;
+}
+
+.tf-btn__arrow svg {
+  width: 40%;
+  height: 40%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.tf-btn--red { background: var(--tf-grad); color: #fff; box-shadow: 0 10px 30px rgba(238, 0, 0, 0.25); }
+.tf-btn--red .tf-btn__arrow { background: #fff; color: var(--tf-red); }
+
+.tf-btn--dark { background: var(--tf-ink); color: #fff; }
+.tf-btn--dark .tf-btn__arrow { background: var(--tf-grad); color: #fff; }
+
+.tf-btn--light { background: #fff; color: var(--tf-ink); }
+.tf-btn--light .tf-btn__arrow { background: var(--tf-grad); color: #fff; }
+
+.tf-btn--ghost {
+  padding: 0 calc(25 * var(--u));
+  border: 1px solid currentColor;
+  background: transparent;
+}
+
+/* ---------- Карточки ---------- */
+
+.tf-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: calc(27 * var(--u));
+  background: linear-gradient(180deg, #ffffff 0%, #f6f6f6 100%);
+  color: var(--tf-ink);
+}
+
+.tf-card--dark {
+  background: linear-gradient(180deg, #232323 0%, #171717 100%);
+  color: #fff;
+}
+
+/* ---------- Появление при прокрутке ----------
+   Прячем только если скрипт страницы включил анимацию (.tf-anim),
+   без скрипта всё видно сразу. */
+
+.tf-anim [data-reveal] { opacity: 0; transform: translateY(24px); }
+
+.tf-anim [data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.7s cubic-bezier(0.16, 0.82, 0.21, 1),
+    transform 0.7s cubic-bezier(0.16, 0.82, 0.21, 1);
+  transition-delay: var(--reveal-delay, 0s);
+}
+
+/* ---------- Планшет: макет 800 ---------- */
+
+@media (max-width: 979px) {
+  .tf-panel { --u: calc(100cqw / 800); }
+  .tf-wrap { width: calc(720 * var(--u)); }
+  .tf-head { width: calc(640 * var(--u)); }
+}
+
+/* ---------- Телефон: пиксели ---------- */
+
+@media (max-width: 640px) {
+  .tf-section { padding-top: 10px; }
+  .tf-panel { border-radius: 36px; }
+  .tf-wrap { width: 100%; padding: 0 18px; }
+  .tf-head { width: 100%; padding: 0 18px; }
+
+  .tf-tag { padding: 7px 10px; font-size: 11px; line-height: 13px; }
+  .tf-head .tf-tag { margin-bottom: 20px; }
+
+  .tf-h2 {
+    font-size: clamp(27px, 7.7vw, 35px);
+    line-height: 0.98;
+    letter-spacing: -0.8px;
+  }
+
+  .tf-h2 br { display: none; }
+
+  .tf-lead { margin-top: 12px; font-size: 14px; line-height: 19px; }
+
+  .tf-btn {
+    position: relative;
+    justify-content: center;
+    width: 100%;
+    min-height: 55px;
+    padding: 5px 55px;
+    font-size: 14px;
+    line-height: 16px;
+  }
+
+  .tf-btn__arrow { position: absolute; top: 50%; right: 5px; width: 44px; height: 44px; transform: translateY(-50%); }
+  .tf-btn--ghost { padding: 0 20px; }
+  .tf-card { border-radius: 24px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tf-anim [data-reveal] { opacity: 1; transform: none; }
+  .tf-btn { transition: none; }
+}

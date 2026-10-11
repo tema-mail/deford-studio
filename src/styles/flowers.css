@@ -1,0 +1,108 @@
+/* ==========================================================
+   Лендинг «Маркетинг для цветочных магазинов» — база страницы.
+
+   Секции самодостаточны: каждая несёт свой CSS внутри компонента,
+   как и было на исходной странице. Здесь только то, на что эта
+   вёрстка опирается снаружи — сброс и сетка платформы.
+
+   Важно: модель размеров — content-box, как на оригинале.
+   Border-box сдвинул бы размеры во всех секциях сразу.
+   ========================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: content-box;
+}
+
+div,
+span,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+code,
+img,
+b,
+u,
+i,
+center,
+table,
+tr,
+th,
+td,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+sup {
+  line-height: 0;
+  font-size: smaller;
+  vertical-align: super;
+}
+
+sub {
+  line-height: 0;
+  font-size: smaller;
+  vertical-align: sub;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Сетка платформы: ширины и контейнеры, на которые ссылается разметка. */
+.t-clear {
+  clear: both;
+}
+
+.t-row {
+  margin: 0;
+}
+
+.t-container {
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  max-width: 1200px;
+  padding: 0;
+}
+
+.t-container::after {
+  clear: both;
+}
+
+.t-width {
+  width: 100%;
+}
+
+.t-width_10 {
+  max-width: 960px;
+}
+
+.t-width_100 {
+  max-width: 100%;
+}
+
+.t-align_left {
+  text-align: left;
+}
+
+.t-align_center {
+  text-align: center;
+}

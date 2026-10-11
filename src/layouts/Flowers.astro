@@ -1,0 +1,52 @@
+---
+/* Оболочка лендинга «Маркетинг для цветочных магазинов».
+   Отдельная от главной: у страницы свои шрифты (Oswald + Montserrat)
+   и свои метаданные, снятые с targetfactory.ru/flowers. */
+import '../styles/flowers.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  canonical?: string;
+}
+
+const {
+  title,
+  description = '',
+  canonical = 'https://targetfactory.ru/flowers',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+
+    <link
+      rel="shortcut icon"
+      href="/img/flowers/32353231-Frame_708.png"
+      type="image/x-icon"
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Montserrat:wght@100..900&subset=latin,cyrillic"
+    />
+  </head>
+
+  <body>
+    <slot />
+  </body>
+</html>

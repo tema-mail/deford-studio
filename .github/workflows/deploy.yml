@@ -31,7 +31,10 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          CNAME=$(gh api "repos/${{ github.repository }}/pages" --jq '.cname // ""' 2>/dev/null || true)
+          # без глушения ошибок: не прочитали настройки — сборка падает,
+          # а не публикуется с неверными путями
+          CNAME=$(gh api "repos/${{ github.repository }}/pages" --jq '.cname // ""')
+          echo "домен в настройках Pages: ${CNAME:-нет}"
           if [ -n "$CNAME" ]; then
             echo "свой домен $CNAME — пути остаются корневыми"
           else

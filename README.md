@@ -96,8 +96,9 @@ REF=https://targetfactory.ru/flowers NEW=http://localhost:4322/flowers \
 ```
 
 Черновики новых блоков (в лендинг не вставлены):
-- «Сайты» — `src/components/flowers/Sites.astro`, смотреть на
-  https://tema-mail.github.io/deford-studio/drafts/flowers-sites/ ; цифры кейса — заглушки «—».
+- «Интернет-магазин» — `src/components/flowers/Sites.astro`, смотреть на
+  https://tema-mail.github.io/deford-studio/drafts/flowers-sites/ ; цифры кейса примерные
+  (500 заказов, 7%, 1 200 ₽) — перед вставкой в лендинг заменить на реальные.
 
 ## Чего на странице ещё нет
 

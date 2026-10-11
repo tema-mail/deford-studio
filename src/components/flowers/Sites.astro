@@ -1,5 +1,5 @@
 ---
-/** «Сайты, которые продают букеты» — новый блок для лендинга /flowers.
+/** «Интернет-магазин цветов» — новый блок для лендинга /flowers.
     Черновик: в лендинг пока не вставлен, смотрится на /drafts/flowers-sites.
 
     Стилистика — с соседних секций: графит #202020, лайм #cefe46,
@@ -7,7 +7,8 @@
     с лаймовым кругом, плашки «новая заявка» как на первом экране.
     Картинки — из уже загруженных для лендинга.
 
-    Цифры кейса — заглушки «—»: реальные подставляются из кейса. */
+    Цифры кейса — примерные, заданы Артёмом; перед публикацией
+    в лендинге заменить на цифры реального кейса. */
 
 const features = [
   {
@@ -26,16 +27,16 @@ const features = [
     text: 'Сайт, ВКонтакте и мессенджеры попадают в CRM и в Telegram.',
   },
   {
-    icon: 'phone',
-    title: 'Сначала под телефон',
-    text: 'Цветы часто заказывают на ходу, поэтому мобильная версия в приоритете.',
+    icon: 'pay',
+    title: 'Оплата по закону',
+    text: 'Карта и СБП, онлайн-касса с чеками по 54-ФЗ, оферта и согласие на обработку данных.',
   },
 ];
 
 const metrics = [
-  { value: '—', label: 'заказов с сайта в месяц' },
-  { value: '—', label: 'конверсия в заказ' },
-  { value: '—', label: 'средний чек' },
+  { value: '500', label: 'заказов с сайта в месяц' },
+  { value: '7%', label: 'конверсия в заказ' },
+  { value: '1 200 ₽', label: 'средний чек' },
 ];
 ---
 
@@ -44,11 +45,11 @@ const metrics = [
     <header class="fmsites__header">
       <div class="fmsites__tag">Сайты</div>
       <h2 class="fmsites__title">
-        Сайты, которые продают букеты, <br />а не просто красиво выглядят
+        Интернет-магазин цветов, <br />который продаёт каждый день
       </h2>
       <p class="fmsites__lead">
-        Делаем сайты для цветочных магазинов под заказы: каталог, корзина,
-        оплата и доставка, а заявки сразу приходят вам в мессенджер.
+        Делаем интернет-магазины для цветочных: каталог с ценами, корзина,
+        онлайн-оплата и доставка, а заказы сразу приходят вам в мессенджер.
       </p>
     </header>
 
@@ -128,10 +129,10 @@ const metrics = [
           decoding="async"
         />
         <div class="fmsites__stats-copy">
-          <h3 class="fmsites__card-title">Считаем заказы, а не клики</h3>
+          <h3 class="fmsites__card-title">Видно каждый заказ и рубль</h3>
           <p class="fmsites__card-text">
-            Метрика, цели и аналитика с первого дня: видно, сколько заказов
-            и денег принёс сайт.
+            Метрика, цели и отчёты с первого дня: сколько заказов и выручки
+            принёс магазин и из какого канала.
           </p>
         </div>
       </article>
@@ -162,10 +163,11 @@ const metrics = [
                   <path d="M8.5 9h7 M8.5 12h4.5" />
                 </svg>
               )}
-              {f.icon === 'phone' && (
+              {f.icon === 'pay' && (
                 <svg viewBox="0 0 24 24">
-                  <rect x="7" y="3" width="10" height="18" rx="2.5" />
-                  <path d="M11 17.5h2" />
+                  <rect x="3" y="5.5" width="18" height="13" rx="2.5" />
+                  <path d="M3 9.5h18 M7 14.5h3" />
+                  <path d="M14.5 14.5l1.5 1.5l3-3" />
                 </svg>
               )}
             </span>
@@ -179,10 +181,10 @@ const metrics = [
       <article class="fmsites__card fmsites__case">
         <div class="fmsites__case-copy">
           <div class="fmsites__chip">Кейс</div>
-          <h3 class="fmsites__hero-title">Сайт для цветочного магазина: от первого экрана до оплаты</h3>
+          <h3 class="fmsites__hero-title">Интернет-магазин для цветочной мастерской</h3>
           <p class="fmsites__hero-text">
-            Задача, что сделали и что получили — на цифрах из рекламного
-            кабинета и CRM.
+            Запустили каталог, корзину и онлайн-оплату, подключили заказы
+            к CRM и Telegram. Цифры — из Метрики и CRM за месяц.
           </p>
         </div>
 
@@ -522,6 +524,7 @@ const metrics = [
   }
 
   .fmsites__metric-value {
+    white-space: nowrap;
     color: var(--fs-green);
     font-size: calc(34 * var(--u));
     line-height: 1;
@@ -740,6 +743,21 @@ const metrics = [
       padding: 0 20px;
       font-size: 14px;
     }
+  }
+
+  /* Узкий телефон: три плитки в ряд не вмещают «1 200 ₽» — метрики столбиком */
+  @media (max-width: 480px) {
+    .fmsites__metrics { flex-direction: column; }
+
+    .fmsites__metric {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 14px;
+    }
+
+    .fmsites__metric-value { flex: 0 0 auto; min-width: 104px; white-space: nowrap; }
+    .fmsites__metric-label { margin-top: 0; font-size: 12px; line-height: 14px; }
   }
 
   @media (prefers-reduced-motion: reduce) {

@@ -2,25 +2,38 @@
  * Достаёт секцию из сохранённой страницы Тильды и собирает из неё
  * компонент Astro: разметка, все слои стилей по порядку, скрипты.
  *
- *   node scripts/extract.mjs <файл-блока> <ИмяКомпонента>
+ *   node scripts/extract.mjs <файл-блока> <ИмяКомпонента> [--map=файл] [--dir=подпапка]
  *
  * Порядок слоёв стилей сохраняется — от него зависит итоговый каскад.
- * Картинки переписываются на локальные /img/<имя>.
+ * Картинки переписываются на локальные /img/<имя>; --map задаёт готовое
+ * соответствие «адрес CDN → локальное имя» (нужно там, где у разных
+ * картинок совпадают имена файлов), --dir кладёт компонент в подпапку.
  */
 import { readFileSync, writeFileSync } from 'node:fs';
 
-const [src, name] = process.argv.slice(2);
+const args = process.argv.slice(2);
+const [src, name] = args.filter((a) => !a.startsWith('--'));
+const mapFile = args.find((a) => a.startsWith('--map='))?.slice(6);
+const dir = args.find((a) => a.startsWith('--dir='))?.slice(6);
+
 if (!src || !name) {
-  console.error('нужно: node scripts/extract.mjs <файл> <Имя>');
+  console.error('нужно: node scripts/extract.mjs <файл> <Имя> [--map=файл] [--dir=подпапка]');
   process.exit(1);
 }
 
 let html = readFileSync(src, 'utf8');
 
 /* Картинки Тильды → локальные файлы */
+const imgMap = mapFile ? JSON.parse(readFileSync(mapFile, 'utf8')) : null;
+const imgDir = dir ? `/img/${dir}` : '/img';
+
 html = html.replace(
   /https:\/\/static\.tildacdn\.com\/[^"')\s]*?\/([^/"')\s]+\.(?:png|jpg|jpeg|svg|webp|gif))/g,
-  (_m, file) => `/img/${file}`,
+  (full, file) => {
+    const local = imgMap?.[full];
+    if (imgMap && !local) console.warn(`ВНИМАНИЕ: картинки нет в карте — ${full}`);
+    return `${imgDir}/${local ?? file}`;
+  },
 );
 
 const styles = [...html.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)].map(
@@ -84,7 +97,9 @@ ${css}
 </style>
 ${js ? `\n<script is:inline>\n${js}\n</script>\n` : ''}`;
 
-const dest = `src/components/${name}.astro`;
+const dest = dir
+  ? `src/components/${dir}/${name}.astro`
+  : `src/components/${name}.astro`;
 writeFileSync(dest, out);
 console.log(
   `${dest}: разметка ${markup.length} симв., стилей ${styles.length} слоёв (${css.length} симв.), скриптов ${scripts.length}`,

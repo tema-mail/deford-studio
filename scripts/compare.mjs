@@ -2,6 +2,10 @@
  * Снимает одну секцию на живом сайте и в копии — для поштучной сверки.
  *
  *   node scripts/compare.mjs "#deford-footer-v1" footer [ширина]
+ *
+ * Адреса по умолчанию — главная. Для другой страницы:
+ *   REF=https://targetfactory.ru/flowers NEW=http://localhost:4322/flowers \
+ *   node scripts/compare.mjs ".fmhero" hero 375
  */
 import { chromium } from 'playwright';
 import { mkdir } from 'node:fs/promises';
@@ -12,8 +16,8 @@ const outDir = new URL('../reference/', import.meta.url);
 await mkdir(outDir, { recursive: true });
 
 const targets = [
-  ['https://deford-studio.ru/', 'ref'],
-  ['http://localhost:4322/', 'new'],
+  [process.env.REF ?? 'https://deford-studio.ru/', 'ref'],
+  [process.env.NEW ?? 'http://localhost:4322/', 'new'],
 ];
 
 const browser = await chromium.launch();

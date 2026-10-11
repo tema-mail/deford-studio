@@ -262,6 +262,9 @@ a {
     padding: 5px 55px;
     font-size: 14px;
     line-height: 16px;
+    /* длинная подпись переносится, а не уходит под круг со стрелкой */
+    white-space: normal;
+    text-align: center;
   }
 
   .tf-btn__arrow { position: absolute; top: 50%; right: 5px; width: 44px; height: 44px; transform: translateY(-50%); }

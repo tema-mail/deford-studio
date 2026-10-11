@@ -1,0 +1,313 @@
+---
+/** Шапка Target Factory. Устройство — как у шапки лендинга /flowers:
+    фиксированная, прозрачная, элементы-пилюли, которые читаются на любом
+    фоне. Слева логотип в тёмной пилюле, в центре меню, справа круг-телефон
+    и кнопка «Бесплатная консультация». На телефоне — логотип, телефон
+    и бургер с выпадающим меню. Ссылки и контакты — с targetfactory.ru. */
+
+const menu = [
+  { href: '#service', label: 'Услуги' },
+  { href: '#case', label: 'Кейсы' },
+  { href: '#Calculation', label: 'Расчёт продвижения' },
+  { href: '#command', label: 'Команда' },
+  { href: '#reviews', label: 'Отзывы' },
+  { href: '#contact', label: 'Контакты' },
+];
+
+const socials = [
+  { href: 'https://t.me/korotaev_denis', label: 'Telegram' },
+  { href: 'https://max.ru/u/f9LHodD0cOLcKLkeG8Hr_oFXFF0snzqnNOGgHN2cX0meUwSiovnBh1wb8xM', label: 'MAX' },
+  { href: 'https://vk.me/target_factory_vk', label: 'ВКонтакте' },
+  { href: 'mailto:korotaev.TF@yandex.ru', label: 'Почта' },
+];
+
+const phoneIcon =
+  'M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z';
+---
+
+<header class="tfh" data-tfh>
+  <div class="tfh__inner">
+    <a class="tfh__logo" href="#top" aria-label="Target Factory — наверх">
+      <img src="/img/tf/logo.png" alt="Target Factory" width="300" height="138" />
+    </a>
+
+    <nav class="tfh__nav" aria-label="Меню">
+      {menu.map((item) => <a href={item.href}>{item.label}</a>)}
+    </nav>
+
+    <div class="tfh__actions">
+      <a class="tfh__phone" href="tel:+79132090181" aria-label="Позвонить: +7 (913) 209-01-81">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d={phoneIcon}></path></svg>
+        <span class="tfh__phone-tip">
+          <span class="tfh__phone-num">+7 (913) 209-01-81</span>
+          <span class="tfh__phone-note"><i></i>Звоните, мы на месте</span>
+        </span>
+      </a>
+      <a class="tfh__cta" href="#zeropopup">Бесплатная консультация</a>
+    </div>
+
+    <button class="tfh__burger" type="button" aria-label="Открыть меню" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <div class="tfh__mobile" aria-hidden="true">
+    <nav class="tfh__mobile-nav">
+      {menu.map((item) => <a href={item.href}>{item.label}</a>)}
+    </nav>
+    <a class="tfh__mobile-phone" href="tel:+79132090181">+7 (913) 209-01-81</a>
+    <a class="tf-btn tf-btn--red tfh__mobile-cta" href="#zeropopup">
+      <span>Бесплатная консультация</span>
+      <span class="tf-btn__arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"></path></svg></span>
+    </a>
+    <div class="tfh__mobile-socials">
+      {socials.map((s) => <a href={s.href} target="_blank" rel="noopener">{s.label}</a>)}
+    </div>
+  </div>
+</header>
+
+<style is:global>
+  .tfh {
+    /* единица для общих кнопок внутри шапки — без масштаба */
+    --u: 1px;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    right: 0;
+    font-family: var(--tf-font);
+    pointer-events: none;
+  }
+
+  .tfh__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 24px 42px;
+    pointer-events: auto;
+  }
+
+  .tfh__logo {
+    display: flex;
+    align-items: center;
+    height: 44px;
+    padding: 0 18px;
+    border-radius: 100px;
+    background: var(--tf-ink);
+  }
+
+  .tfh__logo img { width: 72px; height: auto; }
+
+  .tfh__nav {
+    display: flex;
+    gap: 34px;
+    padding: 0 20px;
+    border-radius: 100px;
+    background: var(--tf-ink);
+  }
+
+  .tfh__nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    color: #fff;
+    font-size: 14px;
+    line-height: 17px;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 0.25s ease;
+  }
+
+  .tfh__nav a:hover { color: #ff4d4d; }
+
+  .tfh__actions { display: flex; align-items: center; gap: 6px; }
+
+  .tfh__phone {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--tf-grad);
+    color: #fff;
+    text-decoration: none;
+  }
+
+  .tfh__phone svg { width: 18px; height: 18px; fill: currentColor; }
+
+  /* номер выезжает подсказкой при наведении */
+  .tfh__phone-tip {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 10px 14px;
+    border-radius: 14px;
+    background: var(--tf-ink);
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    pointer-events: none;
+  }
+
+  .tfh__phone:hover .tfh__phone-tip,
+  .tfh__phone:focus-visible .tfh__phone-tip { opacity: 1; transform: none; }
+
+  .tfh__phone-num { font-size: 15px; font-weight: 600; }
+
+  .tfh__phone-note {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 12px;
+  }
+
+  .tfh__phone-note i { width: 7px; height: 7px; border-radius: 50%; background: #3bd16f; }
+
+  .tfh__cta {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 24px;
+    border-radius: 100px;
+    background: var(--tf-grad);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: transform 0.25s ease;
+  }
+
+  .tfh__cta:hover { transform: translateY(-2px); }
+
+  .tfh__burger {
+    position: relative;
+    display: none;
+    width: 46px;
+    height: 46px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--tf-ink);
+    cursor: pointer;
+  }
+
+  .tfh__burger span {
+    position: absolute;
+    left: 13px;
+    width: 20px;
+    height: 2px;
+    border-radius: 2px;
+    background: #fff;
+    transition: top 0.3s ease, transform 0.3s ease, opacity 0.3s ease;
+  }
+
+  .tfh__burger span:nth-child(1) { top: 16px; }
+  .tfh__burger span:nth-child(2) { top: 23px; }
+  .tfh__burger span:nth-child(3) { top: 30px; }
+
+  .tfh.is-open .tfh__burger { background: var(--tf-grad); }
+  .tfh.is-open .tfh__burger span:nth-child(1) { top: 23px; transform: rotate(45deg); }
+  .tfh.is-open .tfh__burger span:nth-child(2) { opacity: 0; }
+  .tfh.is-open .tfh__burger span:nth-child(3) { top: 23px; transform: rotate(-45deg); }
+
+  .tfh__mobile { display: none; }
+
+  @media (max-width: 1180px) {
+    .tfh__inner { padding: 20px 24px; }
+    .tfh__nav { gap: 20px; }
+    .tfh__nav a { font-size: 13px; }
+  }
+
+  /* Планшет и телефон: бургер вместо меню */
+  @media (max-width: 979px) {
+    .tfh__inner { padding: 14px 16px; }
+    .tfh__nav, .tfh__cta { display: none; }
+    .tfh__phone { width: 46px; height: 46px; }
+    .tfh__phone-tip { display: none; }
+    .tfh__actions { margin-left: auto; }
+    .tfh__burger { display: block; }
+
+    .tfh__mobile {
+      display: block;
+      margin: 0 12px;
+      padding: 10px 18px 20px;
+      border-radius: 28px;
+      background: var(--tf-ink);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+      pointer-events: none;
+    }
+
+    .tfh.is-open .tfh__mobile { opacity: 1; visibility: visible; transform: none; pointer-events: auto; }
+
+    .tfh__mobile-nav a {
+      display: flex;
+      align-items: center;
+      min-height: 48px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      color: #fff;
+      font-size: 18px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .tfh__mobile-phone {
+      display: block;
+      margin: 16px 0 14px;
+      color: #fff;
+      font-size: 17px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .tfh__mobile-cta { width: 100%; }
+
+    .tfh__mobile-socials { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 14px; }
+    .tfh__mobile-socials a { color: rgba(255, 255, 255, 0.5); font-size: 13px; text-decoration: none; }
+  }
+
+  /* мобильное меню на планшете — по ширине меню, справа */
+  @media (min-width: 641px) and (max-width: 979px) {
+    .tfh__mobile { width: 360px; margin-left: auto; margin-right: 16px; }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    var root = document.querySelector('[data-tfh]');
+    if (!root) return;
+    var burger = root.querySelector('.tfh__burger');
+    var panel = root.querySelector('.tfh__mobile');
+
+    function setOpen(open) {
+      root.classList.toggle('is-open', open);
+      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      burger.setAttribute('aria-label', open ? 'Закрыть меню' : 'Открыть меню');
+      panel.setAttribute('aria-hidden', open ? 'false' : 'true');
+    }
+
+    burger.addEventListener('click', function () {
+      setOpen(!root.classList.contains('is-open'));
+    });
+
+    /* пункт меню выбран — меню закрывается, переход делает скролл страницы */
+    panel.addEventListener('click', function (event) {
+      if (event.target.closest('a')) setOpen(false);
+    });
+
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape') setOpen(false);
+    });
+  })();
+</script>

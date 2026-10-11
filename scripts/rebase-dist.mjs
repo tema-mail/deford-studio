@@ -37,6 +37,10 @@ for (const file of files) {
   const text = await readFile(file, 'utf8');
   let next = text;
   for (const [from, to] of rules) next = next.replace(from, to);
+  /* srcset — список адресов через запятую: префикс каждому корневому */
+  next = next.replace(/(\ssrcset=")([^"]*)"/g, (_m, attr, list) =>
+    `${attr}${list.replace(/(^|,\s*)\/(?!\/)/g, `$1${base}/`)}"`,
+  );
   // абсолютные URL в canonical и JSON-LD уже содержат домен — чиним двойной префикс
   next = next.replaceAll(`https://tema-mail.github.io${base}${base}/`, `https://tema-mail.github.io${base}/`);
   if (next !== text) {

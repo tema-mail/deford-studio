@@ -95,6 +95,10 @@ REF=https://targetfactory.ru/flowers NEW=http://localhost:4322/flowers \
   node scripts/compare.mjs "#rec4182830401" steps 375
 ```
 
+Черновики новых блоков (в лендинг не вставлены):
+- «Сайты» — `src/components/flowers/Sites.astro`, смотреть на
+  https://tema-mail.github.io/deford-studio/drafts/flowers-sites/ ; цифры кейса — заглушки «—».
+
 ## Чего на странице ещё нет
 
 Ссылки «Пользовательское соглашение» и «Политика конфиденциальности» в подвале

@@ -1,0 +1,2155 @@
+---
+/** Оригинал: rec4182830401 */
+---
+
+<section class="fmprocess" data-fmprocess="" style="padding-top: 15px;"> <div class="fmprocess__scroll-shell"> <div class="fmprocess__sticky"> <div class="fmprocess__viewport"> <div class="fmprocess__stage">  <div class="fmprocess__content"> <div class="fmprocess__tag" data-process-anim="tag">Этапы работы</div> <h2 class="fmprocess__title" data-process-anim="title">
+              Посмотрите,<br>
+              как мы работаем
+            </h2> <p class="fmprocess__text" data-process-anim="text">Ведем вас от&nbsp;первого сообщения до&nbsp;результата, без&nbsp;лишних шагов и&nbsp;потери времени</p> <a class="fmprocess__button" href="#popup:myform" data-process-anim="button"> <span class="fmprocess__button-label">
+                Консультация
+              </span> <span class="fmprocess__button-icon"> <svg viewBox="0 0 44 44" aria-hidden="true"> <circle cx="22" cy="22" r="22" fill="#CEFE46"></circle> <path d="M17 27L27 17M20 17H27V24" fill="none" stroke="#202020" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path> </svg> </span> </a> </div>  <div class="fmprocess__cards-window"> <div class="fmprocess__cards" data-process-cards="">  <article class="fmprocess__card"> <img class="fmprocess__card-image" src="/img/flowers/35613061-ChatGPT_Image_24__20.png" alt=""> <div class="fmprocess__glass"> <div class="fmprocess__icon">
+                    ✦
+                  </div> <h3 class="fmprocess__card-title">Бесплатный созвон и&nbsp;аудит</h3> <p class="fmprocess__card-text">Разбираем вашу рекламу и бизнес, с&nbsp;ошибками и конкретными рекомендациями. Покажем что можно сделать</p> </div> </article><article class="fmprocess__card"> <img class="fmprocess__card-image" src="/img/flowers/37313761-2.png" alt=""> <div class="fmprocess__glass"> <div class="fmprocess__icon">
+                    ✦
+                  </div> <h3 class="fmprocess__card-title">Создаем рабочий чат&nbsp;и&nbsp;формируем документы</h3> <p class="fmprocess__card-text">Вы с первого дня знаете кто за что отвечает. Подготавливаем договор, чтобы все было прозрачно и с гарантиями. Работаем с ЭДО.</p> </div> </article><article class="fmprocess__card"> <img class="fmprocess__card-image" src="/img/flowers/33663063-ChatGPT_Image_17__20.png" alt=""> <div class="fmprocess__glass"> <div class="fmprocess__icon">
+                    ✦
+                  </div> <h3 class="fmprocess__card-title">Подготовка и&nbsp;запуск рекламы</h3> <p class="fmprocess__card-text">Проводим анализ, подготавливаем кабинеты и сообщество, создаем рекламные объявления. Показываем что сделали, как настроено и почему именно так. <br>Ничего не происходит втёмную.</p> </div> </article><article class="fmprocess__card"> <img class="fmprocess__card-image" src="/img/flowers/34373365-ChatGPT_Image_17__20.png" alt=""> <div class="fmprocess__glass"> <div class="fmprocess__icon">
+                    ✦
+                  </div> <h3 class="fmprocess__card-title">Отчёты и постоянная связь</h3> <p class="fmprocess__card-text">Ежедневно, доступ к статистике. <br>Еженедельно, отчёт понятным языком плюс рекомендации. <br>Ежемесячно, итоговый разбор и стратегия на следующий месяц.<br>Формат, как вам удобно: Google Doc, скринкаст, голосовое или созвон.</p> </div> </article><article class="fmprocess__card"> <img class="fmprocess__card-image" src="/img/flowers/32623139-ChatGPT_Image_17__20.png" alt=""> <div class="fmprocess__glass"> <div class="fmprocess__icon">
+                    ✦
+                  </div> <h3 class="fmprocess__card-title">Предлагаем улучшения каждую неделю</h3> <p class="fmprocess__card-text">Не ждём когда вы спросите. Каждую неделю приходим с идеями, что улучшить в рекламе, контенте и рассылках. Вы всегда понимаете что происходит и что будет дальше.</p> </div> </article>    </div> </div> </div> </div> </div> </div> </section>
+
+<style is:global>
+/* ===== слой 1 из Тильды ===== */
+/* =========================================================
+   BASE
+   ========================================================= */
+
+.fmprocess {
+
+  --fp-bg: #dbdbdb;
+  --fp-dark: #202020;
+  --fp-green: #cefe46;
+  --fp-scale: 1;
+
+  position: relative;
+
+  width: 100%;
+
+  margin: 0;
+  padding: 0;
+
+  background: #fff;
+
+  color: var(--fp-dark);
+
+  font-family:
+    "Inter Tight",
+    Inter,
+    Arial,
+    sans-serif;
+
+}
+
+
+.fmprocess,
+.fmprocess * {
+
+  box-sizing: border-box;
+
+}
+
+
+
+/* =========================================================
+   SCROLL SHELL
+
+   JS automatically changes its height depending
+   on number of cards.
+   ========================================================= */
+
+.fmprocess__scroll-shell {
+
+  position: relative;
+
+  width: 100%;
+
+}
+
+
+
+/* =========================================================
+   STICKY
+   ========================================================= */
+
+.fmprocess__sticky {
+
+  position: sticky;
+
+  top: 0;
+
+  width: 100%;
+
+}
+
+
+
+/* =========================================================
+   VIEWPORT
+   ========================================================= */
+
+.fmprocess__viewport {
+
+  position: relative;
+
+  width: 100%;
+
+  height: 675px;
+
+  overflow: hidden;
+
+  background:
+    var(--fp-bg);
+
+  border-radius:
+    clamp(
+      42px,
+      6.25vw,
+      120px
+    );
+
+}
+
+
+
+/* =========================================================
+   FIGMA CANVAS
+   ========================================================= */
+
+.fmprocess__stage {
+
+  position: absolute;
+
+  left: 50%;
+  top: 0;
+
+  width: 1200px;
+  height: 675px;
+
+  overflow: hidden;
+
+  transform-origin:
+    top center;
+
+  transform:
+    translateX(-50%)
+    scale(var(--fp-scale));
+
+}
+
+
+
+/* =========================================================
+   LEFT CONTENT
+   ========================================================= */
+
+.fmprocess__content {
+
+  position: absolute;
+
+  z-index: 20;
+
+  left: 61px;
+  top: 173px;
+
+  width: 362px;
+
+}
+
+
+
+/* =========================================================
+   TAG
+   ========================================================= */
+
+.fmprocess__tag {
+
+  width: max-content;
+
+  margin-bottom: 15px;
+
+  padding:
+    7px
+    10px;
+
+  border:
+    1px solid #ededee;
+
+  border-radius:
+    100px;
+
+  background: #fff;
+
+  font-size: 11px;
+
+  line-height: 13px;
+
+}
+
+
+
+/* =========================================================
+   TITLE
+   ========================================================= */
+
+.fmprocess__title {
+
+  margin: 0;
+
+  width: 300px;
+
+  font-size: 33px;
+
+  line-height: 33px;
+
+  letter-spacing:
+    -1px;
+
+  font-weight:
+    600;
+
+}
+
+
+
+/* =========================================================
+   DESCRIPTION
+   ========================================================= */
+
+.fmprocess__text {
+
+  width: 362px;
+
+  margin:
+    15px
+    0
+    0;
+
+  color:
+    rgba(
+      32,
+      32,
+      32,
+      .48
+    );
+
+  font-size: 14px;
+
+  line-height: 17.5px;
+
+  font-weight: 500;
+
+}
+
+
+
+/* =========================================================
+   BUTTON
+   ========================================================= */
+
+.fmprocess__button {
+
+  position: relative;
+
+  width: 185px;
+
+  min-height: 54px;
+
+  margin-top: 30px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  padding:
+    5px
+    5px
+    5px
+    25px;
+
+  background: #202020;
+
+  border-radius: 100px;
+
+  color: #fff;
+
+  text-decoration: none;
+
+  font-size: 14.8px;
+
+  line-height: 16px;
+
+  font-weight: 600;
+
+}
+
+
+.fmprocess__button-icon {
+
+  width: 44px;
+  height: 44px;
+
+  flex:
+    0 0
+    44px;
+
+}
+
+
+.fmprocess__button-icon svg {
+
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+}
+
+
+
+/* =========================================================
+   RIGHT CARDS WINDOW
+   ========================================================= */
+
+.fmprocess__cards-window {
+
+  position: absolute;
+
+  left: 600px;
+  top: 30px;
+
+  width: 570px;
+  height: 645px;
+
+  overflow: hidden;
+
+}
+
+
+
+/* =========================================================
+   CARDS RAIL
+
+   JS moves this complete rail upward.
+   ========================================================= */
+
+.fmprocess__cards {
+
+  position: absolute;
+
+  left: 0;
+  top: 0;
+
+  width: 570px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 20px;
+
+  will-change:
+    transform;
+
+  transform:
+    translate3d(
+      0,
+      0,
+      0
+    );
+
+}
+
+
+
+/* =========================================================
+   CARD
+   ========================================================= */
+
+.fmprocess__card {
+
+  position: relative;
+
+  width: 570px;
+  height: 246px;
+
+  flex:
+    0
+    0
+    246px;
+
+  overflow: hidden;
+
+  border-radius:
+    30px;
+
+  background:
+    #999;
+
+}
+
+
+
+/* =========================================================
+   REAL IMAGE
+   ========================================================= */
+
+.fmprocess__card-image {
+
+  position: absolute;
+
+  inset: 0;
+
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+}
+
+
+
+/* =========================================================
+   GLASS PANEL
+   ========================================================= */
+
+.fmprocess__glass {
+
+  position: absolute;
+
+  z-index: 10;
+
+  right: 25px;
+
+  top: 50%;
+
+  width: 285px;
+
+  padding: 25px;
+
+  transform:
+    translateY(-50%);
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-start;
+
+  gap: 12px;
+
+  border-radius:
+    20px;
+
+  background:
+    rgba(
+      32,
+      32,
+      32,
+      .30
+    );
+
+  backdrop-filter:
+    blur(7.5px);
+
+  -webkit-backdrop-filter:
+    blur(7.5px);
+
+}
+
+
+
+/* =========================================================
+   ICON
+   ========================================================= */
+
+.fmprocess__icon {
+
+  width: 33px;
+  height: 33px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius:
+    50%;
+
+  background: #fff;
+
+  color:
+    #202020;
+
+  font-size:
+    17px;
+
+}
+
+
+
+/* =========================================================
+   CARD TEXT
+   ========================================================= */
+
+.fmprocess__card-title {
+
+  width: 225px;
+
+  margin: 0;
+
+  color: #fff;
+
+  font-size: 22px;
+
+  line-height: 22px;
+
+  letter-spacing:
+    -.5px;
+
+  font-weight:
+    600;
+
+}
+
+
+.fmprocess__card-text {
+
+  width: 235px;
+
+  margin:
+    -4px
+    0
+    0;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      .62
+    );
+
+  font-size: 11px;
+
+  line-height: 13px;
+
+  font-weight: 500;
+
+}
+
+
+
+/* =========================================================
+   SHARED GENERATED VISUAL
+   ========================================================= */
+
+.fmprocess__visual {
+
+  position: absolute;
+
+  inset: 0;
+
+  overflow: hidden;
+
+}
+
+
+
+/* =========================================================
+   CHAT VISUAL
+   ========================================================= */
+
+.fmprocess__visual--chat {
+
+  background:
+    radial-gradient(
+      circle at 30% 38%,
+      rgba(206,254,70,.78),
+      transparent 34%
+    ),
+    linear-gradient(
+      120deg,
+      #232823,
+      #dad9d4
+    );
+
+}
+
+
+.fmprocess__device {
+
+  position: absolute;
+
+  left: 60px;
+  top: 25px;
+
+  width: 225px;
+  height: 165px;
+
+  padding: 18px;
+
+  transform:
+    rotate(-5deg);
+
+  border:
+    8px solid
+    #262626;
+
+  border-radius:
+    8px;
+
+  background:
+    #20241f;
+
+  box-shadow:
+    0 18px 35px
+    rgba(0,0,0,.22);
+
+}
+
+
+.fmprocess__device-bar {
+
+  height: 10px;
+
+  margin-bottom:
+    16px;
+
+  border-radius:
+    5px;
+
+  background:
+    #343934;
+
+}
+
+
+.fmprocess__message {
+
+  height: 13px;
+
+  margin-bottom:
+    10px;
+
+  border-radius:
+    10px;
+
+}
+
+
+.fmprocess__message--1 {
+
+  width: 65%;
+
+  margin-left:
+    auto;
+
+  background:
+    #cefe46;
+
+}
+
+
+.fmprocess__message--2 {
+
+  width: 78%;
+
+  background:
+    #f5f5f5;
+
+}
+
+
+.fmprocess__message--3 {
+
+  width: 55%;
+
+  margin-left:
+    auto;
+
+  background:
+    #cefe46;
+
+}
+
+
+.fmprocess__message--4 {
+
+  width: 70%;
+
+  background:
+    #f5f5f5;
+
+}
+
+
+
+/* =========================================================
+   ANALYTICS
+   ========================================================= */
+
+.fmprocess__visual--analytics {
+
+  background:
+    radial-gradient(
+      circle at 34% 40%,
+      rgba(206,254,70,.85),
+      transparent 35%
+    ),
+    linear-gradient(
+      120deg,
+      #222821,
+      #d7d7d4
+    );
+
+}
+
+
+.fmprocess__dashboard {
+
+  position: absolute;
+
+  left: 52px;
+  top: 42px;
+
+  width: 235px;
+  height: 145px;
+
+  padding: 18px;
+
+  transform:
+    rotate(-4deg);
+
+  border:
+    8px solid
+    #262626;
+
+  border-radius:
+    7px;
+
+  background:
+    #f7f7f7;
+
+  box-shadow:
+    0 18px 30px
+    rgba(0,0,0,.23);
+
+}
+
+
+.fmprocess__dashboard-top {
+
+  width: 75%;
+  height: 10px;
+
+  margin-bottom:
+    30px;
+
+  border-radius:
+    5px;
+
+  background:
+    #d6d6d6;
+
+}
+
+
+.fmprocess__chart {
+
+  height: 55px;
+
+  display: flex;
+
+  align-items: flex-end;
+
+  gap: 8px;
+
+  border-bottom:
+    1px solid
+    #ddd;
+
+}
+
+
+.fmprocess__chart span {
+
+  flex: 1;
+
+  height: 25%;
+
+  border-radius:
+    3px
+    3px
+    0
+    0;
+
+  background:
+    #bfc5bd;
+
+}
+
+
+.fmprocess__chart span:nth-child(2) {
+  height: 48%;
+}
+
+.fmprocess__chart span:nth-child(3) {
+  height: 38%;
+}
+
+.fmprocess__chart span:nth-child(4) {
+
+  height: 74%;
+
+  background:
+    #cefe46;
+
+}
+
+.fmprocess__chart span:nth-child(5) {
+
+  height: 61%;
+
+  background:
+    #cefe46;
+
+}
+
+.fmprocess__chart span:nth-child(6) {
+
+  height: 90%;
+
+  background:
+    #cefe46;
+
+}
+
+
+
+/* =========================================================
+   LAUNCH VISUAL
+   ========================================================= */
+
+.fmprocess__visual--launch {
+
+  background:
+    radial-gradient(
+      circle at 35% 40%,
+      rgba(206,254,70,.8),
+      transparent 36%
+    ),
+    linear-gradient(
+      120deg,
+      #222722,
+      #d3d3cf
+    );
+
+}
+
+
+.fmprocess__launch-panel {
+
+  position: absolute;
+
+  left: 58px;
+  top: 38px;
+
+  width: 225px;
+  height: 150px;
+
+  padding: 25px;
+
+  transform:
+    rotate(-4deg);
+
+  border-radius:
+    10px;
+
+  background:
+    #f4f4f4;
+
+  box-shadow:
+    0 17px 30px
+    rgba(0,0,0,.22);
+
+}
+
+
+.fmprocess__launch-row {
+
+  width: 100%;
+  height: 12px;
+
+  margin-bottom:
+    14px;
+
+  border-radius:
+    5px;
+
+  background:
+    #d4d6d1;
+
+}
+
+
+.fmprocess__launch-row:nth-child(2) {
+
+  width: 78%;
+
+}
+
+
+.fmprocess__launch-row:nth-child(3) {
+
+  width: 88%;
+
+}
+
+
+.fmprocess__launch-button {
+
+  width: 80px;
+  height: 23px;
+
+  margin-top: 18px;
+
+  border-radius:
+    20px;
+
+  background:
+    #cefe46;
+
+}
+
+
+
+/* =========================================================
+   ENTRY ANIMATION
+   ========================================================= */
+
+.fmprocess
+[data-process-anim] {
+
+  opacity: 0;
+
+}
+
+
+.fmprocess.is-visible
+[data-process-anim="tag"] {
+
+  animation:
+    fmp-up
+    .55s
+    cubic-bezier(.2,.75,.25,1)
+    .02s
+    both;
+
+}
+
+
+.fmprocess.is-visible
+[data-process-anim="title"] {
+
+  animation:
+    fmp-up
+    .75s
+    cubic-bezier(.2,.75,.25,1)
+    .10s
+    both;
+
+}
+
+
+.fmprocess.is-visible
+[data-process-anim="text"] {
+
+  animation:
+    fmp-up
+    .70s
+    cubic-bezier(.2,.75,.25,1)
+    .18s
+    both;
+
+}
+
+
+.fmprocess.is-visible
+[data-process-anim="button"] {
+
+  animation:
+    fmp-up
+    .65s
+    cubic-bezier(.2,.75,.25,1)
+    .26s
+    both;
+
+}
+
+
+
+@keyframes fmp-up {
+
+  from {
+
+    opacity: 0;
+
+    transform:
+      translateY(22px);
+
+  }
+
+  to {
+
+    opacity: 1;
+
+    transform:
+      translateY(0);
+
+  }
+
+}
+
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 640px) {
+
+
+  .fmprocess {
+
+    background:
+      transparent;
+
+  }
+
+
+
+  /*
+   * Mobile should scroll normally.
+   */
+
+  .fmprocess__scroll-shell {
+
+    height:
+      auto !important;
+
+  }
+
+
+  .fmprocess__sticky {
+
+    position:
+      relative;
+
+    top:
+      auto;
+
+  }
+
+
+  .fmprocess__viewport {
+
+    height:
+      auto !important;
+
+    border-radius:
+      36px;
+
+  }
+
+
+  .fmprocess__stage {
+
+    position:
+      relative;
+
+    left:
+      auto;
+
+    top:
+      auto;
+
+    width:
+      100%;
+
+    height:
+      auto;
+
+    transform:
+      none !important;
+
+    padding:
+      48px
+      clamp(
+        16px,
+        5vw,
+        28px
+      )
+      40px;
+
+  }
+
+
+
+  /* =======================================================
+     CONTENT
+     ======================================================= */
+
+  .fmprocess__content {
+
+    position:
+      relative;
+
+    left:
+      auto;
+
+    top:
+      auto;
+
+    width:
+      100%;
+
+  }
+
+
+  .fmprocess__tag {
+
+    margin-bottom:
+      20px;
+
+  }
+
+
+  .fmprocess__title {
+
+    width:
+      100%;
+
+    max-width:
+      430px;
+
+    font-size:
+      clamp(
+        27px,
+        7.7vw,
+        35px
+      );
+
+    line-height:
+      .98;
+
+    letter-spacing:
+      -.8px;
+
+  }
+
+
+  .fmprocess__title br {
+
+    display:
+      none;
+
+  }
+
+
+  .fmprocess__text {
+
+    width:
+      100%;
+
+    max-width:
+      430px;
+
+    margin-top:
+      22px;
+
+    font-size:
+      clamp(
+        13px,
+        3.6vw,
+        15px
+      );
+
+    line-height:
+      1.27;
+
+  }
+
+
+
+  /* =======================================================
+     BUTTON
+     ======================================================= */
+
+  .fmprocess__button {
+
+    width:
+      100%;
+
+    min-height:
+      55px;
+
+    margin-top:
+      25px;
+
+    justify-content:
+      center;
+
+    padding:
+      5px
+      55px;
+
+  }
+
+
+  .fmprocess__button-label {
+
+    width:
+      100%;
+
+    text-align:
+      center;
+
+  }
+
+
+  .fmprocess__button-icon {
+
+    position:
+      absolute;
+
+    right:
+      5px;
+
+    top:
+      50%;
+
+    transform:
+      translateY(-50%);
+
+  }
+
+
+
+  /* =======================================================
+     CARDS
+     ======================================================= */
+
+  .fmprocess__cards-window {
+
+    position:
+      relative;
+
+    left:
+      auto;
+
+    top:
+      auto;
+
+    width:
+      100%;
+
+    height:
+      auto;
+
+    margin-top:
+      38px;
+
+    overflow:
+      visible;
+
+  }
+
+
+  .fmprocess__cards {
+
+    position:
+      relative;
+
+    left:
+      auto;
+
+    top:
+      auto;
+
+    width:
+      100%;
+
+    gap:
+      12px;
+
+    transform:
+      none !important;
+
+  }
+
+
+  .fmprocess__card {
+
+    width:
+      100%;
+
+    height:
+      auto;
+
+    min-height:
+      300px;
+
+    flex:
+      none;
+
+    border-radius:
+      24px;
+
+  }
+
+
+
+  .fmprocess__card-image {
+
+    object-position:
+      30% center;
+
+  }
+
+
+
+  /* =======================================================
+     GLASS
+     ======================================================= */
+
+  .fmprocess__glass {
+
+    left:
+      16px;
+
+    right:
+      16px;
+
+    top:
+      auto;
+
+    bottom:
+      16px;
+
+    width:
+      auto;
+
+    padding:
+      18px;
+
+    transform:
+      none;
+
+    border-radius:
+      16px;
+
+  }
+
+
+  .fmprocess__card-title {
+
+    width:
+      100%;
+
+    font-size:
+      clamp(
+        20px,
+        5.8vw,
+        24px
+      );
+
+    line-height:
+      1;
+
+  }
+
+
+  .fmprocess__card-text {
+
+    width:
+      100%;
+
+    font-size:
+      clamp(
+        10px,
+        2.8vw,
+        12px
+      );
+
+    line-height:
+      1.2;
+
+  }
+
+
+}
+
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 350px) {
+
+
+  .fmprocess__stage {
+
+    padding-left:
+      12px;
+
+    padding-right:
+      12px;
+
+  }
+
+
+  .fmprocess__title {
+
+    font-size:
+      25px;
+
+  }
+
+
+  .fmprocess__card {
+
+    min-height:
+      285px;
+
+  }
+
+
+}
+
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media
+(prefers-reduced-motion: reduce) {
+
+
+  .fmprocess
+  [data-process-anim] {
+
+    opacity:
+      1 !important;
+
+    animation:
+      none !important;
+
+    transition:
+      none !important;
+
+  }
+
+
+  .fmprocess__cards {
+
+    transition:
+      none !important;
+
+  }
+
+
+}
+</style>
+
+<script is:inline>
+(function () {
+
+
+  const sections =
+    document.querySelectorAll(
+      '[data-fmprocess]'
+    );
+
+
+  sections.forEach(
+    function (root) {
+
+
+      if (
+        root.dataset.fmProcessReady ===
+        '1'
+      ) {
+
+        return;
+
+      }
+
+
+      root.dataset.fmProcessReady =
+        '1';
+
+
+
+      const shell =
+        root.querySelector(
+          '.fmprocess__scroll-shell'
+        );
+
+
+      const sticky =
+        root.querySelector(
+          '.fmprocess__sticky'
+        );
+
+
+      const viewport =
+        root.querySelector(
+          '.fmprocess__viewport'
+        );
+
+
+      const cardsWindow =
+        root.querySelector(
+          '.fmprocess__cards-window'
+        );
+
+
+      const cards =
+        root.querySelector(
+          '[data-process-cards]'
+        );
+
+
+
+      /* =====================================================
+         CONFIG
+         ===================================================== */
+
+      const BASE_WIDTH =
+        1200;
+
+
+      const BASE_HEIGHT =
+        675;
+
+
+      const BASE_WINDOW_HEIGHT =
+        645;
+
+
+
+      /* =====================================================
+         STATE
+         ===================================================== */
+
+      let scale =
+        1;
+
+
+      let maxCardTravel =
+        0;
+
+
+      let targetY =
+        0;
+
+
+      let currentY =
+        0;
+
+
+
+      const reduceMotion =
+        window.matchMedia(
+          '(prefers-reduced-motion: reduce)'
+        );
+
+
+
+      /* =====================================================
+         TILDA EDITOR
+
+         Disable sticky behavior while editing.
+         ===================================================== */
+
+      function isTildaEditor() {
+
+
+        const body =
+          document.body;
+
+
+        const html =
+          document.documentElement;
+
+
+        return (
+
+          body.classList.contains(
+            't-body_edit'
+          )
+
+          ||
+
+          body.classList.contains(
+            'tilda-mode-edit'
+          )
+
+          ||
+
+          html.classList.contains(
+            'tilda-mode-edit'
+          )
+
+          ||
+
+          !!document.querySelector(
+            '.t-edit-toolbar'
+          )
+
+        );
+
+
+      }
+
+
+
+      /* =====================================================
+         MEASURE
+
+         Automatically adapts to ANY number of cards.
+         ===================================================== */
+
+      function measure() {
+
+
+        const rootWidth =
+          root
+            .getBoundingClientRect()
+            .width;
+
+
+
+        /* MOBILE */
+
+        if (
+          rootWidth <= 640
+        ) {
+
+
+          scale = 1;
+
+
+          root.style.removeProperty(
+            '--fp-scale'
+          );
+
+
+          shell.style.height =
+            'auto';
+
+
+          sticky.style.height =
+            'auto';
+
+
+          viewport.style.height =
+            'auto';
+
+
+          cards.style.transform =
+            'none';
+
+
+          return;
+
+        }
+
+
+
+        /* DESKTOP / TABLET */
+
+        scale =
+          rootWidth /
+          BASE_WIDTH;
+
+
+
+        root.style.setProperty(
+          '--fp-scale',
+          scale
+        );
+
+
+
+        const visibleHeight =
+          BASE_HEIGHT *
+          scale;
+
+
+
+        sticky.style.height =
+          visibleHeight +
+          'px';
+
+
+        viewport.style.height =
+          visibleHeight +
+          'px';
+
+
+
+        /*
+         * Actual card rail height in
+         * original 1200 coordinate space.
+         */
+
+        const railHeight =
+          cards.scrollHeight;
+
+
+
+        /*
+         * How far the cards need to move upward
+         * until the final card sits fully
+         * inside the visible window.
+         */
+
+        maxCardTravel =
+          Math.max(
+            0,
+            railHeight -
+            BASE_WINDOW_HEIGHT
+          );
+
+
+
+        /*
+         * In Tilda editor:
+         * no scroll animation / extended runway.
+         */
+
+        if (
+          isTildaEditor()
+        ) {
+
+
+          shell.style.height =
+            visibleHeight +
+            'px';
+
+
+          targetY =
+            0;
+
+
+          currentY =
+            0;
+
+
+          cards.style.transform =
+            'translate3d(0,0,0)';
+
+
+          return;
+
+        }
+
+
+
+        /*
+         * Published site.
+
+         * Scroll distance is proportional
+         * to the card travel.
+
+         * A small multiplier makes the
+         * motion feel slower and smoother.
+         */
+
+        const scrollDistance =
+          maxCardTravel *
+          scale *
+          1.15;
+
+
+
+        shell.style.height =
+          (
+            visibleHeight +
+            scrollDistance
+          )
+          +
+          'px';
+
+
+      }
+
+
+
+      /* =====================================================
+         SCROLL PROGRESS
+         ===================================================== */
+
+      function updateTarget() {
+
+
+        if (
+          window.innerWidth <= 640
+          ||
+          isTildaEditor()
+        ) {
+
+
+          targetY =
+            0;
+
+
+          return;
+
+        }
+
+
+
+        if (
+          reduceMotion.matches
+        ) {
+
+
+          targetY =
+            0;
+
+
+          return;
+
+        }
+
+
+
+        const shellRect =
+          shell
+            .getBoundingClientRect();
+
+
+
+        const visibleHeight =
+          BASE_HEIGHT *
+          scale;
+
+
+
+        const scrollRange =
+          Math.max(
+            1,
+            shell.offsetHeight -
+            visibleHeight
+          );
+
+
+
+        const travelled =
+          Math.max(
+            0,
+            Math.min(
+              scrollRange,
+              -shellRect.top
+            )
+          );
+
+
+
+        const progress =
+          travelled /
+          scrollRange;
+
+
+
+        targetY =
+          -maxCardTravel *
+          progress;
+
+
+      }
+
+
+
+      /* =====================================================
+         SMOOTH FOLLOW
+
+         Cards softly catch up with scroll.
+         ===================================================== */
+
+      function animate() {
+
+
+        if (
+          window.innerWidth > 640
+          &&
+          !isTildaEditor()
+          &&
+          !reduceMotion.matches
+        ) {
+
+
+          currentY +=
+            (
+              targetY -
+              currentY
+            )
+            *
+            .09;
+
+
+
+          if (
+            Math.abs(
+              targetY -
+              currentY
+            )
+            <
+            .01
+          ) {
+
+
+            currentY =
+              targetY;
+
+          }
+
+
+
+          cards.style.transform =
+            'translate3d(0,' +
+            currentY.toFixed(2) +
+            'px,0)';
+
+
+        }
+
+
+
+        requestAnimationFrame(
+          animate
+        );
+
+
+      }
+
+
+
+      /* =====================================================
+         SCROLL
+         ===================================================== */
+
+      let ticking =
+        false;
+
+
+
+      function onScroll() {
+
+
+        if (
+          ticking
+        ) {
+
+          return;
+
+        }
+
+
+        ticking =
+          true;
+
+
+
+        requestAnimationFrame(
+          function () {
+
+
+            updateTarget();
+
+
+            ticking =
+              false;
+
+
+          }
+        );
+
+
+      }
+
+
+
+      /* =====================================================
+         RESIZE
+         ===================================================== */
+
+      function onResize() {
+
+
+        measure();
+
+        updateTarget();
+
+
+      }
+
+
+
+      window.addEventListener(
+        'scroll',
+        onScroll,
+        {
+          passive: true
+        }
+      );
+
+
+      window.addEventListener(
+        'resize',
+        onResize,
+        {
+          passive: true
+        }
+      );
+
+
+
+      if (
+        'ResizeObserver'
+        in window
+      ) {
+
+
+        const ro =
+          new ResizeObserver(
+            function () {
+
+
+              measure();
+
+              updateTarget();
+
+
+            }
+          );
+
+
+        ro.observe(
+          root
+        );
+
+
+        ro.observe(
+          cards
+        );
+
+
+      }
+
+
+
+      /* =====================================================
+         ENTRY
+         ===================================================== */
+
+      if (
+        reduceMotion.matches
+      ) {
+
+
+        root.classList.add(
+          'is-visible'
+        );
+
+
+      } else {
+
+
+        const observer =
+          new IntersectionObserver(
+
+            function (entries) {
+
+
+              entries.forEach(
+                function (entry) {
+
+
+                  if (
+                    !entry.isIntersecting
+                  ) {
+
+                    return;
+
+                  }
+
+
+                  root.classList.add(
+                    'is-visible'
+                  );
+
+
+                  observer.disconnect();
+
+
+                }
+              );
+
+
+            },
+
+            {
+              threshold:
+                .08
+            }
+
+          );
+
+
+        observer.observe(
+          root
+        );
+
+
+      }
+
+
+
+      /* =====================================================
+         INIT
+         ===================================================== */
+
+      measure();
+
+      updateTarget();
+
+      animate();
+
+
+    }
+  );
+
+
+})();
+</script>

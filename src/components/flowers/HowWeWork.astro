@@ -1,0 +1,1184 @@
+---
+/** Оригинал: rec4182830201 */
+---
+
+<section class="fmhow" data-fmhow="" style="padding-top: 15px; padding-bottom: 0px;"> <div class="fmhow__viewport"> <div class="fmhow__stage">  <div class="fmhow__visual" data-how-anim="visual"> <img class="fmhow__photo" src="/img/flowers/32393532-ChatGPT_Image_15__20.png" alt=""> </div>  <div class="fmhow__fade"></div>  <div class="fmhow__content"> <div class="fmhow__tag" data-how-anim="tag">
+          О нас
+        </div> <h2 class="fmhow__title" data-how-anim="title"> <span class="fmhow__title-line">
+            Посмотрите
+          </span> <span class="fmhow__title-line">
+            как мы работаем
+          </span> </h2> <p class="fmhow__text" data-how-anim="text">Покажем вживую на 30-минутной онлайн-встрече.<br>Откроем реальные рекламные кабинеты, покажем цифры и расскажем о том, что делать в вашем случае.<br><br>Это бесплатно и ни к чему не обязывает.<br>Даже если не станете клиентом, уйдёте с&nbsp;пониманием что делать.</p> <a class="fmhow__button" href="#popup:myform" data-how-anim="button"> <span class="fmhow__button-label">
+            Консультация
+          </span> <span class="fmhow__button-icon"> <svg viewBox="0 0 44 44" aria-hidden="true"> <circle cx="22" cy="22" r="22" fill="#202020"></circle> <path d="M16 28L28 16M20 16H28V24" fill="none" stroke="#CEFE46" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path> </svg> </span> </a> </div> </div> </div> </section>
+
+<style is:global>
+/* ===== слой 1 из Тильды ===== */
+/* =========================================================
+   BASE
+   ========================================================= */
+
+.fmhow {
+
+  --fh-bg: #f4f4f4;
+  --fh-dark: #202020;
+  --fh-green: #cefe46;
+
+  position: relative;
+
+  width: 100%;
+
+  margin: 0;
+  padding: 0;
+
+  overflow: hidden;
+
+  background: #fff;
+
+  color: var(--fh-dark);
+
+  font-family:
+    "Inter Tight",
+    Inter,
+    Arial,
+    sans-serif;
+
+}
+
+
+.fmhow,
+.fmhow * {
+  box-sizing: border-box;
+}
+
+
+
+/* =========================================================
+   VIEWPORT
+   ========================================================= */
+
+.fmhow__viewport {
+
+  position: relative;
+
+  width: 100%;
+
+  height: 675px;
+
+  overflow: hidden;
+
+  background:
+    var(--fh-bg);
+
+  border-radius:
+    clamp(
+      42px,
+      6.25vw,
+      120px
+    );
+
+}
+
+
+
+/* =========================================================
+   DESKTOP CANVAS
+   ========================================================= */
+
+.fmhow__stage {
+
+  position: absolute;
+
+  left: 50%;
+  top: 0;
+
+  width: 1200px;
+  height: 675px;
+
+  overflow: hidden;
+
+  transform-origin:
+    top center;
+
+  transform:
+    translateX(-50%)
+    scale(var(--fh-scale,1));
+
+}
+
+
+
+/* =========================================================
+   DESKTOP PHOTO
+   ========================================================= */
+
+.fmhow__visual {
+
+  position: absolute;
+
+  z-index: 1;
+
+  inset: 0;
+
+  overflow: hidden;
+
+}
+
+
+.fmhow__photo {
+
+  position: absolute;
+
+  left: -347px;
+  top: -125px;
+
+  width: 1574px;
+  height: 1106px;
+
+  display: block;
+
+  max-width: none;
+
+  object-fit: cover;
+
+}
+
+
+
+/* =========================================================
+   DESKTOP FADE
+   ========================================================= */
+
+.fmhow__fade {
+
+  position: absolute;
+
+  z-index: 2;
+
+  inset: 0;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,1) 0%,
+      rgba(255,255,255,1) 17%,
+      rgba(255,255,255,.95) 25%,
+      rgba(255,255,255,.74) 34%,
+      rgba(255,255,255,.35) 44%,
+      rgba(255,255,255,.08) 54%,
+      rgba(255,255,255,0) 64%
+    );
+
+}
+
+
+
+/* =========================================================
+   CONTENT
+   ========================================================= */
+
+.fmhow__content {
+
+  position: absolute;
+
+  z-index: 10;
+
+  left: 61px;
+  top: 173px;
+
+  width: 390px;
+
+}
+
+
+
+/* =========================================================
+   TAG
+   ========================================================= */
+
+.fmhow__tag {
+
+  width: max-content;
+
+  margin:
+    0
+    0
+    15px;
+
+  padding:
+    7px
+    10px;
+
+  border:
+    1px solid #ededee;
+
+  border-radius:
+    100px;
+
+  background: #fff;
+
+  font-size: 11px;
+
+  line-height: 13px;
+
+  font-weight: 400;
+
+}
+
+
+
+/* =========================================================
+   TITLE
+   ========================================================= */
+
+.fmhow__title {
+
+  width: 300px;
+
+  margin: 0;
+
+  color:
+    var(--fh-dark);
+
+  font-size: 33px;
+
+  line-height: 33px;
+
+  letter-spacing:
+    -1px;
+
+  font-weight: 600;
+
+}
+
+
+.fmhow__title-line {
+  display: block;
+}
+
+
+
+/* =========================================================
+   TEXT
+   ========================================================= */
+
+.fmhow__text {
+
+  width: 362px;
+
+  margin:
+    15px
+    0
+    0;
+
+  color:
+    rgba(
+      32,
+      32,
+      32,
+      .55
+    );
+
+  font-size: 14px;
+
+  line-height: 17.5px;
+
+  letter-spacing:
+    -.15px;
+
+  font-weight: 500;
+
+}
+
+
+
+/* =========================================================
+   BUTTON
+   ========================================================= */
+
+.fmhow__button {
+
+  position: relative;
+
+  width: max-content;
+
+  min-width: 185px;
+
+  min-height: 54px;
+
+  margin-top:
+    30px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 13px;
+
+  padding:
+    5px
+    5px
+    5px
+    25px;
+
+  border-radius:
+    100px;
+
+  background:
+    var(--fh-green);
+
+  color:
+    var(--fh-dark);
+
+  text-decoration: none;
+
+  font-size: 14.8px;
+
+  line-height: 16px;
+
+  font-weight: 600;
+
+  transition:
+    transform
+    .3s
+    cubic-bezier(.2,.75,.25,1);
+
+}
+
+
+.fmhow__button:hover {
+
+  transform:
+    translateY(-2px);
+
+}
+
+
+.fmhow__button-icon {
+
+  width: 44px;
+  height: 44px;
+
+  flex:
+    0 0 44px;
+
+}
+
+
+.fmhow__button-icon svg {
+
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+}
+
+
+
+/* =========================================================
+   INITIAL MOTION
+   ========================================================= */
+
+.fmhow
+[data-how-anim] {
+
+  opacity: 0;
+
+}
+
+
+
+/* =========================================================
+   MOTION
+   ========================================================= */
+
+.fmhow.is-visible
+[data-how-anim="visual"] {
+
+  animation:
+    fh-image
+    1.1s
+    cubic-bezier(.16,.82,.21,1)
+    both;
+
+}
+
+
+.fmhow.is-visible
+[data-how-anim="tag"] {
+
+  animation:
+    fh-up
+    .55s
+    cubic-bezier(.2,.75,.25,1)
+    .05s
+    both;
+
+}
+
+
+.fmhow.is-visible
+[data-how-anim="title"] {
+
+  animation:
+    fh-up
+    .75s
+    cubic-bezier(.2,.75,.25,1)
+    .14s
+    both;
+
+}
+
+
+.fmhow.is-visible
+[data-how-anim="text"] {
+
+  animation:
+    fh-up
+    .75s
+    cubic-bezier(.2,.75,.25,1)
+    .25s
+    both;
+
+}
+
+
+.fmhow.is-visible
+[data-how-anim="button"] {
+
+  animation:
+    fh-up
+    .65s
+    cubic-bezier(.2,.75,.25,1)
+    .36s
+    both;
+
+}
+
+
+
+@keyframes fh-up {
+
+  from {
+
+    opacity: 0;
+
+    transform:
+      translateY(24px);
+
+  }
+
+  to {
+
+    opacity: 1;
+
+    transform:
+      translateY(0);
+
+  }
+
+}
+
+
+
+@keyframes fh-image {
+
+  from {
+
+    opacity: 0;
+
+    transform:
+      scale(1.025);
+
+  }
+
+  to {
+
+    opacity: 1;
+
+    transform:
+      scale(1);
+
+  }
+
+}
+
+
+
+/* =========================================================
+   MOBILE 300–640
+   ========================================================= */
+
+@media (max-width: 640px) {
+
+
+  .fmhow {
+
+    background:
+      transparent;
+
+  }
+
+
+
+  /* =======================================================
+     MOBILE CONTAINER
+     ======================================================= */
+
+  .fmhow__viewport {
+
+    width: 100%;
+
+    height:
+      auto !important;
+
+    min-height: 0;
+
+    border-radius:
+      36px;
+
+  }
+
+
+
+  .fmhow__stage {
+
+    position: relative;
+
+    left: auto;
+    top: auto;
+
+    width: 100%;
+    height: 780px;
+
+    min-height: 780px;
+
+    transform:
+      none !important;
+
+  }
+
+
+
+  /* =======================================================
+     MOBILE PHOTO
+
+     Фотография теперь существует как отдельный
+     нижний слой фиксированной высоты.
+
+     Никаких width:155% / height:155%.
+     ======================================================= */
+
+  .fmhow__visual {
+
+    position: absolute;
+
+    z-index: 1;
+
+    left: 0;
+    right: 0;
+
+    top: auto;
+    bottom: 0;
+
+    width: 100%;
+    height: 395px;
+
+    overflow: hidden;
+
+  }
+
+
+
+  .fmhow__photo {
+
+    position: absolute;
+
+    inset: 0;
+
+    left: 0;
+    top: 0;
+
+    width: 100%;
+    height: 100%;
+
+    max-width: none;
+
+    display: block;
+
+    object-fit: cover;
+
+
+    /*
+     * Человек расположен справа
+     * в оригинальном Figma-изображении.
+
+     * Сдвигаем точку кадрирования вправо,
+     * чтобы сам человек оказался
+     * в центре мобильного экрана.
+     */
+
+    object-position:
+      68% 44%;
+
+    transform: none;
+
+  }
+
+
+
+  /* =======================================================
+     MOBILE FADE
+
+     ВАЖНО:
+     Теперь градиент заканчивается значительно раньше
+     и больше не перекрывает человека.
+     ======================================================= */
+
+  .fmhow__fade {
+
+    z-index: 2;
+
+    background:
+      linear-gradient(
+        180deg,
+
+        rgba(255,255,255,1) 0%,
+
+        rgba(255,255,255,1) 42%,
+
+        rgba(255,255,255,.96) 47%,
+
+        rgba(255,255,255,.72) 51%,
+
+        rgba(255,255,255,.34) 56%,
+
+        rgba(255,255,255,.08) 61%,
+
+        rgba(255,255,255,0) 66%
+      );
+
+  }
+
+
+
+  /* =======================================================
+     MOBILE CONTENT
+     ======================================================= */
+
+  .fmhow__content {
+
+    position: relative;
+
+    z-index: 10;
+
+    left: auto;
+    top: auto;
+
+    width: 100%;
+
+    padding:
+      48px
+      clamp(
+        18px,
+        5vw,
+        28px
+      )
+      0;
+
+  }
+
+
+
+  .fmhow__tag {
+
+    margin-bottom:
+      20px;
+
+  }
+
+
+
+  /* =======================================================
+     MOBILE TITLE
+     SAME SCALE AS OTHER BLOCKS
+     ======================================================= */
+
+  .fmhow__title {
+
+    width: 100%;
+
+    max-width:
+      430px;
+
+    font-size:
+      clamp(
+        27px,
+        7.7vw,
+        35px
+      );
+
+    line-height:
+      .98;
+
+    letter-spacing:
+      -.8px;
+
+  }
+
+
+
+  .fmhow__title-line {
+
+    display: inline;
+
+  }
+
+
+  .fmhow__title-line:first-child::after {
+
+    content: " ";
+
+  }
+
+
+
+  /* =======================================================
+     MOBILE TEXT
+     ======================================================= */
+
+  .fmhow__text {
+
+    width: 100%;
+
+    max-width:
+      430px;
+
+    margin-top:
+      22px;
+
+    font-size:
+      clamp(
+        13px,
+        3.6vw,
+        15px
+      );
+
+    line-height:
+      1.27;
+
+  }
+
+
+  .fmhow__text br {
+
+    display: none;
+
+  }
+
+
+
+  /* =======================================================
+     BUTTON
+     ======================================================= */
+
+  .fmhow__button {
+
+    width: 100%;
+
+    min-height:
+      55px;
+
+    margin-top:
+      25px;
+
+    display: flex;
+
+    justify-content:
+      center;
+
+    padding:
+      5px
+      55px;
+
+    text-align:
+      center;
+
+  }
+
+
+  .fmhow__button-label {
+
+    width: 100%;
+
+    text-align:
+      center;
+
+  }
+
+
+  .fmhow__button-icon {
+
+    position: absolute;
+
+    right: 5px;
+
+    top: 50%;
+
+    transform:
+      translateY(-50%);
+
+  }
+
+
+}
+
+
+
+/* =========================================================
+   MOBILE UP TO 400
+   ========================================================= */
+
+@media (max-width: 400px) {
+
+
+  .fmhow__stage {
+
+    height:
+      760px;
+
+    min-height:
+      760px;
+
+  }
+
+
+  .fmhow__visual {
+
+    height:
+      380px;
+
+  }
+
+
+  .fmhow__photo {
+
+    object-position:
+      68% 42%;
+
+  }
+
+
+}
+
+
+
+/* =========================================================
+   SMALL MOBILE 300–350
+   ========================================================= */
+
+@media (max-width: 350px) {
+
+
+  .fmhow__stage {
+
+    height:
+      735px;
+
+    min-height:
+      735px;
+
+  }
+
+
+  .fmhow__content {
+
+    padding-left:
+      14px;
+
+    padding-right:
+      14px;
+
+  }
+
+
+  .fmhow__title {
+
+    font-size:
+      25px;
+
+  }
+
+
+  .fmhow__visual {
+
+    height:
+      355px;
+
+  }
+
+
+  .fmhow__photo {
+
+    object-position:
+      68% 42%;
+
+  }
+
+
+}
+
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media
+(prefers-reduced-motion: reduce) {
+
+
+  .fmhow
+  [data-how-anim] {
+
+    opacity:
+      1 !important;
+
+    animation:
+      none !important;
+
+    transition:
+      none !important;
+
+  }
+
+
+}
+
+/* ===== слой 2 из Тильды ===== */
+.fmhow__text {
+    width: 355px;
+}
+</style>
+
+<script is:inline>
+(function () {
+
+
+  const sections =
+    document.querySelectorAll(
+      '[data-fmhow]'
+    );
+
+
+  sections.forEach(
+    function (root) {
+
+
+      if (
+        root.dataset.fmHowReady ===
+        '1'
+      ) {
+
+        return;
+
+      }
+
+
+      root.dataset.fmHowReady =
+        '1';
+
+
+
+      const viewport =
+        root.querySelector(
+          '.fmhow__viewport'
+        );
+
+
+
+      /* =====================================================
+         DESKTOP / TABLET SCALE
+         ===================================================== */
+
+      function updateScale() {
+
+
+        const width =
+          root
+            .getBoundingClientRect()
+            .width;
+
+
+
+        if (
+          width <= 640
+        ) {
+
+
+          root.style.removeProperty(
+            '--fh-scale'
+          );
+
+
+          viewport.style.height =
+            '';
+
+
+          return;
+
+        }
+
+
+
+        const scale =
+          width /
+          1200;
+
+
+
+        root.style.setProperty(
+          '--fh-scale',
+          scale
+        );
+
+
+        viewport.style.height =
+          Math.round(
+            675 *
+            scale
+          )
+          +
+          'px';
+
+
+      }
+
+
+
+      updateScale();
+
+
+
+      if (
+        'ResizeObserver'
+        in window
+      ) {
+
+
+        const ro =
+          new ResizeObserver(
+            updateScale
+          );
+
+
+        ro.observe(
+          root
+        );
+
+
+      } else {
+
+
+        window.addEventListener(
+          'resize',
+          updateScale,
+          {
+            passive: true
+          }
+        );
+
+
+      }
+
+
+
+      /* =====================================================
+         APPEAR
+         ===================================================== */
+
+      const reduceMotion =
+        window
+          .matchMedia(
+            '(prefers-reduced-motion: reduce)'
+          )
+          .matches;
+
+
+
+      if (
+        reduceMotion
+      ) {
+
+
+        root
+          .classList
+          .add(
+            'is-visible'
+          );
+
+
+        return;
+
+      }
+
+
+
+      const observer =
+        new IntersectionObserver(
+
+          function (entries) {
+
+
+            entries.forEach(
+              function (entry) {
+
+
+                if (
+                  !entry.isIntersecting
+                ) {
+
+                  return;
+
+                }
+
+
+                root
+                  .classList
+                  .add(
+                    'is-visible'
+                  );
+
+
+                observer.disconnect();
+
+
+              }
+            );
+
+
+          },
+
+          {
+            threshold:
+              .13
+          }
+
+        );
+
+
+
+      observer.observe(
+        root
+      );
+
+
+    }
+  );
+
+
+})();
+</script>

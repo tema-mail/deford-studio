@@ -1,0 +1,193 @@
+---
+/** Пауза для видеоотзывов. Дополнение к блоку отзывов (Reviews.astro):
+    там видео запускается и закрывается, а пауза отсюда — отдельным
+    модулем, чтобы не расширять компонент на 2400 строк.
+
+    Клик или тап по играющему видео — пауза, повторный — продолжить
+    с того же места. Кружок в центре — как у кнопки запуска: значок
+    паузы виден при наведении и пару секунд после тапа, значок
+    «play» на паузе виден всегда.
+
+    Плеер Kinescope понимает протокол player.js: команды play/pause
+    и события play/pause/ended приходят через postMessage. */
+---
+
+<style is:global>
+  .fmrevpause {
+    position: absolute;
+    z-index: 15;
+    inset: 0;
+    display: none;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .fmreviews__screen.is-active .fmrevpause {
+    display: block;
+  }
+
+  .fmrevpause__circle {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: rgba(32, 32, 32, 0.38);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.9);
+    transition:
+      opacity 0.25s ease,
+      transform 0.25s ease,
+      background-color 0.25s ease;
+    pointer-events: none;
+  }
+
+  .fmrevpause__circle svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .fmrevpause__icon-play {
+    display: none;
+    margin-left: 2px;
+  }
+
+  /* на паузе — значок play, виден всегда */
+  .fmrevpause.is-paused .fmrevpause__icon-pause { display: none; }
+  .fmrevpause.is-paused .fmrevpause__icon-play { display: block; }
+
+  .fmrevpause.is-paused .fmrevpause__circle,
+  .fmrevpause.is-hint .fmrevpause__circle {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  @media (hover: hover) {
+    .fmrevpause:hover .fmrevpause__circle {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+      background: rgba(32, 32, 32, 0.58);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fmrevpause__circle { transition: none; }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    var cards = document.querySelectorAll('[data-fmreviews] [data-review-card]');
+    if (!cards.length) return;
+
+    var PJS = { context: 'player.js', version: '0.0.11' };
+    var HINT_MS = 1800;
+
+    var ICONS =
+      '<svg class="fmrevpause__icon-pause" viewBox="0 0 20 20">' +
+      '<rect x="5.5" y="4.5" width="3" height="11" rx="1" fill="#CEFE46"></rect>' +
+      '<rect x="11.5" y="4.5" width="3" height="11" rx="1" fill="#CEFE46"></rect></svg>' +
+      '<svg class="fmrevpause__icon-play" viewBox="0 0 20 20">' +
+      '<path d="M7 5L15 10L7 15V5Z" fill="#CEFE46"></path></svg>';
+
+    function send(frame, message) {
+      if (!frame || !frame.contentWindow) return;
+      var data = { context: PJS.context, version: PJS.version };
+      for (var key in message) data[key] = message[key];
+      frame.contentWindow.postMessage(JSON.stringify(data), '*');
+    }
+
+    var byWindow = [];
+
+    cards.forEach(function (card) {
+      var frame = card.querySelector('[data-review-frame]');
+      if (!frame) return;
+
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'fmrevpause';
+      btn.setAttribute('aria-label', 'Пауза');
+      btn.innerHTML = '<span class="fmrevpause__circle" aria-hidden="true">' + ICONS + '</span>';
+      card.appendChild(btn);
+
+      var state = { card: card, frame: frame, btn: btn, paused: false, hintTimer: 0 };
+      byWindow.push(state);
+
+      function setPaused(paused) {
+        state.paused = paused;
+        btn.classList.toggle('is-paused', paused);
+        btn.setAttribute('aria-label', paused ? 'Продолжить видео' : 'Пауза');
+      }
+
+      function hint() {
+        btn.classList.add('is-hint');
+        clearTimeout(state.hintTimer);
+        state.hintTimer = setTimeout(function () {
+          btn.classList.remove('is-hint');
+        }, HINT_MS);
+      }
+
+      state.setPaused = setPaused;
+      state.hint = hint;
+
+      btn.addEventListener('click', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        var next = !state.paused;
+        send(frame, { method: next ? 'pause' : 'play' });
+        setPaused(next);
+        if (!next) hint();
+      });
+
+      /* Видео открыли или закрыли в блоке отзывов — сбрасываем паузу */
+      new MutationObserver(function () {
+        var active = card.classList.contains('is-active');
+        setPaused(false);
+        if (active) hint();
+        else btn.classList.remove('is-hint');
+      }).observe(card, { attributes: true, attributeFilter: ['class'] });
+    });
+
+    /* События плеера: держим значок в согласии с тем, что на экране */
+    window.addEventListener('message', function (event) {
+      var data = event.data;
+      if (typeof data === 'string') {
+        try {
+          data = JSON.parse(data);
+        } catch (e) {
+          return;
+        }
+      }
+      if (!data || data.context !== 'player.js') return;
+
+      var state = null;
+      for (var i = 0; i < byWindow.length; i += 1) {
+        if (byWindow[i].frame.contentWindow === event.source) state = byWindow[i];
+      }
+      if (!state) return;
+
+      if (data.event === 'ready') {
+        ['play', 'pause', 'ended'].forEach(function (name) {
+          send(state.frame, { method: 'addEventListener', value: name, listener: 'fmrevpause-' + name });
+        });
+        return;
+      }
+
+      if (!state.card.classList.contains('is-active')) return;
+      if (data.event === 'play') state.setPaused(false);
+      if (data.event === 'pause' || data.event === 'ended') state.setPaused(true);
+    });
+  })();
+</script>

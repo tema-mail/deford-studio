@@ -1,7 +1,8 @@
 ---
-/** Подарок — лаймовый блок после кейсов сайтов. Оффер по словам Дениса
-    Коротаева: если сайт уже есть или только планируется — бесплатный
-    разбор и аудит сайта или консультация на 30-минутном созвоне.
+/** Подарок — лаймовый блок после «6 причин». Оффер — текстом Артёма:
+    «У вас уже есть сайт, но он не приносит заказов? У нас для вас
+    подарок» — бесплатный разбор и аудит сайта или консультация
+    на 30-минутном созвоне.
     Стилистика лендинга: лайм #cefe46, графит #202020, скругление секции
     как у соседних, кнопка-пилюля с кругом-стрелкой как на первом экране.
     Масштаб от макета 1200. Тот же подарок предлагает попап при уходе
@@ -19,7 +20,8 @@ const gifts = [
   <div class="fmcta__viewport">
     <div class="fmcta__copy">
       <div class="fmcta__tag">Подарок</div>
-      <h2 class="fmcta__title">Есть сайт или только планируете? <br />У нас для вас подарок</h2>
+      <h2 class="fmcta__title">У вас уже есть сайт, но он не приносит заказов?</h2>
+      <p class="fmcta__gift">У нас для вас подарок</p>
       <p class="fmcta__text">
         Бесплатный разбор и аудит вашего сайта — или консультация на 30-минутном
         созвоне. Покажем, как мы делаем конверсионные сайты, которые поднимают
@@ -123,6 +125,20 @@ const gifts = [
     line-height: 1;
     font-weight: 600;
     letter-spacing: -1.35px;
+  }
+
+  /* «У нас для вас подарок» — графитовая пилюля с лаймовым текстом */
+  .fmcta__gift {
+    display: inline-block;
+    margin: calc(18 * var(--u)) 0 0;
+    padding: calc(8 * var(--u)) calc(16 * var(--u));
+    border-radius: 100px;
+    background: var(--fa-dark);
+    color: var(--fa-green);
+    font-size: calc(20 * var(--u));
+    line-height: calc(24 * var(--u));
+    font-weight: 600;
+    letter-spacing: -0.4px;
   }
 
   .fmcta__text {
@@ -274,6 +290,8 @@ const gifts = [
     }
 
     .fmcta__title br { display: none; }
+
+    .fmcta__gift { margin-top: 14px; padding: 7px 14px; font-size: 17px; line-height: 20px; }
 
     .fmcta__text { max-width: none; margin-top: 12px; font-size: 15px; line-height: 20px; }
 

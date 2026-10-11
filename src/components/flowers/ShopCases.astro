@@ -1,0 +1,292 @@
+---
+/** «Интернет-магазины, которые мы создали» — кейсы сайтов для лендинга
+    /flowers. Вёрстка повторяет блок «Наши кейсы» (Cases.astro): тёмная
+    подложка, тег, заголовок 33/33, три белые карточки, средняя ниже
+    на 26. В карточке — снимок первого экрана сайта, название магазина
+    и город, вместо «Читать подробнее» — ссылка на сам сайт. Без кнопки
+    внизу. Названия и города сняты с сайтов магазинов. */
+
+const shops = [
+  {
+    name: 'Milovini Flowers',
+    city: 'Самара',
+    url: 'https://milovinisamara.ru/',
+    img: 'shop-milovini.jpg',
+  },
+  {
+    name: 'Compliment',
+    city: 'Брянск',
+    url: 'https://compliment-32.ru/',
+    img: 'shop-compliment.jpg',
+  },
+  {
+    name: 'HoliFlori',
+    city: 'Сергиев Посад',
+    url: 'https://holiflori.ru/',
+    img: 'shop-holiflori.jpg',
+  },
+];
+---
+
+<section class="fmshops" data-fmshops>
+  <div class="fmshops__viewport">
+    <header class="fmshops__header">
+      <div class="fmshops__tag">Наши кейсы</div>
+      <h2 class="fmshops__title">Интернет-магазины, <br />которые мы создали</h2>
+    </header>
+
+    <div class="fmshops__grid">
+      {
+        shops.map((shop, i) => (
+          <article class={`fmshops__card${i === 1 ? ' fmshops__card--center' : ''}`}>
+            <a class="fmshops__image" href={shop.url} target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
+              <img
+                src={`/img/flowers/${shop.img}`}
+                alt={`Главный экран сайта ${shop.name}`}
+                width="1440"
+                height="820"
+                loading="lazy"
+                decoding="async"
+              />
+            </a>
+            <div class="fmshops__content">
+              <h3 class="fmshops__card-title">{shop.name}</h3>
+              <div class="fmshops__card-meta">Интернет-магазин цветов, {shop.city}</div>
+              <a class="fmshops__more" href={shop.url} target="_blank" rel="noopener">
+                Перейти на сайт
+              </a>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .fmshops {
+    --fs-dark: #202020;
+    --fs-link: #607700;
+    position: relative;
+    width: 100%;
+    padding: 10px 0;
+    background: #fff;
+    color: var(--fs-dark);
+    font-family: 'Inter Tight', Inter, Arial, sans-serif;
+    container-type: inline-size;
+  }
+
+  .fmshops,
+  .fmshops * {
+    box-sizing: border-box;
+  }
+
+  .fmshops__viewport {
+    --u: calc(100cqw / 1200);
+    width: 100%;
+    padding: calc(64 * var(--u)) 0 calc(90 * var(--u));
+    overflow: hidden;
+    background: var(--fs-dark);
+    border-radius: clamp(42px, 6.25vw, 120px);
+  }
+
+  .fmshops__header {
+    width: calc(640 * var(--u));
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .fmshops__tag {
+    width: max-content;
+    margin: 0 auto calc(31 * var(--u));
+    padding: calc(7 * var(--u)) calc(10 * var(--u));
+    border: 1px solid #ededee;
+    border-radius: 100px;
+    background: #fff;
+    font-size: calc(11 * var(--u));
+    line-height: calc(13 * var(--u));
+  }
+
+  .fmshops__title {
+    width: calc(556 * var(--u));
+    margin: 0 auto;
+    color: #fff;
+    font-size: calc(33 * var(--u));
+    line-height: calc(33 * var(--u));
+    font-weight: 600;
+    letter-spacing: -1px;
+  }
+
+  .fmshops__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: calc(20 * var(--u));
+    align-items: start;
+    width: calc(1080 * var(--u));
+    margin: calc(50 * var(--u)) auto 0;
+  }
+
+  .fmshops__card {
+    display: flex;
+    flex-direction: column;
+    gap: calc(15 * var(--u));
+    padding: calc(22 * var(--u));
+    overflow: hidden;
+    border-radius: calc(27 * var(--u));
+    background: linear-gradient(180deg, #ffffff 0%, #f6f6f6 100%);
+  }
+
+  .fmshops__card--center {
+    transform: translateY(calc(26 * var(--u)));
+  }
+
+  .fmshops__image {
+    display: block;
+    overflow: hidden;
+    border: 1px solid #ececec;
+    border-radius: calc(10 * var(--u));
+    background: #fff;
+  }
+
+  .fmshops__image img {
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: transform 0.5s cubic-bezier(0.2, 0.75, 0.25, 1);
+  }
+
+  .fmshops__card:hover .fmshops__image img {
+    transform: scale(1.03);
+  }
+
+  .fmshops__content {
+    display: flex;
+    flex-direction: column;
+    gap: calc(6 * var(--u));
+  }
+
+  .fmshops__card-title {
+    margin: 0;
+    font-size: calc(19 * var(--u));
+    line-height: 1.08;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+  }
+
+  .fmshops__card-meta {
+    margin-top: calc(2 * var(--u));
+    color: rgba(0, 0, 0, 0.46);
+    font-size: calc(11 * var(--u));
+    line-height: calc(13 * var(--u));
+    font-weight: 500;
+  }
+
+  .fmshops__more {
+    width: max-content;
+    margin-top: calc(8 * var(--u));
+    color: var(--fs-link);
+    font-size: calc(13 * var(--u));
+    line-height: calc(15 * var(--u));
+    font-weight: 650;
+    letter-spacing: -0.1px;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .fmshops__more:hover {
+    opacity: 0.7;
+  }
+
+  /* Появление при прокрутке — только если скрипт включил анимацию */
+  .fmshops.is-anim .fmshops__card { opacity: 0; }
+
+  .fmshops.is-anim.is-ready .fmshops__card {
+    animation: fmshops-in 0.75s cubic-bezier(0.16, 0.82, 0.21, 1) both;
+  }
+
+  .fmshops.is-anim.is-ready .fmshops__card:nth-child(1) { animation-delay: 0.22s; }
+  .fmshops.is-anim.is-ready .fmshops__card:nth-child(2) { animation-delay: 0.32s; animation-name: fmshops-in-center; }
+  .fmshops.is-anim.is-ready .fmshops__card:nth-child(3) { animation-delay: 0.42s; }
+
+  @keyframes fmshops-in {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  @keyframes fmshops-in-center {
+    from { opacity: 0; transform: translateY(calc(56 * var(--u))); }
+    to { opacity: 1; transform: translateY(calc(26 * var(--u))); }
+  }
+
+  /* ТЕЛЕФОН: как у блока «Наши кейсы» */
+  @media (max-width: 640px) {
+    .fmshops { padding: 8px 0; }
+
+    .fmshops__viewport {
+      padding: 48px clamp(16px, 5vw, 28px) 40px;
+      border-radius: 36px;
+    }
+
+    .fmshops__header { width: 100%; }
+    .fmshops__tag { margin-bottom: 20px; padding: 7px 10px; font-size: 11px; line-height: 13px; }
+
+    .fmshops__title {
+      width: 100%;
+      max-width: 430px;
+      font-size: clamp(27px, 7.7vw, 35px);
+      line-height: 0.98;
+      letter-spacing: -0.8px;
+    }
+
+    .fmshops__title br { display: none; }
+
+    .fmshops__grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+      margin-top: 38px;
+    }
+
+    .fmshops__card {
+      gap: 16px;
+      padding: clamp(18px, 5vw, 24px);
+      border-radius: 24px;
+    }
+
+    .fmshops__card--center { transform: none; }
+    .fmshops.is-anim.is-ready .fmshops__card:nth-child(2) { animation-name: fmshops-in; }
+
+    .fmshops__image { border-radius: 10px; }
+    .fmshops__card-title { font-size: clamp(20px, 5.7vw, 25px); line-height: 1; }
+    .fmshops__card-meta { margin-top: 0; font-size: clamp(11px, 3vw, 13px); line-height: 1.2; }
+    .fmshops__more { margin-top: 8px; font-size: 14px; line-height: 16px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fmshops.is-anim .fmshops__card { opacity: 1 !important; animation: none !important; }
+    .fmshops__image img { transition: none; }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    var root = document.querySelector('[data-fmshops]');
+    if (!root || !('IntersectionObserver' in window)) return;
+
+    root.classList.add('is-anim');
+
+    var io = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          root.classList.add('is-ready');
+          io.disconnect();
+        });
+      },
+      { threshold: 0.15 },
+    );
+
+    io.observe(root);
+  })();
+</script>

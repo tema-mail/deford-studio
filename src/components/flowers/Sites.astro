@@ -651,14 +651,13 @@ const metrics = [
     .fmsites__card,
     .fmsites__feature { border-radius: 24px; }
 
-    .fmsites__hero {
-      flex-direction: column;
-      gap: 22px;
-      min-height: 0;
-      padding: 22px;
-    }
-
-    .fmsites__hero-copy { flex: 0 0 auto; }
+    /* порядок на телефоне: текст → фото → кнопка; обёртка текста
+       растворяется, чтобы кнопку можно было поставить под фото */
+    .fmsites__hero { flex-direction: column; gap: 0; min-height: 0; padding: 22px; }
+    .fmsites__hero-copy { display: contents; }
+    .fmsites__hero .fmsites__chip { align-self: flex-start; }
+    .fmsites__screen { order: 4; margin-top: 22px; }
+    .fmsites__hero .fmsites__button { order: 5; }
 
     .fmsites__chip { padding: 6px 10px; font-size: 11px; line-height: 13px; }
 

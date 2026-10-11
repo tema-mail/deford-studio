@@ -4,13 +4,14 @@
 
 ## Где смотреть
 
-Рабочая копия: **https://tema-mail.github.io/deford-studio/** — пересобирается
+Сайт: **https://deford.ru/** (домен на reg.ru, DNS → GitHub Pages; старый адрес
+tema-mail.github.io/deford-studio/ переадресует сюда) — пересобирается
 автоматически при каждом пуше в `main` (`.github/workflows/deploy.yml`).
 Копия закрыта от поисковиков через `robots.txt`, canonical ведёт на боевой домен.
 
-Пути в разметке корневые, под будущий переезд на `deford-studio.ru`; префикс
-подпапки `/deford-studio` проставляет `scripts/rebase-dist.mjs` уже в `dist`,
-исходники остаются нетронутыми.
+Пути в разметке корневые. Префикс подпапки `/deford-studio` (`scripts/rebase-dist.mjs`)
+сборка ставит, только если у Pages не задан свой домен; с deford.ru пути остаются
+корневыми.
 
 ## Запуск
 
@@ -70,7 +71,7 @@ node scripts/shots.mjs http://localhost:4322/ new     # вся страница
 ## Лендинг «Цветы» — /flowers
 
 Перенос `targetfactory.ru/flowers` (Тильда) 1:1. Копия:
-**https://tema-mail.github.io/deford-studio/flowers/**
+**https://deford.ru/flowers/**
 
 - Свой layout `src/layouts/Flowers.astro` (шрифты Oswald + Montserrat, метаданные
   оригинала, плавный скролл по якорям) и база `src/styles/flowers.css` — сброс
@@ -99,13 +100,13 @@ REF=https://targetfactory.ru/flowers NEW=http://localhost:4322/flowers \
 - «Интернет-магазин» — `src/components/flowers/Sites.astro`; цифры кейса примерные
   (500 заказов, 7%, 1 200 ₽) — заменить на цифры реального кейса;
 - «Аудит сайта» (лаймовый призыв) — `src/components/flowers/SitesCta.astro`.
-Отдельно оба блока: https://tema-mail.github.io/deford-studio/drafts/flowers-sites/
+Отдельно оба блока: https://deford.ru/drafts/flowers-sites/
 
 ## Главная Target Factory — /targetfactory
 
 Тексты и порядок блоков — с `targetfactory.ru`, дизайн — система лендинга
 «Цветы» в красно-чёрной гамме оригинала. Копия:
-**https://tema-mail.github.io/deford-studio/targetfactory/**
+**https://deford.ru/targetfactory/**
 
 - Layout `src/layouts/TargetFactory.astro` (метаданные оригинала, появление блоков,
   скролл по якорям), система стилей `src/styles/tf.css`, блоки — `src/components/tf/`.

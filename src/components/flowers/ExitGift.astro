@@ -1,0 +1,326 @@
+---
+/** Попап при уходе со страницы — «Не уходите, у нас для вас подарок».
+    Тот же подарок, что в лаймовом блоке SitesCta.astro: бесплатный аудит
+    рекламы и сайта или консультация на 30-минутном созвоне.
+
+    Когда показывается — один раз за сеанс и не раньше чем через 5 секунд:
+    • компьютер: курсор уходит за верхний край окна — к вкладкам,
+      адресной строке или крестику;
+    • телефон (курсора нет): после прокрутки трети страницы человек резко
+      листает вверх — так обычно тянутся к адресной строке и вкладкам.
+    Для показа без ухода: добавить к адресу ?exitgift.
+
+    «Забрать подарок» закрывает это окно и открывает обычную форму заявки
+    (Popup.astro ловит ссылки #popup:myform). */
+---
+
+<div class="fmexit" data-fmexit hidden>
+  <div class="fmexit__bg" data-fmexit-close></div>
+
+  <div class="fmexit__card" role="dialog" aria-modal="true" aria-labelledby="fmexit-title">
+    <button class="fmexit__close" type="button" aria-label="Закрыть" data-fmexit-close>
+      <span></span><span></span>
+    </button>
+
+    <div class="fmexit__tag">Подарок</div>
+    <h2 class="fmexit__title" id="fmexit-title">Не уходите — у нас для вас подарок</h2>
+    <p class="fmexit__text">
+      Бесплатный аудит вашей рекламы и сайта — или консультация на 30-минутном созвоне.
+    </p>
+
+    <ul class="fmexit__list">
+      <li><span class="fmexit__check" aria-hidden="true"></span>Покажем, где вы теряете заявки и деньги</li>
+      <li><span class="fmexit__check" aria-hidden="true"></span>Дадим план, что исправить в первую очередь</li>
+      <li><span class="fmexit__check" aria-hidden="true"></span>Без обязательств — просто разбор</li>
+    </ul>
+
+    <a class="fmexit__button" href="#popup:myform" role="button" aria-haspopup="dialog" data-fmexit-take>
+      <span>Забрать подарок</span>
+      <span class="fmexit__button-arrow" aria-hidden="true">
+        <svg viewBox="0 0 44 44">
+          <circle cx="22" cy="22" r="22" fill="#CEFE46"></circle>
+          <path d="M16 28L28 16M20 16H28V24" fill="none" stroke="#202020" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+      </span>
+    </a>
+
+    <button class="fmexit__skip" type="button" data-fmexit-close>Нет, спасибо</button>
+  </div>
+</div>
+
+<style is:global>
+  .fmexit {
+    position: fixed;
+    z-index: 10000001;
+    inset: 0;
+    display: flex;
+    padding: 20px;
+    overflow-y: auto;
+    font-family: 'Inter Tight', Inter, Arial, sans-serif;
+    color: #202020;
+  }
+
+  .fmexit[hidden] { display: none; }
+
+  .fmexit,
+  .fmexit * { box-sizing: border-box; }
+
+  .fmexit__bg {
+    position: fixed;
+    inset: 0;
+    background: rgba(20, 20, 20, 0.45);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    animation: fmexit-fade 0.3s ease both;
+  }
+
+  .fmexit__card {
+    position: relative;
+    width: 100%;
+    max-width: 520px;
+    margin: auto;
+    padding: 40px 40px 26px;
+    overflow: hidden;
+    border-radius: 32px;
+    background:
+      radial-gradient(circle at 92% 0%, rgba(255, 255, 255, 0.6), transparent 42%),
+      #cefe46;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
+    animation: fmexit-in 0.45s cubic-bezier(0.16, 0.82, 0.21, 1) both;
+  }
+
+  @keyframes fmexit-fade { from { opacity: 0; } to { opacity: 1; } }
+
+  @keyframes fmexit-in {
+    from { opacity: 0; transform: translateY(24px) scale(0.97); }
+    to { opacity: 1; transform: none; }
+  }
+
+  .fmexit__close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(32, 32, 32, 0.08);
+    cursor: pointer;
+  }
+
+  .fmexit__close span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 14px;
+    height: 2px;
+    border-radius: 2px;
+    background: #202020;
+  }
+
+  .fmexit__close span:first-child { transform: translate(-50%, -50%) rotate(45deg); }
+  .fmexit__close span:last-child { transform: translate(-50%, -50%) rotate(-45deg); }
+
+  .fmexit__tag {
+    display: inline-block;
+    padding: 7px 10px;
+    border-radius: 100px;
+    background: #202020;
+    color: #fff;
+    font-size: 11px;
+    line-height: 13px;
+  }
+
+  .fmexit__title {
+    margin: 18px 0 0;
+    font-size: 36px;
+    line-height: 1;
+    font-weight: 600;
+    letter-spacing: -1.1px;
+  }
+
+  .fmexit__text {
+    margin: 14px 0 0;
+    color: rgba(32, 32, 32, 0.72);
+    font-size: 16px;
+    line-height: 21px;
+    font-weight: 500;
+  }
+
+  .fmexit__list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 22px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .fmexit__list li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.72);
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 500;
+  }
+
+  .fmexit__check {
+    width: 22px;
+    height: 22px;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: #202020 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4L18 8' fill='none' stroke='%23cefe46' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 62% no-repeat;
+  }
+
+  .fmexit__button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 55px;
+    margin-top: 24px;
+    padding: 5px 55px;
+    border-radius: 100px;
+    background: #202020;
+    color: #fff;
+    font-size: 15px;
+    line-height: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform 0.25s ease;
+  }
+
+  .fmexit__button:hover { transform: translateY(-2px); }
+
+  .fmexit__button-arrow {
+    position: absolute;
+    top: 50%;
+    right: 5px;
+    width: 44px;
+    height: 44px;
+    transform: translateY(-50%);
+  }
+
+  .fmexit__button-arrow svg { display: block; width: 100%; height: 100%; }
+
+  .fmexit__skip {
+    display: block;
+    margin: 14px auto 0;
+    padding: 4px 8px;
+    border: 0;
+    background: none;
+    color: rgba(32, 32, 32, 0.55);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  .fmexit__skip:hover { color: #202020; }
+
+  @media (max-width: 640px) {
+    .fmexit { padding: 12px; }
+    .fmexit__card { padding: 30px 20px 18px; border-radius: 26px; }
+    .fmexit__close { top: 12px; right: 12px; }
+    .fmexit__title { margin-top: 16px; padding-right: 30px; font-size: clamp(27px, 7.6vw, 32px); }
+    .fmexit__text { font-size: 15px; line-height: 20px; }
+    .fmexit__list li { padding: 11px 12px; font-size: 13px; line-height: 17px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fmexit__card, .fmexit__bg { animation: none; }
+    .fmexit__button { transition: none; }
+  }
+
+  body.fm-exitlock { overflow: hidden; }
+</style>
+
+<script is:inline>
+  (function () {
+    var box = document.querySelector('[data-fmexit]');
+    if (!box) return;
+
+    var KEY = 'fm-exit-gift-shown';
+    var ARM_MS = 5000;
+    var startedAt = Date.now();
+    var done = false;
+
+    try {
+      if (sessionStorage.getItem(KEY) === '1') done = true;
+    } catch (e) {
+      /* приватный режим — просто показываем один раз за загрузку */
+    }
+
+    /* другое окно уже открыто — не перебиваем его */
+    function otherOpen() {
+      var sel = '[data-fmpopup]:not([hidden]), [data-fmdoc]:not([hidden])';
+      return !!document.querySelector(sel);
+    }
+
+    function show(force) {
+      if (!force && (done || Date.now() - startedAt < ARM_MS || otherOpen())) return;
+      done = true;
+      try {
+        sessionStorage.setItem(KEY, '1');
+      } catch (e) {}
+      box.hidden = false;
+      document.body.classList.add('fm-exitlock');
+    }
+
+    function close() {
+      box.hidden = true;
+      document.body.classList.remove('fm-exitlock');
+    }
+
+    /* Компьютер: курсор ушёл за верхний край окна */
+    document.addEventListener('mouseout', function (event) {
+      if (event.relatedTarget || event.toElement) return;
+      if (event.clientY > 0) return;
+      show(false);
+    });
+
+    /* Телефон: резкая прокрутка вверх после трети страницы —
+       больше 400 px вверх за 350 мс (обычное чтение назад медленнее) */
+    if (window.matchMedia('(hover: none)').matches) {
+      var marks = [];
+      var deepest = 0;
+
+      window.addEventListener('scroll', function () {
+        var y = window.scrollY;
+        var t = performance.now();
+        var max = document.documentElement.scrollHeight - window.innerHeight;
+        deepest = Math.max(deepest, y);
+
+        marks.push({ y: y, t: t });
+        while (marks.length && t - marks[0].t > 350) marks.shift();
+
+        if (deepest > max * 0.33 && marks[0].y - y > 400) show(false);
+      }, { passive: true });
+    }
+
+    /* Закрытие */
+    box.addEventListener('click', function (event) {
+      if (event.target.closest('[data-fmexit-close]')) close();
+    });
+
+    /* «Забрать подарок»: окно закрывается, форма заявки открывается сама */
+    box.querySelector('[data-fmexit-take]').addEventListener('click', close);
+
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && !box.hidden) close();
+    });
+
+    /* Посмотреть окно без ухода со страницы: ?exitgift в адресе */
+    if (/[?&]exitgift\b/.test(location.search)) {
+      setTimeout(function () {
+        show(true);
+      }, 600);
+    }
+  })();
+</script>

@@ -1,0 +1,191 @@
+---
+/** «Меня зовут Денис Коротаев» — блок основателя (якорь command).
+    Тексты, цифры и ссылка — с оригинала. Красно-тёмная карточка с фото,
+    справа текст и ссылка на разборы; ниже — четыре карточки с цифрами.
+    Без рваных краёв и наклонённых плашек. */
+
+const stats = [
+  { value: '500+', label: 'Проектов в разных нишах' },
+  { value: '90%', label: 'Окупаем вложения в рекламу' },
+  { value: '70+ млн', label: 'Освоенный рекламный бюджет для оффлайн бизнеса в 2024 году' },
+  { value: '∞', label: 'Кейсов и видео-отзывов — всё открыто и прозрачно' },
+];
+---
+
+<section class="tf-section tffounder" id="command">
+  <div class="tf-panel tf-panel--light tffounder__panel">
+    <div class="tf-wrap">
+      <div class="tffounder__card">
+        <img class="tffounder__bg" src="/img/tf/founder-bg.jpg" alt="" width="1400" height="906" loading="lazy" decoding="async" />
+        <img
+          class="tffounder__photo"
+          src="/img/tf/founder.webp"
+          alt="Денис Коротаев, основатель агентства Target Factory"
+          width="760"
+          height="1094"
+          loading="lazy"
+          decoding="async"
+        />
+
+        <div class="tffounder__copy" data-reveal>
+          <div class="tf-tag tf-tag--red">Команда, которая увеличивает прибыль в вашем бизнесе</div>
+          <h2 class="tffounder__name">Меня зовут <br />Денис Коротаев</h2>
+          <p class="tffounder__about">
+            Сертифицированный таргетолог и партнёр ВКонтакте<br />
+            Основатель агентства Target Factory<br />
+            Более 6 лет опыта в digital-продвижении малого и среднего бизнеса
+          </p>
+          <p class="tffounder__quote">
+            <span>Подход, который мы используем:</span>
+            «Я не просто запускаю рекламу — я погружаюсь в ваш бизнес: изучаю цели, аудиторию
+            и продукт, чтобы выстроить систему, которая начнёт приносить заявки уже в первый месяц.»
+          </p>
+          <a class="tffounder__link" href="https://vk.me/target_factory_vk" target="_blank" rel="noopener">
+            <img src="/img/tf/vkvideo.png" alt="" width="44" height="44" />
+            <span>Посмотреть мои разборы в VK Видео</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="tffounder__stats">
+        {
+          stats.map((s, i) => (
+            <div class="tffounder__stat" data-reveal style={`--reveal-delay: ${i * 0.07}s`}>
+              <div class="tffounder__value">{s.value}</div>
+              <div class="tffounder__label">{s.label}</div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .tffounder__panel { padding: calc(70 * var(--u)) 0; }
+
+  .tffounder__card {
+    position: relative;
+    min-height: calc(560 * var(--u));
+    overflow: hidden;
+    border-radius: calc(30 * var(--u));
+    background: var(--tf-dark);
+    color: #fff;
+  }
+
+  .tffounder__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 30% 50%; }
+
+  .tffounder__card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(20, 20, 20, 0) 30%, rgba(20, 20, 20, 0.75) 55%, rgba(20, 20, 20, 0.92) 100%);
+    pointer-events: none;
+  }
+
+  .tffounder__photo {
+    position: absolute;
+    z-index: 1;
+    bottom: 0;
+    left: calc(20 * var(--u));
+    width: auto;
+    height: 96%;
+    object-fit: contain;
+    object-position: 50% 100%;
+  }
+
+  .tffounder__copy {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: calc(520 * var(--u));
+    margin-left: auto;
+    padding: calc(48 * var(--u)) calc(48 * var(--u)) calc(48 * var(--u)) 0;
+  }
+
+  .tffounder__name { margin-top: calc(20 * var(--u)); font-size: calc(44 * var(--u)); line-height: 1; font-weight: 600; letter-spacing: -1.35px; }
+
+  .tffounder__about,
+  .tffounder__quote {
+    margin-top: calc(18 * var(--u));
+    color: rgba(255, 255, 255, 0.72);
+    font-size: calc(14 * var(--u));
+    line-height: calc(20 * var(--u));
+    font-weight: 500;
+  }
+
+  .tffounder__quote span { display: block; margin-bottom: calc(4 * var(--u)); color: #fff; font-weight: 600; }
+
+  .tffounder__link {
+    display: inline-flex;
+    align-items: center;
+    gap: calc(12 * var(--u));
+    margin-top: calc(26 * var(--u));
+    color: #fff;
+    font-size: calc(16 * var(--u));
+    font-weight: 600;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .tffounder__link:hover { opacity: 0.8; }
+  .tffounder__link img { width: calc(44 * var(--u)); height: calc(44 * var(--u)); }
+
+  .tffounder__stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: calc(20 * var(--u));
+    margin-top: calc(20 * var(--u));
+  }
+
+  .tffounder__stat {
+    padding: calc(24 * var(--u));
+    border-radius: calc(24 * var(--u));
+    background: linear-gradient(180deg, #ffffff 0%, #f6f6f6 100%);
+  }
+
+  .tffounder__value {
+    background: var(--tf-grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-size: calc(38 * var(--u));
+    line-height: 1;
+    font-weight: 600;
+    letter-spacing: -1.2px;
+  }
+
+  .tffounder__label {
+    margin-top: calc(12 * var(--u));
+    color: var(--tf-muted);
+    font-size: calc(13 * var(--u));
+    line-height: calc(18 * var(--u));
+    font-weight: 500;
+  }
+
+  @media (max-width: 979px) {
+    .tffounder__copy { width: calc(430 * var(--u)); padding-right: calc(36 * var(--u)); }
+    .tffounder__photo { left: calc(-40 * var(--u)); height: 88%; }
+    .tffounder__stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  /* Телефон: фото сверху, текст под ним */
+  @media (max-width: 640px) {
+    .tffounder__panel { padding: 30px 0; }
+    .tffounder__card { display: flex; flex-direction: column; min-height: 0; border-radius: 24px; }
+    .tffounder__card::after { background: linear-gradient(180deg, rgba(20, 20, 20, 0) 0%, rgba(20, 20, 20, 0) 34%, rgba(20, 20, 20, 0.9) 52%, rgba(20, 20, 20, 1) 100%); }
+    .tffounder__bg { height: 380px; }
+    .tffounder__photo { position: relative; left: auto; bottom: auto; align-self: center; width: auto; height: 360px; margin-top: 20px; }
+    .tffounder__copy { width: 100%; margin: -40px 0 0; padding: 0 18px 24px; }
+    .tffounder__name { margin-top: 16px; font-size: clamp(28px, 8vw, 36px); letter-spacing: -0.9px; }
+    .tffounder__about, .tffounder__quote { margin-top: 14px; font-size: 14px; line-height: 19px; }
+    .tffounder__link { gap: 10px; margin-top: 20px; font-size: 15px; }
+    .tffounder__link img { width: 40px; height: 40px; }
+    .tffounder__stats { gap: 10px; margin-top: 10px; }
+    .tffounder__stat { padding: 16px; border-radius: 20px; }
+    .tffounder__value { font-size: clamp(26px, 7.4vw, 32px); }
+    .tffounder__label { margin-top: 8px; font-size: 12px; line-height: 16px; }
+  }
+</style>

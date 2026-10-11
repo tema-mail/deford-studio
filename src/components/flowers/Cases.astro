@@ -1,0 +1,1361 @@
+---
+/** Оригинал: rec4182829801 */
+---
+
+<section class="fmcases" data-fmcases=""> <div class="fmcases__viewport"> <div class="fmcases__stage">  <div class="fmcases__header"> <div class="fmcases__tag" data-cases-anim="tag">
+          Наши кейсы
+        </div> <h2 class="fmcases__title" data-cases-anim="title">
+          Реальные цифры наших клиентов<br>
+          прямо из рекламного кабинета
+        </h2> </div>  <div class="fmcases__grid">  <article class="fmcases__card fmcases__card--left" data-cases-card=""> <div class="fmcases__image"> <img src="/img/flowers/35613666-2.png" alt=""> </div> <div class="fmcases__content"> <h3 class="fmcases__card-title">Реклама цветочного магазина ВКонтакте: 209 тёплых обращений по&nbsp;251&nbsp;₽</h3> <div class="fmcases__card-meta">Реклама по району, чат-бот, рассылка и ретаргетинг. Получили 209 тёплых обращений по 251 ₽ вместо заявок по 2 500–3 000 ₽.</div> <a class="fmcases__more" href="https://vc.ru/id3572167/3150153-effektivnaya-reklama-tsvetochnogo-magazina-vkontakte" target="_blank">Читать подробнее</a> </div> </article>  <article class="fmcases__card fmcases__card--center" data-cases-card=""> <div class="fmcases__image"> <img src="/img/flowers/63336436-1.png" alt=""> </div> <div class="fmcases__content"> <h3 class="fmcases__card-title">Кейс: как настроили рекламу ВКонтакте для&nbsp;цветочного магазина и снизили стоимость заявки до&nbsp;400&nbsp;₽</h3> <div class="fmcases__card-meta">Разобрали сообщество, настроили чат-бота и воронку, протестировали аудитории и снизили стоимость лида с&nbsp;1.500-2.000&nbsp;₽&nbsp;до&nbsp;400&nbsp;₽.</div> <a class="fmcases__more" href="https://vc.ru/marketing/3150040-reklama-vkontakte-dlya-tsvetochnogo-magazina" target="_blank">Читать подробнее</a> </div> </article>  <article class="fmcases__card fmcases__card--right" data-cases-card=""> <div class="fmcases__image"> <img src="/img/flowers/61363837-3.png" alt=""> </div> <div class="fmcases__content"> <h3 class="fmcases__card-title">Как привлечь клиентов в цветочный магазин: 215 обращений по&nbsp;245&nbsp;₽.</h3> <div class="fmcases__card-meta">Как получать обращения через VK, если нет сайта. Две связки с чат-ботом принесли 215 тёплых обращений по&nbsp;245&nbsp;₽.</div> <a class="fmcases__more" href="https://vc.ru/id3572167/3150182-kak-privelch-klientov-v-tsvetochnyj-magazin-cherez-vkontakte" target="_blank">Читать подробнее</a> </div> </article> </div>  <div class="fmcases__cta-wrap" data-cases-anim="cta"> <a class="fmcases__cta" href="#popup:myform"> <span class="fmcases__cta-label">
+            Экскурсия по живому проекту
+          </span> <span class="fmcases__cta-icon"> <svg viewBox="0 0 44 44" aria-hidden="true"> <circle cx="22" cy="22" r="22" fill="#202020"></circle> <path d="M16 28L28 16M20 16H28V24" fill="none" stroke="#CEFE46" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path> </svg> </span> </a> </div> </div> </div> </section>
+
+<style is:global>
+/* ===== слой 1 из Тильды ===== */
+/* =========================================================
+   BASE
+   ========================================================= */
+
+.fmcases {
+
+  --fc-dark: #202020;
+  --fc-green: #cefe46;
+  --fc-link: #607700;
+
+  position: relative;
+
+  width: 100%;
+
+  padding: 10px 0;
+
+  margin: 0;
+
+  overflow: hidden;
+
+  background: #fff;
+
+  color: var(--fc-dark);
+
+  font-family:
+    "Inter Tight",
+    Inter,
+    Arial,
+    sans-serif;
+
+}
+
+
+.fmcases,
+.fmcases * {
+
+  box-sizing: border-box;
+
+}
+
+
+
+/* =========================================================
+   DESKTOP VIEWPORT
+   ========================================================= */
+
+.fmcases__viewport {
+
+  position: relative;
+
+  width: 100%;
+
+  height: 720px;
+
+  overflow: hidden;
+
+  background:
+    var(--fc-dark);
+
+  border-radius:
+    clamp(
+      42px,
+      6.25vw,
+      120px
+    );
+
+}
+
+
+.fmcases__stage {
+
+  position: absolute;
+
+  left: 50%;
+  top: 0;
+
+  width: 1200px;
+  height: 720px;
+
+  transform-origin:
+    top center;
+
+  transform:
+    translateX(-50%)
+    scale(var(--fc-scale,1));
+
+}
+
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.fmcases__header {
+
+  position: absolute;
+
+  z-index: 20;
+
+  left: 50%;
+
+  top: 64px;
+
+  width: 640px;
+
+  transform:
+    translateX(-50%);
+
+  text-align: center;
+
+}
+
+
+.fmcases__tag {
+
+  width: max-content;
+
+  margin:
+    0 auto
+    31px;
+
+  padding:
+    7px
+    10px;
+
+  background: #fff;
+
+  color:
+    var(--fc-dark);
+
+  border:
+    1px solid #ededee;
+
+  border-radius:
+    100px;
+
+  font-size: 11px;
+
+  line-height: 13px;
+
+  font-weight: 400;
+
+}
+
+
+.fmcases__title {
+
+  width: 556px;
+
+  margin:
+    0 auto;
+
+  color: #fff;
+
+  font-size: 33px;
+
+  line-height: 33px;
+
+  letter-spacing:
+    -1px;
+
+  font-weight: 600;
+
+}
+
+
+
+/* =========================================================
+   GRID
+   ========================================================= */
+
+.fmcases__grid {
+
+  position: absolute;
+
+  left: 60px;
+  right: 60px;
+
+  /* было ниже */
+  top: 240px;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0,1fr)
+    );
+
+  gap: 20px;
+
+  align-items: start;
+
+}
+
+
+
+/* =========================================================
+   CARD
+   ========================================================= */
+
+.fmcases__card {
+
+  position: relative;
+
+  width: 100%;
+
+  min-height: 0;
+  height: auto;
+
+  padding: 22px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 15px;
+
+  overflow: hidden;
+
+  border-radius:
+    27px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #ffffff 0%,
+      #f6f6f6 100%
+    );
+
+  color:
+    var(--fc-dark);
+
+  will-change:
+    transform,
+    opacity;
+
+}
+
+
+.fmcases__card--center {
+
+  transform:
+    translateY(26px);
+
+}
+
+
+
+/* =========================================================
+   IMAGE
+   ========================================================= */
+
+.fmcases__image {
+
+  position: relative;
+
+  width: 100%;
+
+  height: auto;
+
+  flex: none;
+
+  display: block;
+
+  overflow: hidden;
+
+  border-radius:
+    10px;
+
+  background: #fff;
+
+}
+
+
+.fmcases__image img {
+
+  position: relative;
+
+  display: block;
+
+  width: 100%;
+  height: auto;
+
+  object-fit: contain;
+
+  object-position: center;
+
+}
+
+
+
+/* =========================================================
+   CARD CONTENT
+   ========================================================= */
+
+.fmcases__content {
+
+  min-height: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 6px;
+
+  justify-content: flex-start;
+
+}
+
+
+.fmcases__card-title {
+
+  margin: 0;
+
+  width: 100%;
+
+  max-width: 100%;
+
+  font-size: 19px;
+
+  line-height: 1.08;
+
+  letter-spacing:
+    -.5px;
+
+  font-weight: 600;
+
+}
+
+
+.fmcases__card-meta {
+
+  margin-top: 2px;
+
+  color:
+    rgba(0,0,0,.46);
+
+  font-size: 11px;
+
+  line-height: 13px;
+
+  font-weight: 500;
+
+}
+
+
+
+.fmcases__more {
+
+  width: max-content;
+
+  margin-top: 8px;
+
+  padding-top: 0;
+
+  display: inline-block;
+
+  color:
+    var(--fc-link);
+
+  text-decoration: none;
+
+  font-size: 13px;
+
+  line-height: 15px;
+
+  font-weight: 650;
+
+  letter-spacing:
+    -.1px;
+
+  transition:
+    color .2s ease,
+    opacity .2s ease;
+
+}
+
+
+.fmcases__more:hover {
+
+  color:
+    #4f6200;
+
+  opacity:
+    .85;
+
+}
+
+
+/* =========================================================
+   CTA WRAPPER
+   ========================================================= */
+
+.fmcases__cta-wrap {
+
+  position: absolute;
+
+  z-index: 30;
+
+  left: 0;
+  right: 0;
+
+  bottom: 34px;
+
+  display: flex;
+
+  justify-content: center;
+
+  pointer-events: none;
+
+}
+
+
+
+/* =========================================================
+   CTA
+   ========================================================= */
+
+.fmcases__cta {
+
+  position: relative;
+
+  min-height: 54px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 13px;
+
+  padding:
+    5px
+    5px
+    5px
+    25px;
+
+  border-radius:
+    100px;
+
+  background:
+    var(--fc-green);
+
+  color:
+    var(--fc-dark);
+
+  text-decoration: none;
+
+  font-size: 14.8px;
+
+  line-height: 16px;
+
+  font-weight: 600;
+
+  white-space: nowrap;
+
+  pointer-events: auto;
+
+  transition:
+    transform
+    .3s
+    cubic-bezier(.2,.75,.25,1);
+
+}
+
+
+.fmcases__cta:hover {
+
+  transform:
+    translateY(-2px);
+
+}
+
+
+.fmcases__cta-icon {
+
+  width: 44px;
+  height: 44px;
+
+  flex:
+    0 0 44px;
+
+}
+
+
+.fmcases__cta-icon svg {
+
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+}
+
+
+
+/* =========================================================
+   MOTION INITIAL
+   ========================================================= */
+
+.fmcases
+[data-cases-anim],
+
+.fmcases
+[data-cases-card] {
+
+  opacity: 0;
+
+}
+
+
+
+/* =========================================================
+   HEADER MOTION
+   ========================================================= */
+
+.fmcases.is-visible
+[data-cases-anim="tag"] {
+
+  animation:
+    fcUp
+    .55s
+    cubic-bezier(.2,.75,.25,1)
+    .02s
+    both;
+
+}
+
+
+.fmcases.is-visible
+[data-cases-anim="title"] {
+
+  animation:
+    fcUp
+    .70s
+    cubic-bezier(.2,.75,.25,1)
+    .10s
+    both;
+
+}
+
+
+
+/* =========================================================
+   CARD MOTION
+   ========================================================= */
+
+.fmcases.is-visible
+.fmcases__card--left {
+
+  animation:
+    fcCard
+    .75s
+    cubic-bezier(.16,.82,.21,1)
+    .22s
+    both;
+
+}
+
+
+.fmcases.is-visible
+.fmcases__card--center {
+
+  animation:
+    fcCardCenter
+    .75s
+    cubic-bezier(.16,.82,.21,1)
+    .32s
+    both;
+
+}
+
+
+.fmcases.is-visible
+.fmcases__card--right {
+
+  animation:
+    fcCard
+    .75s
+    cubic-bezier(.16,.82,.21,1)
+    .42s
+    both;
+
+}
+
+
+
+/* =========================================================
+   CTA MOTION
+
+   transform применяется к WRAPPER,
+   поэтому центрирование больше не ломается
+   ========================================================= */
+
+.fmcases.is-visible
+[data-cases-anim="cta"] {
+
+  animation:
+    fcUp
+    .65s
+    cubic-bezier(.2,.75,.25,1)
+    .52s
+    both;
+
+}
+
+
+
+/* =========================================================
+   KEYFRAMES
+   ========================================================= */
+
+@keyframes fcUp {
+
+  from {
+
+    opacity: 0;
+
+    transform:
+      translateY(22px);
+
+  }
+
+
+  to {
+
+    opacity: 1;
+
+    transform:
+      translateY(0);
+
+  }
+
+}
+
+
+
+@keyframes fcCard {
+
+  from {
+
+    opacity: 0;
+
+    transform:
+      translateY(42px)
+      scale(.975);
+
+  }
+
+
+  to {
+
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+
+  }
+
+}
+
+
+
+@keyframes fcCardCenter {
+
+  from {
+
+    opacity: 0;
+
+    transform:
+      translateY(68px)
+      scale(.975);
+
+  }
+
+
+  to {
+
+    opacity: 1;
+
+    transform:
+      translateY(26px)
+      scale(1);
+
+  }
+
+}
+
+
+
+/* =========================================================
+   MOBILE 300–640
+   ========================================================= */
+
+@media (max-width: 640px) {
+
+
+  .fmcases {
+
+    padding:
+      8px
+      0;
+
+  }
+
+
+
+  .fmcases__viewport {
+
+    width: 100%;
+
+    height: auto !important;
+
+    min-height: 0;
+
+    border-radius:
+      36px;
+
+  }
+
+
+
+  .fmcases__stage {
+
+    position: relative;
+
+    left: auto;
+    top: auto;
+
+    width: 100%;
+    height: auto;
+
+    padding:
+      48px
+      clamp(
+        16px,
+        5vw,
+        28px
+      )
+      40px;
+
+    transform:
+      none !important;
+
+  }
+
+
+
+  /* =========================
+     HEADER
+     ========================= */
+
+  .fmcases__header {
+
+    position: relative;
+
+    left: auto;
+    top: auto;
+
+    width: 100%;
+
+    transform: none;
+
+  }
+
+
+  .fmcases__tag {
+
+    margin-bottom:
+      20px;
+
+  }
+
+
+  .fmcases__title {
+
+    width: 100%;
+
+    max-width:
+      430px;
+
+    font-size:
+      clamp(
+        27px,
+        7.7vw,
+        35px
+      );
+
+    line-height:
+      .98;
+
+    letter-spacing:
+      -.8px;
+
+  }
+
+
+  .fmcases__title br {
+
+    display: none;
+
+  }
+
+
+
+  /* =========================
+     CARDS
+     ========================= */
+
+  .fmcases__grid {
+
+    position: relative;
+
+    left: auto;
+    right: auto;
+    top: auto;
+
+    width: 100%;
+
+    margin-top:
+      38px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+
+  }
+
+
+  .fmcases__card {
+
+    width: 100%;
+
+    height: auto;
+
+    padding:
+      clamp(
+        18px,
+        5vw,
+        24px
+      );
+
+    gap: 16px;
+
+    border-radius:
+      24px;
+
+  }
+
+
+  .fmcases__card--center {
+
+    transform: none;
+
+  }
+
+
+
+  /* =========================
+     IMAGE
+     ========================= */
+
+  .fmcases__image {
+
+    width: 100%;
+
+    height: auto;
+
+    min-height: 0;
+
+    flex: none;
+
+    display: block;
+
+    overflow: hidden;
+
+  }
+
+
+  .fmcases__image img {
+
+    width: 100%;
+
+    height: auto;
+
+    object-fit: contain;
+
+  }
+
+
+
+  /* =========================
+     TEXT
+     ========================= */
+
+  .fmcases__card-title {
+
+    width: 100%;
+
+    max-width: 100%;
+
+    font-size:
+      clamp(
+        20px,
+        5.7vw,
+        25px
+      );
+
+    line-height: 1;
+
+  }
+
+
+  .fmcases__card-meta {
+
+    margin-top: 0;
+
+    font-size:
+      clamp(
+        10px,
+        2.8vw,
+        12px
+      );
+
+  }
+
+
+  .fmcases__more {
+
+    margin-top: 8px;
+
+    padding-top: 0;
+
+    font-size: 14px;
+
+    line-height: 16px;
+
+  }
+
+
+
+  /* =========================
+     CTA
+     ========================= */
+
+  .fmcases__cta-wrap {
+
+    position: relative;
+
+    left: auto;
+    right: auto;
+    bottom: auto;
+
+    width: 100%;
+
+    margin-top:
+      22px;
+
+    display: block;
+
+  }
+
+
+  .fmcases__cta {
+
+    position: relative;
+
+    width: 100%;
+
+    min-height: 55px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding:
+      5px
+      55px;
+
+    text-align: center;
+
+  }
+
+
+  .fmcases__cta-label {
+
+    width: 100%;
+
+    text-align: center;
+
+  }
+
+
+  .fmcases__cta-icon {
+
+    position: absolute;
+
+    right: 5px;
+
+    top: 50%;
+
+    transform:
+      translateY(-50%);
+
+  }
+
+
+
+  /* =========================
+     MOBILE MOTION
+     ========================= */
+
+  .fmcases.is-visible
+  .fmcases__card--center {
+
+    animation:
+      fcCard
+      .75s
+      cubic-bezier(.16,.82,.21,1)
+      .32s
+      both;
+
+  }
+
+
+}
+
+
+
+/* =========================================================
+   SMALL MOBILE 300–350
+   ========================================================= */
+
+@media (max-width: 350px) {
+
+
+  .fmcases__stage {
+
+    padding-left:
+      12px;
+
+    padding-right:
+      12px;
+
+  }
+
+
+  .fmcases__title {
+
+    font-size:
+      25px;
+
+  }
+
+
+  .fmcases__card {
+
+    padding:
+      16px;
+
+  }
+
+
+}
+
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media
+(prefers-reduced-motion: reduce) {
+
+
+  .fmcases
+  [data-cases-anim],
+
+  .fmcases
+  [data-cases-card] {
+
+    opacity:
+      1 !important;
+
+    animation:
+      none !important;
+
+    transition:
+      none !important;
+
+  }
+
+
+  .fmcases__card--center {
+
+    transform:
+      translateY(26px);
+
+  }
+
+
+}
+
+
+@media
+(max-width: 640px)
+and
+(prefers-reduced-motion: reduce) {
+
+
+  .fmcases__card--center {
+
+    transform: none;
+
+  }
+
+
+}
+
+/* ===== слой 2 из Тильды ===== */
+.fmcases__more {
+    color: #abd243;
+}
+</style>
+
+<script is:inline>
+(function () {
+
+
+  const sections =
+    document.querySelectorAll(
+      '[data-fmcases]'
+    );
+
+
+  sections.forEach(
+    function (root) {
+
+
+      if (
+        root.dataset.fmCasesReady ===
+        '1'
+      ) {
+
+        return;
+
+      }
+
+
+      root.dataset.fmCasesReady =
+        '1';
+
+
+      const viewport =
+        root.querySelector(
+          '.fmcases__viewport'
+        );
+
+
+
+      /* =====================================================
+         AUTOSCALE
+         ===================================================== */
+
+      function updateScale() {
+
+
+        const width =
+          root
+            .getBoundingClientRect()
+            .width;
+
+
+
+        if (
+          width <= 640
+        ) {
+
+
+          root.style.removeProperty(
+            '--fc-scale'
+          );
+
+
+          viewport.style.height =
+            '';
+
+
+          return;
+
+
+        }
+
+
+
+        const scale =
+          width / 1200;
+
+
+
+        root.style.setProperty(
+          '--fc-scale',
+          scale
+        );
+
+
+        viewport.style.height =
+          Math.round(
+            720 * scale
+          )
+          + 'px';
+
+
+      }
+
+
+
+      updateScale();
+
+
+
+      if (
+        'ResizeObserver'
+        in window
+      ) {
+
+
+        const ro =
+          new ResizeObserver(
+            updateScale
+          );
+
+
+        ro.observe(
+          root
+        );
+
+
+      } else {
+
+
+        window.addEventListener(
+          'resize',
+          updateScale,
+          {
+            passive: true
+          }
+        );
+
+
+      }
+
+
+
+      /* =====================================================
+         ENTRANCE MOTION
+         ===================================================== */
+
+      const reduceMotion =
+        window
+          .matchMedia(
+            '(prefers-reduced-motion: reduce)'
+          )
+          .matches;
+
+
+
+      if (
+        reduceMotion
+      ) {
+
+
+        root
+          .classList
+          .add(
+            'is-visible'
+          );
+
+
+        return;
+
+
+      }
+
+
+
+      const observer =
+        new IntersectionObserver(
+
+          function (entries) {
+
+
+            entries.forEach(
+              function (entry) {
+
+
+                if (
+                  !entry.isIntersecting
+                ) {
+
+                  return;
+
+                }
+
+
+                root
+                  .classList
+                  .add(
+                    'is-visible'
+                  );
+
+
+                observer.disconnect();
+
+
+              }
+            );
+
+
+          },
+
+          {
+            threshold: .12
+          }
+
+        );
+
+
+
+      observer.observe(
+        root
+      );
+
+
+    }
+  );
+
+
+})();
+</script>

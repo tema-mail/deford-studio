@@ -1,0 +1,489 @@
+---
+/** Попап «Оставьте заявку». Оригинал — Zero Block платформы
+    (rec4182986501 внутри обёртки rec4182986701): абсолютные
+    координаты в сетке макета и общий масштаб артборда.
+
+    Повторено своим кодом по снятым параметрам. Макетов три,
+    как в оригинале: 1200 (высота артборда 560), 640 (389)
+    и 320 (499). Масштаб — ширина окна, делённая на ширину
+    макета; артборд центрируется по центру экрана.
+
+    Заявка уходит на тот же адрес, куда уходила раньше, —
+    с теми же служебными полями, поэтому письма приходят
+    как прежде. */
+
+const FORM_ACTION = 'https://forms.tildacdn.com/procces/';
+
+/* Служебные поля формы — сняты с оригинала, по ним письмо
+   попадает в нужный проект и форму. */
+const SERVICES = [
+  '383b4ce5b0ddf54b0514cdce11401ef2',
+  '024d230ccd0bacf66604d31c1ce9caf2',
+];
+---
+
+<div class="fmpopup" data-fmpopup hidden>
+  <div class="fmpopup__bg"></div>
+
+  <button type="button" class="fmpopup__exit" aria-label="Закрыть диалог">
+    <svg viewBox="0 0 23 23" width="23" height="23" aria-hidden="true">
+      <g fill="#fff" fill-rule="evenodd">
+        <rect
+          transform="translate(11.3137, 11.3137) rotate(-45) translate(-11.3137, -11.3137)"
+          x="10.3137"
+          y="-3.6863"
+          width="2"
+          height="30"></rect>
+        <rect
+          transform="translate(11.3137, 11.3137) rotate(-315) translate(-11.3137, -11.3137)"
+          x="10.3137"
+          y="-3.6863"
+          width="2"
+          height="30"></rect>
+      </g>
+    </svg>
+  </button>
+
+  <div class="fmpopup__board" role="dialog" aria-modal="true" aria-label="Оставьте заявку">
+    <div class="fmpopup__card"></div>
+
+    <div class="fmpopup__title">Оставьте заявку</div>
+
+    <div class="fmpopup__sub">
+      Мы понимаем, что вы хотите получать больше продаж и наша задача
+      разобраться - чем мы можем быть полезны
+    </div>
+
+    <form class="fmpopup__form" action={FORM_ACTION} method="POST">
+      {SERVICES.map((id) => <input type="hidden" name="formservices[]" value={id} />)}
+      <input type="hidden" name="tildaspec-elemid" value="1765676764617" />
+      <input type="hidden" name="formid" value="form4182986501" />
+
+      <input
+        class="fmpopup__input"
+        type="text"
+        name="name"
+        placeholder="Ваше имя"
+        aria-label="Ваше имя"
+        required
+      />
+
+      <input
+        class="fmpopup__input"
+        type="tel"
+        name="Phone"
+        placeholder="+7 (000) 000-00-00"
+        aria-label="Телефон"
+        required
+      />
+
+      <label class="fmpopup__check">
+        <input type="checkbox" name="Checkbox" value="yes" required />
+        <span class="fmpopup__check-box" aria-hidden="true"></span>
+        <span class="fmpopup__check-text">
+          Я ознакомлен (-а) с&nbsp;<a href="#popup:infoblock2"
+            >Политикой обработки персональных данных</a
+          >&nbsp;и даю&nbsp;<a href="#popup:infoblock1"
+            >согласие&nbsp;на их использование</a
+          >
+        </span>
+      </label>
+
+      <button type="submit" class="fmpopup__submit">Оставить заявку</button>
+    </form>
+
+    <a class="fmpopup__close" href="#closepopup" aria-label="Закрыть">
+      <img src="/img/flowers/66343464-Group_1171274888.svg" alt="" />
+    </a>
+  </div>
+</div>
+
+<style>
+  .fmpopup {
+    position: fixed;
+    inset: 0;
+    z-index: 10000002;
+  }
+
+  .fmpopup[hidden] {
+    display: none;
+  }
+
+  .fmpopup__bg {
+    position: absolute;
+    inset: 0;
+    /* префиксная версия первой: при обратном порядке минификатор
+       оставляет только её, и Chromium размытие не применяет */
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+  }
+
+  .fmpopup__exit {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    width: 43px;
+    height: 43px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    z-index: 9;
+  }
+
+  /* Артборд: размеры макета, центр экрана, общий масштаб. */
+  .fmpopup__board {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 1200px;
+    height: 560px;
+    margin-left: -600px;
+    margin-top: -280px;
+    transform: scale(var(--fmpopup-scale, 1));
+    transform-origin: center center;
+  }
+
+  .fmpopup__card,
+  .fmpopup__title,
+  .fmpopup__sub,
+  .fmpopup__form,
+  .fmpopup__close {
+    position: absolute;
+  }
+
+  .fmpopup__card {
+    top: 70px;
+    left: 306px;
+    width: 589px;
+    height: 420px;
+    background: #fff;
+    border-radius: 25px;
+  }
+
+  .fmpopup__title {
+    top: 113px;
+    left: 370px;
+    font-family: 'Arial', Arial, sans-serif;
+    font-size: 48px;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -2px;
+    color: #202020;
+    white-space: nowrap;
+  }
+
+  .fmpopup__sub {
+    top: 171px;
+    left: 370px;
+    width: 414px;
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 300;
+    line-height: 1.4;
+    color: #000;
+  }
+
+  .fmpopup__form {
+    top: 225px;
+    left: 370px;
+    width: 460px;
+  }
+
+  .fmpopup__input {
+    display: block;
+    width: 100%;
+    height: 50px;
+    margin-bottom: 9px;
+    padding: 0 20px;
+    border: 1px solid #c8c8c8;
+    border-radius: 5px;
+    background: #fff;
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    color: #1f1f1f;
+    box-sizing: border-box;
+  }
+
+  .fmpopup__input::placeholder {
+    color: #9b9b9b;
+  }
+
+  .fmpopup__check {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 9px;
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 300;
+    line-height: 1.2;
+    color: #1f1f1f;
+    cursor: pointer;
+  }
+
+  .fmpopup__check input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .fmpopup__check-box {
+    flex: 0 0 auto;
+    width: 20px;
+    height: 20px;
+    border: 1.66667px solid #c8c8c8;
+    background: transparent;
+  }
+
+  .fmpopup__check input:checked + .fmpopup__check-box {
+    background: #c8c8c8;
+  }
+
+  .fmpopup__check-text {
+    padding-top: 3.4px;
+  }
+
+  .fmpopup__check a {
+    color: #ff8562;
+    text-decoration: none;
+  }
+
+  .fmpopup__submit {
+    width: 460px;
+    height: 55px;
+    margin-top: 18px;
+    padding: 0;
+    box-sizing: border-box;
+    border: 0;
+    border-radius: 50px;
+    background: #cefe46;
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: #000;
+    cursor: pointer;
+  }
+
+  .fmpopup__close {
+    top: 90px;
+    left: 851px;
+    width: 24px;
+    height: 24px;
+    opacity: 0.25;
+    transition: opacity 0.2s ease-in-out;
+  }
+
+  .fmpopup__close:hover {
+    opacity: 0.6;
+  }
+
+  .fmpopup__close img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* Макет 640 */
+  @media screen and (max-width: 1199px) {
+    .fmpopup__board {
+      width: 640px;
+      height: 389px;
+      margin-left: -320px;
+      margin-top: -194.5px;
+    }
+
+    .fmpopup__card {
+      top: 45px;
+      left: 159px;
+      width: 322px;
+      height: 300px;
+    }
+
+    .fmpopup__title {
+      top: 67px;
+      left: 193px;
+      width: 264px;
+      font-size: 30px;
+      white-space: normal;
+    }
+
+    .fmpopup__sub {
+      top: 102px;
+      left: 193px;
+      width: 257px;
+      font-size: 10px;
+    }
+
+    .fmpopup__form {
+      top: 154px;
+      left: 193px;
+      width: 240px;
+    }
+
+    .fmpopup__input {
+      height: 40px;
+      margin-bottom: 4px;
+      padding: 0 14px;
+      font-size: 8px;
+    }
+
+    .fmpopup__check {
+      gap: 7px;
+      margin-bottom: 4px;
+      font-size: 8px;
+    }
+
+    .fmpopup__check-box {
+      width: 14px;
+      height: 14px;
+    }
+
+    .fmpopup__submit {
+      width: 240px;
+      height: 30px;
+      margin-top: 10px;
+      font-size: 8px;
+    }
+
+    .fmpopup__close {
+      top: 55px;
+      left: 458px;
+      width: 13px;
+      height: 13px;
+    }
+  }
+
+  /* Макет 320 */
+  @media screen and (max-width: 639px) {
+    .fmpopup__board {
+      width: 320px;
+      height: 499px;
+      margin-left: -160px;
+      margin-top: -249.5px;
+    }
+
+    .fmpopup__card {
+      top: 56px;
+      left: 10px;
+      width: 300px;
+      height: 388px;
+    }
+
+    .fmpopup__title {
+      top: 100px;
+      left: 30px;
+      letter-spacing: -1px;
+    }
+
+    .fmpopup__sub {
+      top: 140px;
+      left: 30px;
+      width: 211px;
+      height: 56px;
+    }
+
+    .fmpopup__form {
+      top: 202px;
+      left: 30px;
+      width: 260px;
+    }
+
+    .fmpopup__input {
+      height: 50px;
+      margin-bottom: 7px;
+      padding: 0 20px;
+      font-size: 11px;
+    }
+
+    .fmpopup__check {
+      gap: 10px;
+      margin-bottom: 7px;
+      font-size: 9px;
+    }
+
+    .fmpopup__check-box {
+      width: 18px;
+      height: 18px;
+    }
+
+    .fmpopup__submit {
+      width: 260px;
+      height: 45px;
+      margin-top: 15px;
+      border-radius: 45px;
+      font-size: 11px;
+    }
+
+    .fmpopup__close {
+      top: 76px;
+      left: 275px;
+      width: 15px;
+      height: 15px;
+    }
+  }
+
+  :global(body.fm-noscroll) {
+    overflow: hidden;
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    var popup = document.querySelector('[data-fmpopup]');
+    if (!popup) return;
+
+    var board = popup.querySelector('.fmpopup__board');
+
+    /* Масштаб артборда — как на оригинале: ширина окна к ширине макета. */
+    function updateScale() {
+      var w = window.innerWidth;
+      var layout = w >= 1200 ? 1200 : w >= 640 ? 640 : 320;
+      board.style.setProperty('--fmpopup-scale', w / layout);
+    }
+
+    updateScale();
+    window.addEventListener('resize', updateScale, { passive: true });
+
+    function setOpen(open) {
+      popup.hidden = !open;
+      document.body.classList.toggle('fm-noscroll', open);
+      if (open) updateScale();
+    }
+
+    document.addEventListener('click', function (event) {
+      var link = event.target.closest && event.target.closest('a[href]');
+      if (!link) return;
+
+      var href = link.getAttribute('href') || '';
+
+      if (href.indexOf('#popup:myform') === 0) {
+        event.preventDefault();
+        setOpen(true);
+        return;
+      }
+
+      if (href === '#closepopup') {
+        event.preventDefault();
+        setOpen(false);
+      }
+    });
+
+    popup.querySelector('.fmpopup__exit').addEventListener('click', function () {
+      setOpen(false);
+    });
+
+    popup.querySelector('.fmpopup__bg').addEventListener('click', function () {
+      setOpen(false);
+    });
+
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && !popup.hidden) setOpen(false);
+    });
+  })();
+</script>

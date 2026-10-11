@@ -7,8 +7,7 @@
     с лаймовым кругом, плашки «новая заявка» как на первом экране.
     Картинки — из уже загруженных для лендинга.
 
-    Цифры кейса — примерные, заданы Артёмом; перед публикацией
-    в лендинге заменить на цифры реального кейса. */
+    Кейсы — отдельным блоком ShopCases.astro сразу после этого. */
 
 const features = [
   {
@@ -33,11 +32,6 @@ const features = [
   },
 ];
 
-const metrics = [
-  { value: '500', label: 'заказов с сайта в месяц' },
-  { value: '7%', label: 'конверсия в заказ' },
-  { value: '1 200 ₽', label: 'средний чек' },
-];
 ---
 
 <section class="fmsites" data-fmsites>
@@ -181,31 +175,6 @@ const metrics = [
         ))
       }
 
-      <!-- КЕЙС -->
-      <article class="fmsites__card fmsites__case">
-        <div class="fmsites__case-copy">
-          <div class="fmsites__chip">Кейс</div>
-          <h3 class="fmsites__hero-title">Интернет-магазин для цветочной мастерской</h3>
-          <p class="fmsites__hero-text">
-            Запустили каталог, корзину и онлайн-оплату, подключили заказы
-            к CRM и Telegram. Цифры — из Метрики и CRM за месяц.
-          </p>
-        </div>
-
-        <div class="fmsites__case-side">
-          <div class="fmsites__metrics">
-            {
-              metrics.map((m) => (
-                <div class="fmsites__metric">
-                  <div class="fmsites__metric-value">{m.value}</div>
-                  <div class="fmsites__metric-label">{m.label}</div>
-                </div>
-              ))
-            }
-          </div>
-          <a class="fmsites__ghost" href="#cases">Смотреть кейс</a>
-        </div>
-      </article>
     </div>
   </div>
 </section>
@@ -491,76 +460,6 @@ const metrics = [
     stroke-linejoin: round;
   }
 
-  /* КЕЙС */
-  .fmsites__case {
-    grid-column: 1 / -1;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: calc(40 * var(--u));
-    padding: calc(36 * var(--u));
-    background:
-      radial-gradient(circle at 6% -30%, rgba(206, 254, 70, 0.18), transparent 40%),
-      var(--fs-dark);
-    color: #fff;
-  }
-
-  .fmsites__case-copy {
-    display: flex;
-    flex: 0 1 calc(470 * var(--u));
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .fmsites__case-side {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: calc(22 * var(--u));
-  }
-
-  .fmsites__metrics { display: flex; gap: calc(12 * var(--u)); }
-
-  .fmsites__metric {
-    width: calc(150 * var(--u));
-    padding: calc(16 * var(--u)) calc(18 * var(--u));
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: calc(18 * var(--u));
-    background: rgba(255, 255, 255, 0.04);
-  }
-
-  .fmsites__metric-value {
-    white-space: nowrap;
-    color: var(--fs-green);
-    font-size: calc(34 * var(--u));
-    line-height: 1;
-    font-weight: 600;
-    letter-spacing: -1px;
-  }
-
-  .fmsites__metric-label {
-    margin-top: calc(8 * var(--u));
-    color: rgba(255, 255, 255, 0.55);
-    font-size: calc(11 * var(--u));
-    line-height: calc(13 * var(--u));
-    font-weight: 500;
-  }
-
-  .fmsites__ghost {
-    display: inline-flex;
-    align-items: center;
-    height: calc(48 * var(--u));
-    padding: 0 calc(24 * var(--u));
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    border-radius: 100px;
-    color: #fff;
-    font-size: calc(14 * var(--u));
-    font-weight: 600;
-    text-decoration: none;
-    transition: background-color 0.25s ease, color 0.25s ease;
-  }
-
-  .fmsites__ghost:hover { background: #fff; color: var(--fs-dark); }
 
   /* ПОЯВЛЕНИЕ при прокрутке — только если скрипт включил анимацию */
   .fmsites.is-anim .fmsites__card { opacity: 0; }
@@ -586,21 +485,13 @@ const metrics = [
     .fmsites__grid { width: calc(720 * var(--u)); grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
     .fmsites__hero,
-    .fmsites__stats,
-    .fmsites__case { grid-column: 1 / -1; }
+    .fmsites__stats { grid-column: 1 / -1; }
 
     .fmsites__feature { grid-column: span 1; }
 
     .fmsites__stats { flex-direction: row; align-items: center; }
 
     .fmsites__stats-img { flex: 0 0 46%; width: 46%; aspect-ratio: 1; }
-
-    .fmsites__case { flex-direction: column; align-items: flex-start; }
-
-    /* в колонке ширина-основа превращалась в высоту и давала пустоту */
-    .fmsites__case-copy { flex: 0 0 auto; }
-
-    .fmsites__case-side { align-items: flex-start; }
   }
 
   /* ТЕЛЕФОН */
@@ -645,8 +536,7 @@ const metrics = [
 
     .fmsites__hero,
     .fmsites__stats,
-    .fmsites__feature,
-    .fmsites__case { grid-column: 1 / -1; }
+    .fmsites__feature { grid-column: 1 / -1; }
 
     .fmsites__card,
     .fmsites__feature { border-radius: 24px; }
@@ -724,47 +614,6 @@ const metrics = [
     }
 
     .fmsites__feature .fmsites__card-text { margin-top: 6px; }
-
-    .fmsites__case { gap: 22px; padding: 22px; }
-
-    .fmsites__case-side,
-    .fmsites__metrics { width: 100%; }
-
-    .fmsites__metrics { gap: 8px; }
-
-    .fmsites__metric {
-      flex: 1 1 0;
-      width: auto;
-      padding: 12px;
-      border-radius: 14px;
-    }
-
-    .fmsites__metric-value { font-size: 26px; }
-
-    .fmsites__metric-label { margin-top: 6px; font-size: 10px; line-height: 12px; }
-
-    .fmsites__ghost {
-      justify-content: center;
-      width: 100%;
-      height: 50px;
-      padding: 0 20px;
-      font-size: 14px;
-    }
-  }
-
-  /* Узкий телефон: три плитки в ряд не вмещают «1 200 ₽» — метрики столбиком */
-  @media (max-width: 480px) {
-    .fmsites__metrics { flex-direction: column; }
-
-    .fmsites__metric {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 12px 14px;
-    }
-
-    .fmsites__metric-value { flex: 0 0 auto; min-width: 104px; white-space: nowrap; }
-    .fmsites__metric-label { margin-top: 0; font-size: 12px; line-height: 14px; }
   }
 
   @media (prefers-reduced-motion: reduce) {

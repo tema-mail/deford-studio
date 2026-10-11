@@ -28,7 +28,8 @@ jobs:
       - name: Проставить префикс подпапки GitHub Pages
         run: node scripts/rebase-dist.mjs /deford-studio
       - name: Закрыть копию от поисковиков
-        run: printf 'User-agent: *\nDisallow: /\n' > dist/robots.txt
+        run: |
+          printf 'User-agent: *\nDisallow: /\n' > dist/robots.txt
       - name: Запретить Jekyll обрабатывать сборку
         run: touch dist/.nojekyll
       - uses: actions/upload-pages-artifact@v3

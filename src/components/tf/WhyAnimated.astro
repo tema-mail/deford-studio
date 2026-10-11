@@ -1,0 +1,247 @@
+---
+/** «Почему выбирают нас» — вариант 2, с анимацией. Вертикальная линия
+    заполняется красным вместе с прокруткой; когда заливка доходит до
+    пункта, его точка загорается, а карточка выезжает и становится яркой.
+    Прокрутка не перехватывается — страница едет как обычно. Без скрипта
+    все пункты сразу видны. Пункты и иконки — общие с вариантом 1,
+    в src/data/tf-why.json. */
+import why from '../../data/tf-why.json';
+
+const whyItems = why.items;
+const whyIcons: Record<string, string> = why.icons;
+---
+
+<section class="tf-section tfwhy2" data-tfwhy2>
+  <div class="tf-panel tf-panel--dark tfwhy2__panel">
+    <header class="tf-head" data-reveal>
+      <div class="tf-tag tfwhy2__tag">Преимущества</div>
+      <h2 class="tf-h2">Почему выбирают нас</h2>
+    </header>
+
+    <div class="tf-wrap tfwhy2__track">
+      <div class="tfwhy2__line" aria-hidden="true"><span class="tfwhy2__fill"></span></div>
+
+      {
+        whyItems.map((it, i) => (
+          <article class={`tfwhy2__item tfwhy2__item--${i % 2 ? 'right' : 'left'}`} data-tfwhy2-item>
+            <span class="tfwhy2__dot" aria-hidden="true"></span>
+            <div class="tfwhy2__card">
+              <span class="tfwhy2__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d={whyIcons[it.icon]}></path></svg>
+              </span>
+              <div>
+                <h3 class="tfwhy2__title">{it.title}</h3>
+                {it.text && <p class="tfwhy2__text">{it.text}</p>}
+              </div>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+
+    <div class="tfwhy2__cta" data-reveal>
+      <a class="tf-btn tf-btn--red" href="#zeropopup">
+        <span>Получить бесплатную консультацию</span>
+        <span class="tf-btn__arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"></path></svg></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .tfwhy2__panel { padding: calc(80 * var(--u)) 0 calc(70 * var(--u)); }
+  .tfwhy2__tag { background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.14); color: #fff; }
+
+  .tfwhy2__track {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: calc(28 * var(--u));
+    margin-top: calc(56 * var(--u));
+  }
+
+  /* Линия по центру и заливка, высота заливки — от прокрутки */
+  .tfwhy2__line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 2px;
+    margin-left: -1px;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .tfwhy2__fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: calc(var(--tfwhy2-p, 1) * 100%);
+    border-radius: inherit;
+    background: linear-gradient(180deg, #ff3b3b 0%, var(--tf-red) 60%, var(--tf-red-deep) 100%);
+    box-shadow: 0 0 18px rgba(238, 0, 0, 0.7);
+  }
+
+  .tfwhy2__item { position: relative; display: flex; }
+  .tfwhy2__item--left { justify-content: flex-start; padding-right: calc(50% + 46 * var(--u)); }
+  .tfwhy2__item--right { justify-content: flex-end; padding-left: calc(50% + 46 * var(--u)); }
+
+  .tfwhy2__dot {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: calc(16 * var(--u));
+    height: calc(16 * var(--u));
+    border: 2px solid rgba(255, 255, 255, 0.25);
+    border-radius: 50%;
+    background: var(--tf-dark);
+    transform: translate(-50%, -50%);
+    transition: border-color 0.4s ease, background-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease;
+  }
+
+  .tfwhy2__card {
+    display: flex;
+    align-items: center;
+    gap: calc(18 * var(--u));
+    width: 100%;
+    padding: calc(24 * var(--u)) calc(26 * var(--u));
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: calc(24 * var(--u));
+    background: linear-gradient(180deg, #232323 0%, #181818 100%);
+    transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.16, 0.82, 0.21, 1), border-color 0.5s ease, background 0.5s ease;
+  }
+
+  .tfwhy2__icon {
+    display: grid;
+    place-items: center;
+    width: calc(50 * var(--u));
+    height: calc(50 * var(--u));
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.55);
+    transition: background 0.5s ease, color 0.5s ease;
+  }
+
+  .tfwhy2__icon svg {
+    width: 46%;
+    height: 46%;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .tfwhy2__title { font-size: calc(21 * var(--u)); line-height: 1.1; font-weight: 600; letter-spacing: -0.5px; }
+
+  .tfwhy2__text {
+    margin-top: calc(6 * var(--u));
+    color: rgba(255, 255, 255, 0.6);
+    font-size: calc(13 * var(--u));
+    line-height: calc(18 * var(--u));
+    font-weight: 500;
+  }
+
+  /* До загорания — приглушено и чуть в стороне (только со скриптом) */
+  .tfwhy2.is-live .tfwhy2__item .tfwhy2__card { opacity: 0.35; }
+  .tfwhy2.is-live .tfwhy2__item--left .tfwhy2__card { transform: translateX(calc(-30 * var(--u))); }
+  .tfwhy2.is-live .tfwhy2__item--right .tfwhy2__card { transform: translateX(calc(30 * var(--u))); }
+
+  /* Загорелся */
+  .tfwhy2__item.is-on .tfwhy2__dot {
+    border-color: #ff3b3b;
+    background: var(--tf-red);
+    box-shadow: 0 0 0 calc(6 * var(--u)) rgba(238, 0, 0, 0.18), 0 0 20px rgba(238, 0, 0, 0.8);
+    transform: translate(-50%, -50%) scale(1.15);
+  }
+
+  .tfwhy2.is-live .tfwhy2__item.is-on .tfwhy2__card {
+    opacity: 1;
+    transform: none;
+    border-color: rgba(238, 0, 0, 0.45);
+    background:
+      radial-gradient(circle at 0% 0%, rgba(238, 0, 0, 0.22), transparent 55%),
+      linear-gradient(180deg, #262626 0%, #191919 100%);
+  }
+
+  .tfwhy2__item.is-on .tfwhy2__icon { background: var(--tf-grad); color: #fff; }
+
+  .tfwhy2__cta { display: flex; justify-content: center; margin-top: calc(48 * var(--u)); }
+
+  /* Телефон и узкий планшет: линия слева, карточки справа от неё */
+  @media (max-width: 979px) {
+    .tfwhy2__line { left: calc(8 * var(--u)); }
+    .tfwhy2__dot { left: calc(8 * var(--u)); }
+    .tfwhy2__item--left,
+    .tfwhy2__item--right { justify-content: flex-start; padding: 0 0 0 calc(44 * var(--u)); }
+    .tfwhy2.is-live .tfwhy2__item--left .tfwhy2__card,
+    .tfwhy2.is-live .tfwhy2__item--right .tfwhy2__card { transform: translateX(calc(24 * var(--u))); }
+  }
+
+  @media (max-width: 640px) {
+    .tfwhy2__panel { padding: 46px 0 34px; }
+    .tfwhy2__track { gap: 12px; margin-top: 30px; }
+    .tfwhy2__line, .tfwhy2__dot { left: 26px; }
+    .tfwhy2__dot { width: 14px; height: 14px; }
+    .tfwhy2__item--left, .tfwhy2__item--right { padding-left: 34px; }
+    /* на узком экране карточка выезжает снизу, а не вбок — не упирается в край */
+    .tfwhy2.is-live .tfwhy2__item--left .tfwhy2__card,
+    .tfwhy2.is-live .tfwhy2__item--right .tfwhy2__card { transform: translateY(14px); }
+    .tfwhy2__card { gap: 14px; padding: 16px; border-radius: 20px; }
+    .tfwhy2__icon { width: 42px; height: 42px; }
+    .tfwhy2__title { font-size: clamp(16px, 4.6vw, 19px); }
+    .tfwhy2__text { font-size: 13px; line-height: 17px; }
+    .tfwhy2__item.is-on .tfwhy2__dot { box-shadow: 0 0 0 5px rgba(238, 0, 0, 0.18), 0 0 16px rgba(238, 0, 0, 0.8); }
+    .tfwhy2__cta { margin-top: 28px; padding: 0 18px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tfwhy2__card, .tfwhy2__dot, .tfwhy2__icon { transition: none; }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    var root = document.querySelector('[data-tfwhy2]');
+    if (!root) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    var track = root.querySelector('.tfwhy2__track');
+    var items = Array.prototype.slice.call(root.querySelectorAll('[data-tfwhy2-item]'));
+    var ticking = false;
+
+    root.classList.add('is-live');
+
+    /* линия заливается, пока трек проходит через середину экрана */
+    function update() {
+      ticking = false;
+      var r = track.getBoundingClientRect();
+      var mark = window.innerHeight * 0.6;
+      var p = r.height > 0 ? (mark - r.top) / r.height : 0;
+      p = Math.max(0, Math.min(1, p));
+      /* страница докручена до низа — дальше линии идти некуда */
+      var doc = document.documentElement;
+      if (r.top < window.innerHeight && window.scrollY + window.innerHeight >= doc.scrollHeight - 2) p = 1;
+      root.style.setProperty('--tfwhy2-p', p.toFixed(4));
+
+      var fillY = r.top + p * r.height;
+      items.forEach(function (item) {
+        var dot = item.querySelector('.tfwhy2__dot').getBoundingClientRect();
+        item.classList.toggle('is-on', fillY >= dot.top + dot.height / 2);
+      });
+    }
+
+    function onScroll() {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    update();
+  })();
+</script>

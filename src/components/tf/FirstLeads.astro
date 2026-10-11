@@ -1,0 +1,171 @@
+---
+/** «Получите ваши первые заявки уже завтра!» — призыв с ноутбуком.
+    Тексты с оригинала. На оригинале в «На созвоне разберём» первый
+    пункт повторён третьим — здесь он один. Фон — композиция оригинала
+    с ноутбуком, текст слева; ниже — стеклянная карточка «На созвоне
+    разберём». Без рваных краёв и наклонов. */
+
+const items = [
+  'Сколько заявок реально получить в вашей нише',
+  'Какой бюджет нужен будет на рекламу для старта',
+];
+---
+
+<section class="tf-section tfleads">
+  <div class="tf-panel tf-panel--dark tfleads__panel">
+    <picture>
+      <source media="(max-width: 640px)" srcset="/img/tf/leads-m.jpg" />
+      <img class="tfleads__bg" src="/img/tf/leads.jpg" alt="" width="1680" height="900" loading="lazy" decoding="async" />
+    </picture>
+
+    <div class="tfleads__copy" data-reveal>
+      <h2 class="tfleads__title">Получите ваши первые заявки</h2>
+      <div class="tf-tag tf-tag--red tfleads__tag">Уже завтра!</div>
+      <p class="tfleads__text">
+        Разберем ваш бизнес и покажем, как организовать поток заявок через ВКонтакте —
+        без слива бюджета и долгих тестов.
+      </p>
+      <a class="tf-btn tf-btn--red tfleads__btn" href="#zeropopup">
+        <span>Получить бесплатную консультацию</span>
+        <span class="tf-btn__arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"></path></svg></span>
+      </a>
+    </div>
+
+    <div class="tfleads__call" data-reveal style="--reveal-delay: 0.12s">
+      <div class="tfleads__call-title">На созвоне разберем:</div>
+      <ul class="tfleads__list">
+        {items.map((item) => <li>{item}</li>)}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .tfleads__panel {
+    min-height: calc(640 * var(--u));
+    padding: calc(80 * var(--u)) calc(120 * var(--u)) calc(56 * var(--u));
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: calc(48 * var(--u));
+  }
+
+  /* обёртка картинки не участвует в раскладке (иначе к ней добавляется gap) */
+  .tfleads__panel > picture { display: contents; }
+
+  .tfleads__bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 100% 30%;
+  }
+
+  .tfleads__panel::before {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    background:
+      linear-gradient(90deg, rgba(20, 20, 20, 0.9) 0%, rgba(20, 20, 20, 0.55) 40%, rgba(20, 20, 20, 0) 62%),
+      linear-gradient(0deg, rgba(20, 20, 20, 0.85) 0%, rgba(20, 20, 20, 0) 40%);
+    pointer-events: none;
+  }
+
+  .tfleads__copy {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: calc(520 * var(--u));
+  }
+
+  .tfleads__title { font-size: calc(44 * var(--u)); line-height: 1; font-weight: 600; letter-spacing: -1.35px; }
+  .tfleads__tag { margin-top: calc(16 * var(--u)); font-size: calc(15 * var(--u)); line-height: calc(18 * var(--u)); padding: calc(8 * var(--u)) calc(14 * var(--u)); }
+
+  .tfleads__text {
+    margin-top: calc(20 * var(--u));
+    color: rgba(255, 255, 255, 0.7);
+    font-size: calc(15 * var(--u));
+    line-height: calc(21 * var(--u));
+    font-weight: 500;
+  }
+
+  .tfleads__btn { margin-top: calc(30 * var(--u)); }
+
+  .tfleads__call {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: calc(40 * var(--u));
+    padding: calc(24 * var(--u)) calc(30 * var(--u));
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: calc(22 * var(--u));
+    background: rgba(32, 32, 32, 0.6);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+  }
+
+  .tfleads__call-title { flex: 0 0 auto; font-size: calc(20 * var(--u)); font-weight: 600; letter-spacing: -0.4px; }
+
+  .tfleads__list { display: flex; gap: calc(40 * var(--u)); padding: 0; list-style: none; }
+
+  .tfleads__list li {
+    position: relative;
+    padding-left: calc(28 * var(--u));
+    color: rgba(255, 255, 255, 0.75);
+    font-size: calc(14 * var(--u));
+    line-height: calc(19 * var(--u));
+    font-weight: 500;
+  }
+
+  .tfleads__list li::before {
+    content: '';
+    position: absolute;
+    top: calc(1 * var(--u));
+    left: 0;
+    width: calc(18 * var(--u));
+    height: calc(18 * var(--u));
+    border-radius: 50%;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4L18 8' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 66% no-repeat, var(--tf-grad);
+  }
+
+  @media (max-width: 979px) {
+    .tfleads__panel { padding: calc(60 * var(--u)) calc(50 * var(--u)) calc(44 * var(--u)); }
+    .tfleads__copy { width: calc(460 * var(--u)); }
+    .tfleads__call { flex-direction: column; align-items: flex-start; gap: calc(16 * var(--u)); }
+  }
+
+  @media (max-width: 640px) {
+    /* телефон: текст → ноутбук → «На созвоне разберём», всё в потоке */
+    .tfleads__panel { min-height: 0; padding: 40px 18px 18px; gap: 0; }
+    .tfleads__panel::before { display: none; }
+    .tfleads__copy { order: 1; }
+
+    .tfleads__bg {
+      position: relative;
+      inset: auto;
+      order: 2;
+      width: calc(100% + 36px);
+      height: auto;
+      margin: 18px -18px -36px;
+      aspect-ratio: 900 / 711;
+      object-fit: cover;
+    }
+
+    .tfleads__call { order: 3; }
+    .tfleads__copy { width: 100%; }
+    .tfleads__title { font-size: clamp(28px, 8vw, 38px); letter-spacing: -0.9px; }
+    .tfleads__tag { margin-top: 12px; padding: 7px 12px; font-size: 14px; line-height: 16px; }
+    .tfleads__text { margin-top: 14px; font-size: 14px; line-height: 19px; }
+    .tfleads__btn { margin-top: 22px; }
+    .tfleads__call { gap: 14px; padding: 18px; border-radius: 20px; }
+    .tfleads__call-title { font-size: 18px; }
+    .tfleads__list { flex-direction: column; gap: 10px; }
+    .tfleads__list li { padding-left: 28px; font-size: 14px; line-height: 19px; }
+    .tfleads__list li::before { top: 1px; width: 18px; height: 18px; }
+  }
+</style>

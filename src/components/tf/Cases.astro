@@ -1,0 +1,157 @@
+---
+/** «Кейсы, которые говорят сами за себя» — три видеокейса VK Видео
+    с оригинала (якорь case). Лента карточек: на компьютере листается
+    стрелками, на телефоне — свайпом. Видео встраивается плеером
+    VK Видео и подгружается, когда лента подъезжает к экрану. */
+
+const VK_OWNER = '-213005931';
+const videos = [
+  { id: '456239237', title: 'Видеокейс 1' },
+  { id: '456239201', title: 'Видеокейс 2' },
+  { id: '456239197', title: 'Видеокейс 3' },
+];
+---
+
+<section class="tf-section tfcases" id="case">
+  <div class="tf-panel tf-panel--light tfcases__panel">
+    <div class="tf-wrap tfcases__head" data-reveal>
+      <div>
+        <div class="tf-tag">Кейсы</div>
+        <h2 class="tf-h2 tfcases__title">Кейсы, которые <br />говорят сами за себя</h2>
+        <p class="tf-lead tfcases__lead">
+          За годы работы мы накопили десятки подробных кейсов из разных ниш:
+          от офлайн-бизнеса до онлайн-услуг
+        </p>
+      </div>
+      <div class="tfcases__arrows">
+        <button class="tfcases__arrow" type="button" aria-label="Предыдущий кейс" data-tfcases-prev>
+          <svg viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"></path></svg>
+        </button>
+        <button class="tfcases__arrow" type="button" aria-label="Следующий кейс" data-tfcases-next>
+          <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="tfcases__rail" data-tfcases-rail>
+      {
+        videos.map((v) => (
+          <article class="tfcases__card">
+            <iframe
+              src={`https://vkvideo.ru/video_ext.php?oid=${VK_OWNER}&id=${v.id}&hd=2`}
+              title={v.title}
+              loading="lazy"
+              allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock"
+              allowfullscreen
+            ></iframe>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .tfcases__panel { padding: calc(80 * var(--u)) 0; }
+
+  .tfcases__head { display: flex; align-items: flex-end; justify-content: space-between; gap: calc(30 * var(--u)); }
+  .tfcases__title { margin-top: calc(24 * var(--u)); }
+  .tfcases__lead { max-width: calc(470 * var(--u)); }
+
+  .tfcases__arrows { display: flex; gap: calc(10 * var(--u)); }
+
+  .tfcases__arrow {
+    display: grid;
+    place-items: center;
+    width: calc(54 * var(--u));
+    height: calc(54 * var(--u));
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--tf-grad);
+    color: #fff;
+    cursor: pointer;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+  }
+
+  .tfcases__arrow:hover { transform: translateY(-2px); }
+  .tfcases__arrow:disabled { opacity: 0.35; cursor: default; transform: none; }
+
+  .tfcases__arrow svg {
+    width: 40%;
+    height: 40%;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* Лента: от левого края контента до правого края экрана */
+  .tfcases__rail {
+    display: flex;
+    gap: calc(20 * var(--u));
+    margin-top: calc(40 * var(--u));
+    padding: 0 calc(60 * var(--u));
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding: 0 calc(60 * var(--u));
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .tfcases__rail::-webkit-scrollbar { display: none; }
+
+  .tfcases__card {
+    flex: 0 0 calc(560 * var(--u));
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: calc(24 * var(--u));
+    background: var(--tf-dark);
+    scroll-snap-align: start;
+  }
+
+  .tfcases__card iframe { display: block; width: 100%; height: 100%; border: 0; }
+
+  @media (max-width: 979px) {
+    .tfcases__rail { padding: 0 calc(40 * var(--u)); scroll-padding: 0 calc(40 * var(--u)); }
+    .tfcases__card { flex-basis: calc(620 * var(--u)); }
+  }
+
+  @media (max-width: 640px) {
+    .tfcases__panel { padding: 46px 0 30px; }
+    .tfcases__head { flex-direction: column; align-items: flex-start; }
+    .tfcases__title { margin-top: 18px; }
+    .tfcases__lead { max-width: none; }
+    .tfcases__arrows { display: none; }
+    .tfcases__rail { gap: 10px; margin-top: 26px; padding: 0 18px; scroll-padding: 0 18px; }
+    .tfcases__card { flex-basis: calc(100% - 28px); border-radius: 20px; }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    var rail = document.querySelector('[data-tfcases-rail]');
+    if (!rail) return;
+    var prev = document.querySelector('[data-tfcases-prev]');
+    var next = document.querySelector('[data-tfcases-next]');
+
+    function step() {
+      var card = rail.querySelector('.tfcases__card');
+      var gap = parseFloat(getComputedStyle(rail).columnGap) || 0;
+      return card ? card.offsetWidth + gap : rail.clientWidth;
+    }
+
+    function refresh() {
+      var max = rail.scrollWidth - rail.clientWidth - 2;
+      prev.disabled = rail.scrollLeft <= 2;
+      next.disabled = rail.scrollLeft >= max;
+    }
+
+    prev.addEventListener('click', function () { rail.scrollBy({ left: -step(), behavior: 'smooth' }); });
+    next.addEventListener('click', function () { rail.scrollBy({ left: step(), behavior: 'smooth' }); });
+    rail.addEventListener('scroll', refresh, { passive: true });
+    window.addEventListener('resize', refresh, { passive: true });
+    refresh();
+  })();
+</script>

@@ -36,7 +36,6 @@ const rows = [logos.slice(0, 10), logos.slice(10, 20), logos.slice(20, 30)];
 
 <style is:global>
   .tfbrands__panel { padding: calc(80 * var(--u)) 0; }
-  .tfbrands__tag { background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.14); color: #fff; }
   .tfbrands .tf-head { width: calc(820 * var(--u)); }
 
   .tfbrands__rows {
@@ -82,6 +81,10 @@ const rows = [logos.slice(0, 10), logos.slice(10, 20), logos.slice(20, 30)];
 
   /* вписываем в карточку по обеим сторонам — высокие логотипы не обрезаются */
   .tfbrands__tile img { width: auto; height: auto; max-width: 100%; max-height: 100%; object-fit: contain; }
+
+  @media (max-width: 979px) {
+    .tfbrands .tf-head { width: calc(680 * var(--u)); }
+  }
 
   @media (max-width: 640px) {
     .tfbrands__panel { padding: 46px 0 36px; }

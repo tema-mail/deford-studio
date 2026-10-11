@@ -53,7 +53,6 @@ const videos = ['456239209', '456239206', '456239205', '456239204', '456239212']
   .tfrev__panel { padding: calc(80 * var(--u)) 0; }
 
   .tfrev__head { display: flex; align-items: flex-end; justify-content: space-between; gap: calc(30 * var(--u)); }
-  .tfrev__tag { background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.14); color: #fff; }
   .tfrev__title { max-width: calc(700 * var(--u)); margin-top: calc(24 * var(--u)); }
   .tfrev__lead { max-width: calc(560 * var(--u)); }
 
@@ -104,9 +103,13 @@ const videos = ['456239209', '456239206', '456239205', '456239204', '456239212']
     flex: 0 0 calc(255 * var(--u));
     aspect-ratio: 275 / 432;
     overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: calc(24 * var(--u));
-    background: #0d0d0d;
+    border: 1px solid var(--tf-line);
+    border-radius: calc(22 * var(--u));
+    /* заглушка, пока плеер VK не загрузился: кнопка play на тёмном */
+    background:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='31' fill='%23e3131b'/%3E%3Cpath d='M26 21v22l18-11z' fill='%23fff'/%3E%3C/svg%3E") center / calc(64 * var(--u)) no-repeat,
+      radial-gradient(60% 60% at 50% 50%, rgba(227, 19, 27, 0.16), transparent 70%),
+      #141416;
     scroll-snap-align: start;
   }
 

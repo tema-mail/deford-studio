@@ -128,6 +128,10 @@ const metrics = [
           alt=""
           decoding="async"
         />
+        <!-- на телефоне вместо картинки — иконка, как у плашек ниже -->
+        <span class="fmsites__icon fmsites__stats-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M4 19h16 M7 15.5l3.5-4l3 2.5L19 7.5 M15 7.5h4v4" /></svg>
+        </span>
         <div class="fmsites__stats-copy">
           <h3 class="fmsites__card-title">Видно каждый заказ и рубль</h3>
           <p class="fmsites__card-text">
@@ -441,6 +445,8 @@ const metrics = [
 
   .fmsites__stats-copy { padding: calc(4 * var(--u)) calc(26 * var(--u)) calc(28 * var(--u)); }
 
+  .fmsites__stats .fmsites__stats-icon { display: none; }
+
   .fmsites__card-title {
     margin: 0;
     font-size: calc(19 * var(--u));
@@ -693,14 +699,15 @@ const metrics = [
       50% { translate: 0 -4px; }
     }
 
-    .fmsites__stats { flex-direction: column; }
-
-    .fmsites__stats-img { flex: 0 0 auto; width: 100%; aspect-ratio: 16 / 10; }
-
-    .fmsites__stats-copy { padding: 4px 22px 24px; }
+    .fmsites__stats-img { display: none; }
+    .fmsites__stats .fmsites__stats-icon { display: grid; grid-row: auto; }
+    .fmsites__stats-copy { padding: 0; }
+    .fmsites__stats .fmsites__card-text { margin-top: 6px; }
 
     .fmsites__card-title { font-size: clamp(19px, 5.4vw, 22px); }
 
+    /* аналитика — такой же плашкой, как «Каталог как в магазине» и ниже */
+    .fmsites__stats,
     .fmsites__feature {
       display: grid;
       grid-template-columns: 44px 1fr;

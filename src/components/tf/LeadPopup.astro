@@ -1,0 +1,242 @@
+---
+/** Попап «Оставьте заявку» — один на всю страницу. На оригинале это четыре
+    одинаковые формы Zero Block: общая (#zeropopup) и по одной на тариф.
+    Здесь одна форма; ссылка-хук задаёт её служебный номер (formid) —
+    по нему, как и на оригинале, видно, с какого тарифа заявка, —
+    и подпись тарифа в окне. Лишних полей в заявку не добавляется.
+    Поля и тексты — с оригинала, оформление — карточка в системе страницы. */
+
+const FORM_ACTION = 'https://forms.tildacdn.com/procces/';
+const SERVICE = '024d230ccd0bacf66604d31c1ce9caf2';
+const ELEM_ID = '1759916648729';
+
+/* хук → номер формы оригинала и подпись тарифа */
+const HOOKS = {
+  '#zeropopup': { formid: 'form1469854401', plan: '' },
+  '#zeropopupconsult': { formid: 'form1469919931', plan: 'Консультация по рекламе ВКонтакте' },
+  '#zeropopuptarget': { formid: 'form1469918731', plan: 'Настройка таргетированной рекламы' },
+  '#zeropopuptargetsmm': { formid: 'form1469917831', plan: 'Продвижение под ключ — «Таргет + СММ»' },
+};
+---
+
+<div class="tfpop" data-tfpop data-hooks={JSON.stringify(HOOKS)} hidden>
+  <div class="tfpop__bg" data-tfpop-close></div>
+
+  <div class="tfpop__card" role="dialog" aria-modal="true" aria-labelledby="tfpop-title">
+    <button class="tfpop__close" type="button" aria-label="Закрыть" data-tfpop-close>
+      <span></span><span></span>
+    </button>
+
+    <h2 class="tfpop__title" id="tfpop-title">Оставьте заявку</h2>
+    <p class="tfpop__sub">И наш менеджер свяжется с вами в ближайшее время</p>
+    <p class="tfpop__plan" data-tfpop-plan hidden></p>
+
+    <form class="tfpop__form" action={FORM_ACTION} method="POST">
+      <input type="hidden" name="formservices[]" value={SERVICE} />
+      <input type="hidden" name="tildaspec-elemid" value={ELEM_ID} />
+      <input type="hidden" name="formid" value="form1469854401" data-tfpop-formid />
+
+      <input class="tfpop__input" type="text" name="Имя клиента" placeholder="Ваше имя" aria-label="Ваше имя" required />
+      <input class="tfpop__input" type="tel" name="Телефон" placeholder="+7 (000) 000-00-00" aria-label="Телефон" required />
+      <input class="tfpop__input" type="text" name="Input" placeholder="Комментарий" aria-label="Комментарий" />
+
+      <label class="tfpop__check">
+        <input type="checkbox" name="Checkbox" value="yes" required />
+        <span class="tfpop__check-box" aria-hidden="true"></span>
+        <span>
+          Я принимаю условия <a href="https://targetfactory.ru/agreement" target="_blank" rel="noopener">пользовательского соглашения</a>{' '}и{' '}<a href="https://targetfactory.ru/policy" target="_blank" rel="noopener">политики конфиденциальности</a>
+        </span>
+      </label>
+
+      <button class="tf-btn tf-btn--red tfpop__submit" type="submit">
+        <span>Отправить заявку</span>
+        <span class="tf-btn__arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"></path></svg></span>
+      </button>
+    </form>
+  </div>
+</div>
+
+<style is:global>
+  .tfpop {
+    --u: 1px;
+    position: fixed;
+    z-index: 10000;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    overflow-y: auto;
+    font-family: var(--tf-font);
+  }
+
+  .tfpop[hidden] { display: none; }
+
+  .tfpop__bg {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 10, 10, 0.55);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+  }
+
+  .tfpop__card {
+    position: relative;
+    width: 100%;
+    max-width: 520px;
+    margin: auto;
+    padding: 44px 44px 40px;
+    border-radius: 28px;
+    background: #fff;
+    color: var(--tf-ink);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+    animation: tfpop-in 0.3s cubic-bezier(0.16, 0.82, 0.21, 1);
+  }
+
+  @keyframes tfpop-in {
+    from { opacity: 0; transform: translateY(16px) scale(0.98); }
+    to { opacity: 1; transform: none; }
+  }
+
+  .tfpop__close {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: #f1f1f1;
+    cursor: pointer;
+  }
+
+  .tfpop__close span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 14px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--tf-ink);
+  }
+
+  .tfpop__close span:first-child { transform: translate(-50%, -50%) rotate(45deg); }
+  .tfpop__close span:last-child { transform: translate(-50%, -50%) rotate(-45deg); }
+
+  .tfpop__title { font-size: 34px; line-height: 1; font-weight: 600; letter-spacing: -1px; }
+  .tfpop__sub { margin-top: 10px; color: var(--tf-muted); font-size: 14px; line-height: 19px; }
+
+  .tfpop__plan {
+    display: inline-block;
+    margin-top: 14px;
+    padding: 6px 12px;
+    border-radius: 100px;
+    background: rgba(238, 0, 0, 0.08);
+    color: var(--tf-red-deep);
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .tfpop__plan[hidden] { display: none; }
+
+  .tfpop__form { display: flex; flex-direction: column; gap: 10px; margin-top: 24px; }
+
+  .tfpop__input {
+    width: 100%;
+    height: 54px;
+    padding: 0 20px;
+    border: 1px solid #d6d6d6;
+    border-radius: 14px;
+    background: #fff;
+    color: var(--tf-ink);
+    font-family: inherit;
+    font-size: 15px;
+    transition: border-color 0.2s ease;
+  }
+
+  .tfpop__input:focus { outline: none; border-color: var(--tf-red); }
+
+  .tfpop__check {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 4px 0 6px;
+    color: var(--tf-muted);
+    font-size: 12px;
+    line-height: 16px;
+    cursor: pointer;
+  }
+
+  .tfpop__check input { position: absolute; opacity: 0; width: 0; height: 0; }
+
+  .tfpop__check-box {
+    flex: 0 0 auto;
+    width: 18px;
+    height: 18px;
+    border: 1.5px solid #c8c8c8;
+    border-radius: 5px;
+    background: #fff;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .tfpop__check input:checked + .tfpop__check-box {
+    border-color: var(--tf-red);
+    background: var(--tf-red) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 12px no-repeat;
+  }
+
+  .tfpop__check input:focus-visible + .tfpop__check-box { outline: 2px solid var(--tf-red); outline-offset: 2px; }
+  .tfpop__check a { color: var(--tf-red-deep); text-decoration: none; }
+
+  .tfpop__submit { justify-content: space-between; width: 100%; }
+
+  @media (max-width: 640px) {
+    .tfpop { padding: 12px; }
+    .tfpop__card { padding: 30px 20px 22px; border-radius: 24px; }
+    .tfpop__title { font-size: 28px; }
+    .tfpop__close { top: 12px; right: 12px; }
+  }
+
+  body.tf-noscroll { overflow: hidden; }
+</style>
+
+<script is:inline>
+  (function () {
+    var popup = document.querySelector('[data-tfpop]');
+    if (!popup) return;
+
+    var hooks = JSON.parse(popup.dataset.hooks || '{}');
+    var formid = popup.querySelector('[data-tfpop-formid]');
+    var planNote = popup.querySelector('[data-tfpop-plan]');
+
+    function open(hook) {
+      var conf = hooks[hook] || hooks['#zeropopup'];
+      formid.value = conf.formid;
+      planNote.hidden = !conf.plan;
+      planNote.textContent = conf.plan ? 'Тариф: ' + conf.plan : '';
+      popup.hidden = false;
+      document.body.classList.add('tf-noscroll');
+    }
+
+    function close() {
+      popup.hidden = true;
+      document.body.classList.remove('tf-noscroll');
+    }
+
+    document.addEventListener('click', function (event) {
+      var link = event.target.closest && event.target.closest('a[href^="#zeropopup"]');
+      if (!link) return;
+      event.preventDefault();
+      open(link.getAttribute('href'));
+    });
+
+    popup.querySelectorAll('[data-tfpop-close]').forEach(function (el) {
+      el.addEventListener('click', close);
+    });
+
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && !popup.hidden) close();
+    });
+  })();
+</script>

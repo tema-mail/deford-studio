@@ -1,0 +1,146 @@
+---
+/** Второй блок — шесть фактов об агентстве. На оригинале: рука-робот
+    с лампочкой и карточки с огромными номерами 01–06. По решению Артёма
+    переделан: без руки и огромных цифр, спокойная сетка карточек разного
+    размера на светлой подложке, акценты цветом (тёмные и одна красная),
+    у каждой — линейная иконка в красном круге. Тексты — с оригинала. */
+
+const facts = [
+  { key: 'complex', size: 'wide', tone: 'dark', title: 'Комплексный маркетинг', text: 'Закроем любые задачи в сфере диджитл' },
+  { key: 'profit', size: 'one', tone: 'light', title: 'Считаем прибыль', text: 'Считаем прибыль, а не лайки и клики' },
+  { key: 'day', size: 'one', tone: 'light', title: 'Один день', text: 'Заявки уже в первый день после запуска' },
+  { key: 'clients', size: 'one', tone: 'red', title: '90% клиентов', text: 'Становятся постоянными и работают с нами на протяжении многих лет.' },
+  { key: 'contract', size: 'one', tone: 'light', title: 'Работаем по договору', text: 'С предоставлением всех закрывающих документов' },
+  { key: 'support', size: 'wide', tone: 'dark', title: 'На связи 24/7', text: 'Поддержка на всех этапах' },
+];
+
+const icons: Record<string, string> = {
+  complex: 'M4 7h16M4 12h16M4 17h10',
+  profit: 'M4 18l5-6 4 3 7-8M15 7h5v5',
+  day: 'M12 7v5l3 2M12 3a9 9 0 1 0 0 18a9 9 0 0 0 0-18z',
+  clients: 'M8.5 11a3.5 3.5 0 1 0 0-7a3.5 3.5 0 0 0 0 7zM2 20c0-3.3 2.9-6 6.5-6s6.5 2.7 6.5 6M16 4.5a3.5 3.5 0 0 1 0 6.5M18 14.3c2.3.7 4 2.9 4 5.7',
+  contract: 'M7 3h7l5 5v13H7zM14 3v5h5M10 13h6M10 17h6',
+  support: 'M4 13v-1a8 8 0 0 1 16 0v1M4 13h3v6H5a1 1 0 0 1-1-1zM20 13h-3v6h2a1 1 0 0 0 1-1zM17 19c0 1.5-2 2-5 2',
+};
+---
+
+<section class="tf-section tffacts">
+  <div class="tf-panel tf-panel--light tffacts__panel">
+    <div class="tf-wrap tffacts__grid">
+      {
+        facts.map((f, i) => (
+          <article
+            class={`tf-card tffacts__card tffacts__card--${f.size} tffacts__card--${f.tone}`}
+            data-reveal
+            style={`--reveal-delay: ${i * 0.07}s`}
+          >
+            <span class="tffacts__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d={icons[f.key]}></path></svg>
+            </span>
+            <h2 class="tffacts__title">{f.title}</h2>
+            <p class="tffacts__text">{f.text}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .tffacts__panel { padding: calc(60 * var(--u)) 0; }
+
+  .tffacts__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: calc(20 * var(--u));
+  }
+
+  .tffacts__card {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(230 * var(--u));
+    padding: calc(28 * var(--u));
+  }
+
+  .tffacts__card--wide { grid-column: span 2; }
+
+  .tffacts__card--dark {
+    background:
+      radial-gradient(circle at 100% 0%, rgba(238, 0, 0, 0.22), transparent 55%),
+      linear-gradient(180deg, #232323 0%, #161616 100%);
+    color: #fff;
+  }
+
+  .tffacts__card--red { background: var(--tf-grad); color: #fff; }
+
+  .tffacts__icon {
+    display: grid;
+    place-items: center;
+    width: calc(46 * var(--u));
+    height: calc(46 * var(--u));
+    margin-bottom: auto;
+    border-radius: 50%;
+    background: var(--tf-grad);
+    color: #fff;
+  }
+
+  .tffacts__card--red .tffacts__icon { background: #fff; color: var(--tf-red); }
+
+  .tffacts__icon svg {
+    width: 48%;
+    height: 48%;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .tffacts__title {
+    margin-top: calc(40 * var(--u));
+    font-size: calc(24 * var(--u));
+    line-height: 1.05;
+    font-weight: 600;
+    letter-spacing: -0.6px;
+  }
+
+  .tffacts__card--wide .tffacts__title { font-size: calc(30 * var(--u)); }
+
+  .tffacts__text {
+    margin-top: calc(10 * var(--u));
+    max-width: calc(320 * var(--u));
+    color: var(--tf-muted);
+    font-size: calc(13 * var(--u));
+    line-height: calc(18 * var(--u));
+    font-weight: 500;
+  }
+
+  .tffacts__card--dark .tffacts__text,
+  .tffacts__card--red .tffacts__text { color: rgba(255, 255, 255, 0.7); }
+
+  /* Планшет: две колонки, широкие карточки — на всю строку */
+  @media (max-width: 979px) {
+    .tffacts__panel { padding: calc(56 * var(--u)) 0; }
+    .tffacts__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  /* Телефон: столбик, иконка слева от текста */
+  @media (max-width: 640px) {
+    .tffacts__panel { padding: 30px 0; }
+    .tffacts__grid { grid-template-columns: 1fr; gap: 10px; }
+    .tffacts__card--wide { grid-column: auto; }
+
+    .tffacts__card {
+      display: grid;
+      grid-template-columns: 44px 1fr;
+      column-gap: 14px;
+      min-height: 0;
+      padding: 18px;
+    }
+
+    .tffacts__icon { grid-row: span 2; width: 44px; height: 44px; margin: 0; }
+    .tffacts__title,
+    .tffacts__card--wide .tffacts__title { margin-top: 0; font-size: clamp(19px, 5.4vw, 22px); }
+    .tffacts__text { max-width: none; margin-top: 6px; font-size: 13px; line-height: 17px; }
+  }
+</style>

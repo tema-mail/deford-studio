@@ -25,8 +25,18 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
+      # Свой домен в настройках Pages (deford.ru) — сайт живёт в корне,
+      # префикс не нужен. Без домена — адрес tema-mail.github.io/deford-studio/.
       - name: Проставить префикс подпапки GitHub Pages
-        run: node scripts/rebase-dist.mjs /deford-studio
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          CNAME=$(gh api "repos/${{ github.repository }}/pages" --jq '.cname // ""' 2>/dev/null || true)
+          if [ -n "$CNAME" ]; then
+            echo "свой домен $CNAME — пути остаются корневыми"
+          else
+            node scripts/rebase-dist.mjs /deford-studio
+          fi
       - name: Закрыть копию от поисковиков
         run: |
           printf 'User-agent: *\nDisallow: /\n' > dist/robots.txt

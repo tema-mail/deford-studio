@@ -1,0 +1,177 @@
+---
+/** Подвал. Состав — с оригинала: логотип, подпись, меню, соцсети,
+    правовые ссылки (страницы остаются на targetfactory.ru), разработчик
+    сайта и большая надпись TARGET FACTORY. Поправлены опечатки
+    оригинала («Агенство», «Вконтакте»). Телефон — рабочий, как в шапке:
+    в подвале оригинала стоит заглушка +7 (000) 000-00-00. */
+
+const menu = [
+  { href: '#service', label: 'Услуги' },
+  { href: '#case', label: 'Кейсы' },
+  { href: '#Calculation', label: 'Расчёт продвижения' },
+  { href: '#command', label: 'Команда' },
+  { href: '#reviews', label: 'Отзывы' },
+  { href: '#contact', label: 'Контакты' },
+];
+
+const socials = [
+  { href: 'mailto:korotaev.TF@yandex.ru', icon: 'ic-mail.svg', label: 'Электронная почта' },
+  { href: 'https://max.ru/u/f9LHodD0cOLcKLkeG8Hr_oFXFF0snzqnNOGgHN2cX0meUwSiovnBh1wb8xM', icon: 'ic-max.png', label: 'MAX' },
+  { href: 'https://vk.me/target_factory_vk', icon: 'ic-vk.svg', label: 'ВКонтакте' },
+  { href: 'https://t.me/korotaev_denis', icon: 'ic-tg.svg', label: 'Telegram' },
+];
+
+const legal = [
+  { href: 'https://targetfactory.ru/policy', label: 'Политика конфиденциальности' },
+  { href: 'https://targetfactory.ru/agreement', label: 'Пользовательское соглашение' },
+  { href: 'https://targetfactory.ru/details', label: 'Реквизиты' },
+];
+---
+
+<footer class="tf-section tffoot">
+  <div class="tf-panel tf-panel--dark tffoot__panel">
+    <div class="tf-wrap tffoot__grid">
+      <div class="tffoot__brand">
+        <a class="tffoot__logo" href="#top" aria-label="Target Factory — наверх">
+          <img src="/img/tf/logo.png" alt="Target Factory" width="300" height="138" loading="lazy" />
+        </a>
+        <p class="tffoot__about">
+          Агентство по продвижению ВКонтакте и не только. Закроем любую задачу маркетинга
+          для вашего бизнеса
+        </p>
+      </div>
+
+      <nav class="tffoot__nav" aria-label="Меню в подвале">
+        {menu.map((m) => <a href={m.href}>{m.label}</a>)}
+      </nav>
+
+      <div class="tffoot__side">
+        <div class="tffoot__socials">
+          {
+            socials.map((s) => (
+              <a href={s.href} target="_blank" rel="noopener" aria-label={s.label}>
+                <img src={`/img/tf/${s.icon}`} alt="" width="44" height="44" loading="lazy" />
+              </a>
+            ))
+          }
+        </div>
+        <a class="tffoot__phone" href="tel:+79132090181">+7 (913) 209-01-81</a>
+        <span class="tffoot__note"><i></i>Звоните, мы на месте</span>
+      </div>
+    </div>
+
+    <div class="tf-wrap tffoot__bottom">
+      <div class="tffoot__legal">
+        {legal.map((l) => <a href={l.href} target="_blank" rel="noopener">{l.label}</a>)}
+      </div>
+      <a class="tffoot__dev" href="https://deford-studio.ru" target="_blank" rel="noopener">Разработчик сайта Deford</a>
+    </div>
+
+    <img class="tffoot__word" src="/img/tf/wordmark.svg" alt="" width="967" height="46" loading="lazy" aria-hidden="true" />
+  </div>
+</footer>
+
+<style is:global>
+  .tffoot { padding-bottom: 15px; }
+  .tffoot__panel { padding: calc(56 * var(--u)) 0 calc(36 * var(--u)); }
+
+  .tffoot__grid {
+    display: grid;
+    grid-template-columns: calc(300 * var(--u)) 1fr auto;
+    gap: calc(40 * var(--u));
+    align-items: start;
+  }
+
+  .tffoot__logo img { width: calc(150 * var(--u)); height: auto; }
+
+  .tffoot__about {
+    margin-top: calc(18 * var(--u));
+    color: rgba(255, 255, 255, 0.55);
+    font-size: calc(13 * var(--u));
+    line-height: calc(18 * var(--u));
+    font-weight: 500;
+  }
+
+  /* меню — две ровные строки по три пункта */
+  .tffoot__nav {
+    display: grid;
+    grid-template-columns: repeat(3, max-content);
+    justify-content: center;
+    gap: calc(14 * var(--u)) calc(40 * var(--u));
+    padding-top: calc(12 * var(--u));
+  }
+
+  .tffoot__nav a,
+  .tffoot__legal a,
+  .tffoot__dev {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: calc(14 * var(--u));
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .tffoot__nav a:hover,
+  .tffoot__legal a:hover,
+  .tffoot__dev:hover { color: #fff; }
+
+  .tffoot__side { display: flex; flex-direction: column; align-items: flex-end; gap: calc(10 * var(--u)); }
+  .tffoot__socials { display: flex; gap: calc(10 * var(--u)); }
+  .tffoot__socials a { transition: transform 0.2s ease; }
+  .tffoot__socials a:hover { transform: translateY(-2px); }
+  .tffoot__socials img { width: calc(44 * var(--u)); height: calc(44 * var(--u)); }
+
+  .tffoot__phone { margin-top: calc(10 * var(--u)); color: #fff; font-size: calc(18 * var(--u)); font-weight: 600; text-decoration: none; }
+
+  .tffoot__note { display: flex; align-items: center; gap: calc(6 * var(--u)); color: rgba(255, 255, 255, 0.5); font-size: calc(12 * var(--u)); }
+  .tffoot__note i { width: calc(7 * var(--u)); height: calc(7 * var(--u)); border-radius: 50%; background: #3bd16f; }
+
+  .tffoot__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: calc(14 * var(--u));
+    margin-top: calc(40 * var(--u));
+    padding-top: calc(22 * var(--u));
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .tffoot__legal { display: flex; flex-wrap: wrap; gap: calc(8 * var(--u)) calc(24 * var(--u)); }
+  .tffoot__legal a, .tffoot__dev { font-size: calc(12 * var(--u)); color: rgba(255, 255, 255, 0.45); }
+
+  /* большая надпись: чёрный SVG делаем бледно-белым */
+  .tffoot__word {
+    display: block;
+    width: calc(1080 * var(--u));
+    height: auto;
+    margin: calc(36 * var(--u)) auto 0;
+    opacity: 0.07;
+    filter: invert(1);
+  }
+
+  @media (max-width: 979px) {
+    .tffoot__grid { grid-template-columns: 1fr 1fr; }
+    .tffoot__nav { grid-column: 1 / -1; grid-row: 2; justify-content: start; padding-top: 0; }
+  }
+
+  @media (max-width: 640px) {
+    .tffoot { padding-bottom: 10px; }
+    .tffoot__panel { padding: 36px 0 24px; }
+    .tffoot__grid { grid-template-columns: 1fr; gap: 26px; }
+    .tffoot__logo img { width: 130px; }
+    .tffoot__about { margin-top: 14px; font-size: 13px; line-height: 18px; }
+    .tffoot__nav { grid-row: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 12px 20px; }
+    .tffoot__nav a { font-size: 15px; }
+    .tffoot__side { align-items: flex-start; gap: 8px; }
+    .tffoot__socials { gap: 10px; }
+    .tffoot__socials img { width: 44px; height: 44px; }
+    .tffoot__phone { margin-top: 8px; font-size: 18px; }
+    .tffoot__note { gap: 6px; font-size: 12px; }
+    .tffoot__note i { width: 7px; height: 7px; }
+    .tffoot__bottom { flex-direction: column; align-items: flex-start; margin-top: 26px; padding-top: 18px; }
+    .tffoot__legal { flex-direction: column; gap: 8px; }
+    .tffoot__legal a, .tffoot__dev { font-size: 13px; }
+    .tffoot__word { width: calc(100% - 36px); margin-top: 26px; }
+  }
+</style>

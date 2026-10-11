@@ -1,0 +1,89 @@
+---
+/** Уведомление о cookie. Текст — с оригинала. Карточка в правом нижнем
+    углу, на телефоне — полоса внизу; кнопка «ОК» красная. Согласие
+    запоминается в браузере. */
+---
+
+<div class="tfcookie" data-tfcookie hidden>
+  <div class="tfcookie__card" role="alertdialog" aria-modal="false" aria-label="Уведомление о cookie">
+    <p class="tfcookie__text">
+      Используя данный сайт, вы даете согласие на использование файлов cookie, помогающих нам
+      сделать его удобнее для вас
+    </p>
+    <button class="tfcookie__ok" type="button">ОК</button>
+  </div>
+</div>
+
+<style is:global>
+  .tfcookie {
+    position: fixed;
+    z-index: 900;
+    right: 24px;
+    bottom: 24px;
+    width: 340px;
+    max-width: calc(100% - 32px);
+    font-family: var(--tf-font);
+  }
+
+  .tfcookie[hidden] { display: none; }
+
+  .tfcookie__card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 20px 22px;
+    border-radius: 20px;
+    background: #fff;
+    color: var(--tf-ink);
+    box-shadow: 0 16px 50px rgba(0, 0, 0, 0.25);
+  }
+
+  .tfcookie__text { font-size: 13px; line-height: 18px; font-weight: 500; }
+
+  .tfcookie__ok {
+    min-width: 72px;
+    height: 38px;
+    padding: 0 18px;
+    border: 0;
+    border-radius: 100px;
+    background: var(--tf-grad);
+    color: #fff;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  @media (max-width: 640px) {
+    .tfcookie { left: 10px; right: 10px; bottom: 10px; width: auto; max-width: none; }
+    .tfcookie__card { flex-direction: row; align-items: center; gap: 12px; padding: 14px 14px 14px 16px; border-radius: 18px; }
+    .tfcookie__text { font-size: 12px; line-height: 16px; }
+    .tfcookie__ok { flex: 0 0 auto; }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    var KEY = 'tf-cookie-accepted';
+    var box = document.querySelector('[data-tfcookie]');
+    if (!box) return;
+
+    var stored = null;
+    try {
+      stored = localStorage.getItem(KEY);
+    } catch (e) {
+      /* приватный режим — показываем как обычно */
+    }
+
+    if (stored === 'yes') return;
+    box.hidden = false;
+
+    box.querySelector('.tfcookie__ok').addEventListener('click', function () {
+      box.hidden = true;
+      try {
+        localStorage.setItem(KEY, 'yes');
+      } catch (e) {}
+    });
+  })();
+</script>

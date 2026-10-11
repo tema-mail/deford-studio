@@ -1,33 +1,16 @@
 ---
 /** «Делаем интернет-магазины для цветочных салонов» — короткий вход
     в кейсы сайтов (следующий блок ShopCases.astro). По правкам Артёма
-    и Дениса Коротаева: только заголовок, подводка и три тезиса —
-    почему старые сайты цветочных не продают; внизу ссылка к кейсам.
+    и Дениса Коротаева: только заголовок, оффер и ссылка к кейсам.
+    Тезисы о старых сайтах переехали в «6 причин» (SiteReasons.astro)
+    после кейсов.
 
     Стилистика — с соседних секций: серая подложка #dbdbdb, графит,
-    лайм #cefe46, пилюля-тег, заголовок 33/33, белые карточки.
-    Цифры про штрафы — от Артёма; доля сайтов подписана как оценка. */
+    лайм #cefe46, пилюля-тег, заголовок 33/33. */
 
-const points = [
-  {
-    icon: 'old',
-    title: 'Сайты, сделанные 5–10 лет назад, уже не работают',
-    text: 'Каталог-«портянка» из сотни одинаковых карточек не продаёт: покупатель теряется и уходит к конкурентам.',
-  },
-  {
-    icon: 'law',
-    title: 'Штрафы до 3 млн ₽ в 2027 году',
-    text: 'По нашей оценке, больше 80% сайтов не готовы к требованиям законов, принятых в 2026 году.',
-  },
-  {
-    icon: 'sales',
-    title: 'Сайты не продают, потому что сделаны без маркетинга',
-    text: 'Их собирали как витрину — без сценария заказа, аналитики и связки с рекламой.',
-  },
-];
 ---
 
-<section class="fmsites" data-fmsites>
+<section class="fmsites">
   <div class="fmsites__viewport">
     <header class="fmsites__header">
       <div class="fmsites__tag">Сайты</div>
@@ -39,39 +22,6 @@ const points = [
         За плечами — больше 10 лет опыта и огромное количество кейсов.
       </p>
     </header>
-
-    <div class="fmsites__points">
-      {
-        points.map((p) => (
-          <article class="fmsites__point">
-            <span class="fmsites__icon" aria-hidden="true">
-              {p.icon === 'old' && (
-                <svg viewBox="0 0 24 24">
-                  <rect x="4" y="5" width="16" height="15" rx="2.5" />
-                  <path d="M4 10h16M9 3v4M15 3v4M9.5 14.5l5 3M14.5 14.5l-5 3" />
-                </svg>
-              )}
-              {p.icon === 'law' && (
-                <svg viewBox="0 0 24 24">
-                  <path d="M12 4l9 16H3z" />
-                  <path d="M12 10v4.5M12 17.3v.2" />
-                </svg>
-              )}
-              {p.icon === 'sales' && (
-                <svg viewBox="0 0 24 24">
-                  <path d="M4 6l5 5 4-3 7 8" />
-                  <path d="M15 16h5v-5" />
-                </svg>
-              )}
-            </span>
-            <div>
-              <h3 class="fmsites__point-title">{p.title}</h3>
-              <p class="fmsites__point-text">{p.text}</p>
-            </div>
-          </article>
-        ))
-      }
-    </div>
 
     <a class="fmsites__more" href="#shops">
       <span>Посмотрите ниже малую часть наших сайтов, которые мы недавно сдали</span>
@@ -145,60 +95,6 @@ const points = [
     font-weight: 500;
   }
 
-  /* Три тезиса — белые карточки в ряд */
-  .fmsites__points {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: calc(20 * var(--u));
-    width: calc(1080 * var(--u));
-    margin: calc(44 * var(--u)) auto 0;
-  }
-
-  .fmsites__point {
-    display: flex;
-    flex-direction: column;
-    gap: calc(28 * var(--u));
-    padding: calc(24 * var(--u));
-    border-radius: calc(27 * var(--u));
-    background: linear-gradient(180deg, #ffffff 0%, #f6f6f6 100%);
-  }
-
-  .fmsites__icon {
-    display: grid;
-    place-items: center;
-    width: calc(44 * var(--u));
-    height: calc(44 * var(--u));
-    flex: 0 0 auto;
-    border-radius: 50%;
-    background: var(--fs-green);
-  }
-
-  .fmsites__icon svg {
-    width: 50%;
-    height: 50%;
-    fill: none;
-    stroke: var(--fs-dark);
-    stroke-width: 1.8;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-
-  .fmsites__point-title {
-    margin: 0;
-    font-size: calc(19 * var(--u));
-    line-height: 1.08;
-    font-weight: 600;
-    letter-spacing: -0.5px;
-  }
-
-  .fmsites__point-text {
-    margin: calc(8 * var(--u)) 0 0;
-    color: rgba(0, 0, 0, 0.5);
-    font-size: calc(12 * var(--u));
-    line-height: calc(16 * var(--u));
-    font-weight: 500;
-  }
-
   /* Переход к кейсам */
   .fmsites__more {
     display: flex;
@@ -206,7 +102,7 @@ const points = [
     justify-content: center;
     gap: calc(12 * var(--u));
     width: max-content;
-    margin: calc(36 * var(--u)) auto 0;
+    margin: calc(30 * var(--u)) auto 0;
     color: var(--fs-dark);
     font-size: calc(15 * var(--u));
     line-height: calc(18 * var(--u));
@@ -239,27 +135,10 @@ const points = [
     50% { translate: 0 calc(4 * var(--u)); }
   }
 
-  /* Появление при прокрутке — только если скрипт включил анимацию */
-  .fmsites.is-anim .fmsites__point { opacity: 0; }
-
-  .fmsites.is-anim.is-ready .fmsites__point {
-    animation: fmsites-in 0.7s cubic-bezier(0.16, 0.82, 0.21, 1) both;
-  }
-
-  .fmsites.is-anim.is-ready .fmsites__point:nth-child(2) { animation-delay: 0.1s; }
-  .fmsites.is-anim.is-ready .fmsites__point:nth-child(3) { animation-delay: 0.2s; }
-
-  @keyframes fmsites-in {
-    from { opacity: 0; transform: translateY(24px); }
-    to { opacity: 1; transform: none; }
-  }
-
   /* ПЛАНШЕТ: макет 800, тезисы столбиком */
   @media (max-width: 979px) {
     .fmsites__viewport { --u: calc(100cqw / 800); padding: calc(70 * var(--u)) 0 calc(60 * var(--u)); }
     .fmsites__header { width: calc(640 * var(--u)); }
-    .fmsites__points { grid-template-columns: 1fr; width: calc(640 * var(--u)); gap: calc(14 * var(--u)); }
-    .fmsites__point { flex-direction: row; align-items: flex-start; gap: calc(18 * var(--u)); }
   }
 
   /* ТЕЛЕФОН */
@@ -278,11 +157,6 @@ const points = [
     }
 
     .fmsites__lead { width: 100%; margin-top: 14px; font-size: 14px; line-height: 19px; }
-    .fmsites__points { width: 100%; margin-top: 28px; padding: 0 18px; gap: 10px; }
-    .fmsites__point { gap: 14px; padding: 18px; border-radius: 24px; }
-    .fmsites__icon { width: 44px; height: 44px; }
-    .fmsites__point-title { font-size: clamp(17px, 4.8vw, 20px); }
-    .fmsites__point-text { margin-top: 6px; font-size: 13px; line-height: 17px; }
 
     .fmsites__more {
       gap: 12px;
@@ -304,28 +178,5 @@ const points = [
 
   @media (prefers-reduced-motion: reduce) {
     .fmsites__more-arrow { animation: none; }
-    .fmsites.is-anim .fmsites__point { opacity: 1 !important; animation: none !important; }
   }
 </style>
-
-<script is:inline>
-  (function () {
-    var root = document.querySelector('[data-fmsites]');
-    if (!root || !('IntersectionObserver' in window)) return;
-
-    root.classList.add('is-anim');
-
-    var io = new IntersectionObserver(
-      function (entries) {
-        entries.forEach(function (entry) {
-          if (!entry.isIntersecting) return;
-          root.classList.add('is-ready');
-          io.disconnect();
-        });
-      },
-      { threshold: 0.15 },
-    );
-
-    io.observe(root);
-  })();
-</script>

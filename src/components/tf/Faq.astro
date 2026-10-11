@@ -1,0 +1,157 @@
+---
+/** «Этот блок для вас, если остались сомнения» — восемь вопросов
+    с ответами оригинала (данные — src/data/tf-faq.json). Аккордеон
+    на <details>: открывается и без скрипта; скрипт только плавно
+    раскрывает и держит открытым один ответ. */
+import faq from '../../data/tf-faq.json';
+---
+
+<section class="tf-section tffaq">
+  <div class="tf-panel tf-panel--light tffaq__panel">
+    <header class="tf-head" data-reveal>
+      <div class="tf-tag">Вопросы</div>
+      <h2 class="tf-h2">Этот блок для вас, <br />если остались сомнения</h2>
+      <p class="tf-lead">Тут собраны ответы на все самые популярные вопросы</p>
+    </header>
+
+    <div class="tffaq__list" data-tffaq>
+      {
+        faq.map((item, i) => (
+          <details class="tffaq__item" data-reveal style={`--reveal-delay: ${Math.min(i, 4) * 0.05}s`}>
+            <summary class="tffaq__q">
+              <span>{item.q}</span>
+              <span class="tffaq__icon" aria-hidden="true" />
+            </summary>
+            <div class="tffaq__a">
+              <div class="tffaq__a-in">{item.a.map((p) => <p>{p}</p>)}</div>
+            </div>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .tffaq__panel { padding: calc(80 * var(--u)) 0; }
+
+  .tffaq__list {
+    display: flex;
+    flex-direction: column;
+    gap: calc(10 * var(--u));
+    width: calc(860 * var(--u));
+    margin: calc(44 * var(--u)) auto 0;
+  }
+
+  .tffaq__item {
+    overflow: hidden;
+    border-radius: calc(22 * var(--u));
+    background: #fff;
+    transition: box-shadow 0.3s ease;
+  }
+
+  .tffaq__item[open] { box-shadow: 0 16px 40px rgba(0, 0, 0, 0.06); }
+
+  .tffaq__q {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: calc(20 * var(--u));
+    padding: calc(24 * var(--u)) calc(28 * var(--u));
+    font-size: calc(19 * var(--u));
+    line-height: 1.2;
+    font-weight: 600;
+    letter-spacing: -0.4px;
+    list-style: none;
+    cursor: pointer;
+  }
+
+  .tffaq__q::-webkit-details-marker { display: none; }
+
+  /* плюс в красном круге, при раскрытии — минус */
+  .tffaq__icon {
+    position: relative;
+    width: calc(36 * var(--u));
+    height: calc(36 * var(--u));
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: var(--tf-grad);
+    transition: transform 0.3s ease;
+  }
+
+  .tffaq__icon::before,
+  .tffaq__icon::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 38%;
+    height: 2px;
+    border-radius: 2px;
+    background: #fff;
+    transform: translate(-50%, -50%);
+    transition: transform 0.3s ease;
+  }
+
+  .tffaq__icon::after { transform: translate(-50%, -50%) rotate(90deg); }
+  .tffaq__item[open] .tffaq__icon { transform: rotate(180deg); }
+  .tffaq__item[open] .tffaq__icon::after { transform: translate(-50%, -50%) rotate(0deg); }
+
+  /* внешний слой без отступов — его высота анимируется до нуля без рывка */
+  .tffaq__a { overflow: hidden; }
+
+  .tffaq__a-in {
+    padding: 0 calc(28 * var(--u)) calc(26 * var(--u));
+    color: var(--tf-muted);
+    font-size: calc(14 * var(--u));
+    line-height: calc(21 * var(--u));
+    font-weight: 500;
+  }
+
+  .tffaq__a p + p { margin-top: calc(10 * var(--u)); }
+
+  @media (max-width: 979px) {
+    .tffaq__list { width: calc(720 * var(--u)); }
+  }
+
+  @media (max-width: 640px) {
+    .tffaq__panel { padding: 46px 0 30px; }
+    .tffaq__list { width: 100%; gap: 8px; margin-top: 28px; padding: 0 18px; }
+    .tffaq__item { border-radius: 18px; }
+    .tffaq__q { gap: 14px; padding: 18px; font-size: clamp(16px, 4.5vw, 18px); }
+    .tffaq__icon { width: 32px; height: 32px; }
+    .tffaq__a-in { padding: 0 18px 20px; font-size: 14px; line-height: 20px; }
+    .tffaq__a p + p { margin-top: 8px; }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    var list = document.querySelector('[data-tffaq]');
+    if (!list) return;
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    list.querySelectorAll('.tffaq__item').forEach(function (item) {
+      var summary = item.querySelector('summary');
+      var body = item.querySelector('.tffaq__a');
+
+      summary.addEventListener('click', function (event) {
+        if (reduce) return;
+        event.preventDefault();
+
+        if (item.open) {
+          var h = body.offsetHeight;
+          body.animate([{ height: h + 'px', opacity: 1 }, { height: '0px', opacity: 0 }], { duration: 260, easing: 'ease' })
+            .onfinish = function () { item.open = false; };
+          return;
+        }
+
+        /* открыт один ответ — остальные закрываются */
+        list.querySelectorAll('.tffaq__item[open]').forEach(function (other) { other.open = false; });
+        item.open = true;
+        var full = body.offsetHeight;
+        body.animate([{ height: '0px', opacity: 0 }, { height: full + 'px', opacity: 1 }], { duration: 320, easing: 'cubic-bezier(0.16, 0.82, 0.21, 1)' });
+      });
+    });
+  })();
+</script>

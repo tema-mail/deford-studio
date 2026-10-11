@@ -1,0 +1,156 @@
+---
+/** «Никто не расскажет о нашей работе лучше…» — пять вертикальных
+    видеоотзывов VK Видео с оригинала (якорь reviews). Лента карточек:
+    на компьютере — стрелки, на телефоне — свайп. Плееры подгружаются,
+    когда лента подъезжает к экрану. */
+
+const VK_OWNER = '-213005931';
+const videos = ['456239209', '456239206', '456239205', '456239204', '456239212'];
+---
+
+<section class="tf-section tfrev" id="reviews">
+  <div class="tf-panel tf-panel--dark tfrev__panel">
+    <div class="tf-wrap tfrev__head" data-reveal>
+      <div>
+        <div class="tf-tag tfrev__tag">Отзывы</div>
+        <h2 class="tf-h2 tfrev__title">
+          Никто не расскажет о нашей работе лучше, чем те, кто уже с нами получает результат
+        </h2>
+        <p class="tf-lead tfrev__lead">
+          С каждым клиентом мы выстраиваем долгосрочные партнёрские отношения и работаем
+          не ради галочки, а ради прибыли.
+        </p>
+      </div>
+      <div class="tfrev__arrows">
+        <button class="tfrev__arrow" type="button" aria-label="Предыдущий отзыв" data-tfrev-prev>
+          <svg viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"></path></svg>
+        </button>
+        <button class="tfrev__arrow" type="button" aria-label="Следующий отзыв" data-tfrev-next>
+          <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="tfrev__rail" data-tfrev-rail>
+      {
+        videos.map((id, i) => (
+          <article class="tfrev__card">
+            <iframe
+              src={`https://vkvideo.ru/video_ext.php?oid=${VK_OWNER}&id=${id}&hd=2`}
+              title={`Видеоотзыв ${i + 1}`}
+              loading="lazy"
+              allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock"
+              allowfullscreen
+            ></iframe>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .tfrev__panel { padding: calc(80 * var(--u)) 0; }
+
+  .tfrev__head { display: flex; align-items: flex-end; justify-content: space-between; gap: calc(30 * var(--u)); }
+  .tfrev__tag { background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.14); color: #fff; }
+  .tfrev__title { max-width: calc(700 * var(--u)); margin-top: calc(24 * var(--u)); }
+  .tfrev__lead { max-width: calc(560 * var(--u)); }
+
+  .tfrev__arrows { display: flex; flex: 0 0 auto; gap: calc(10 * var(--u)); }
+
+  .tfrev__arrow {
+    display: grid;
+    place-items: center;
+    width: calc(54 * var(--u));
+    height: calc(54 * var(--u));
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--tf-grad);
+    color: #fff;
+    cursor: pointer;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+  }
+
+  .tfrev__arrow:hover { transform: translateY(-2px); }
+  .tfrev__arrow:disabled { opacity: 0.3; cursor: default; transform: none; }
+
+  .tfrev__arrow svg {
+    width: 40%;
+    height: 40%;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .tfrev__rail {
+    display: flex;
+    gap: calc(20 * var(--u));
+    margin-top: calc(40 * var(--u));
+    padding: 0 calc(60 * var(--u));
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding: 0 calc(60 * var(--u));
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .tfrev__rail::-webkit-scrollbar { display: none; }
+
+  .tfrev__card {
+    flex: 0 0 calc(255 * var(--u));
+    aspect-ratio: 275 / 432;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: calc(24 * var(--u));
+    background: #0d0d0d;
+    scroll-snap-align: start;
+  }
+
+  .tfrev__card iframe { display: block; width: 100%; height: 100%; border: 0; }
+
+  @media (max-width: 979px) {
+    .tfrev__rail { padding: 0 calc(40 * var(--u)); scroll-padding: 0 calc(40 * var(--u)); }
+    .tfrev__card { flex-basis: calc(300 * var(--u)); }
+  }
+
+  @media (max-width: 640px) {
+    .tfrev__panel { padding: 46px 0 30px; }
+    .tfrev__head { flex-direction: column; align-items: flex-start; }
+    .tfrev__title { max-width: none; margin-top: 18px; }
+    .tfrev__lead { max-width: none; }
+    .tfrev__arrows { display: none; }
+    .tfrev__rail { gap: 10px; margin-top: 26px; padding: 0 18px; scroll-padding: 0 18px; }
+    .tfrev__card { flex-basis: 64%; border-radius: 20px; }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    var rail = document.querySelector('[data-tfrev-rail]');
+    if (!rail) return;
+    var prev = document.querySelector('[data-tfrev-prev]');
+    var next = document.querySelector('[data-tfrev-next]');
+
+    function step() {
+      var card = rail.querySelector('.tfrev__card');
+      var gap = parseFloat(getComputedStyle(rail).columnGap) || 0;
+      return card ? card.offsetWidth + gap : rail.clientWidth;
+    }
+
+    function refresh() {
+      var max = rail.scrollWidth - rail.clientWidth - 2;
+      prev.disabled = rail.scrollLeft <= 2;
+      next.disabled = rail.scrollLeft >= max;
+    }
+
+    prev.addEventListener('click', function () { rail.scrollBy({ left: -step(), behavior: 'smooth' }); });
+    next.addEventListener('click', function () { rail.scrollBy({ left: step(), behavior: 'smooth' }); });
+    rail.addEventListener('scroll', refresh, { passive: true });
+    window.addEventListener('resize', refresh, { passive: true });
+    refresh();
+  })();
+</script>

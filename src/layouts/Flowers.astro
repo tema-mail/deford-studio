@@ -48,5 +48,48 @@ const {
 
   <body>
     <slot />
+
+    <script is:inline>
+      /* Плавный переход по якорям меню. Заменяет служебный блок
+         rec4182947201: цель — <a name> или <div id>, стоп на 3px ниже её
+         (замерено на оригинале: страница встаёт на top + 3),
+         попапы и ссылки в новом окне не трогаем. */
+      (function () {
+        var OFFSET = 3;
+
+        function target(hash) {
+          var name = decodeURIComponent(hash.slice(1));
+          if (!name) return null;
+          return document.querySelector('a[name="' + name + '"], div[id="' + name + '"]');
+        }
+
+        function scrollToHash(hash, smooth) {
+          var el = target(hash);
+          if (!el) return false;
+          var top = el.getBoundingClientRect().top + window.scrollY + OFFSET;
+          window.scrollTo({ top: top, behavior: smooth ? 'smooth' : 'auto' });
+          return true;
+        }
+
+        document.addEventListener('click', function (event) {
+          var link = event.target.closest && event.target.closest('a[href^="#"]');
+          if (!link || link.target === '_blank') return;
+
+          var hash = link.getAttribute('href');
+          if (hash === '#' || /^#(popup|closepopup|zeropopup|!)/.test(hash)) return;
+
+          if (scrollToHash(hash, true)) event.preventDefault();
+        });
+
+        /* Переход на страницу сразу с якорем */
+        window.addEventListener('load', function () {
+          if (location.hash) setTimeout(function () { scrollToHash(location.hash, false); }, 1000);
+        });
+
+        window.addEventListener('popstate', function () {
+          if (location.hash) scrollToHash(location.hash, false);
+        });
+      })();
+    </script>
   </body>
 </html>

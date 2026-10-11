@@ -1,29 +1,33 @@
 ---
-/** «У вас уже есть сайт, но он не продаёт?» — лаймовый блок-призыв
-    после блока «Интернет-магазин». Стилистика лендинга: лайм #cefe46,
-    графит #202020, скругление секции как у соседних, кнопка-пилюля
-    с кругом-стрелкой как на первом экране. Масштаб от макета 1200.
+/** Подарок — лаймовый блок после кейсов сайтов. Оффер по словам Дениса
+    Коротаева: если сайт уже есть или только планируется — бесплатный
+    разбор и аудит сайта или консультация на 30-минутном созвоне.
+    Стилистика лендинга: лайм #cefe46, графит #202020, скругление секции
+    как у соседних, кнопка-пилюля с кругом-стрелкой как на первом экране.
+    Масштаб от макета 1200. Тот же подарок предлагает попап при уходе
+    со страницы (ExitGift.astro). */
 
-    Справа — типичные места потерь: это частые проблемы сайтов
-    цветочных, а не диагноз конкретного магазина. */
-
-const leaks = [
-  'Долго открывается с телефона',
-  'Нельзя оплатить заказ онлайн',
-  'Заявки теряются в почте и личке',
-  'Не видно, какая реклама приносит заказы',
+const gifts = [
+  'Разбор и аудит вашего сайта',
+  'Или консультация на 30-минутном созвоне',
+  'Покажем, где сайт теряет заказы',
+  'Покажем, как делаем сайты, которые поднимают выручку',
 ];
 ---
 
 <section class="fmcta" data-fmcta>
   <div class="fmcta__viewport">
     <div class="fmcta__copy">
-      <div class="fmcta__tag">Аудит сайта</div>
-      <h2 class="fmcta__title">У вас уже есть сайт, <br />но он не продаёт?</h2>
-      <p class="fmcta__text">Давайте расскажем, где вы теряете на нём деньги каждый день.</p>
+      <div class="fmcta__tag">Подарок</div>
+      <h2 class="fmcta__title">Есть сайт или только планируете? <br />У нас для вас подарок</h2>
+      <p class="fmcta__text">
+        Бесплатный разбор и аудит вашего сайта — или консультация на 30-минутном
+        созвоне. Покажем, как мы делаем конверсионные сайты, которые поднимают
+        выручку магазинов.
+      </p>
 
       <a class="fmcta__button" href="#popup:myform" role="button" aria-haspopup="dialog">
-        <span>Бесплатная консультация</span>
+        <span>Забрать подарок</span>
         <span class="fmcta__button-arrow" aria-hidden="true">
           <svg viewBox="0 0 44 44">
             <circle cx="22" cy="22" r="22" fill="#CEFE46"></circle>
@@ -47,14 +51,14 @@ const leaks = [
           alt=""
           decoding="async"
         />
-        <div class="fmcta__card-title">Где обычно уходят деньги</div>
+        <div class="fmcta__card-title">Что вы получите</div>
       </div>
 
       <ul class="fmcta__list">
         {
-          leaks.map((item) => (
+          gifts.map((item) => (
             <li class="fmcta__item">
-              <span class="fmcta__minus" aria-hidden="true" />
+              <span class="fmcta__check" aria-hidden="true" />
               {item}
             </li>
           ))
@@ -211,25 +215,13 @@ const leaks = [
     font-weight: 500;
   }
 
-  .fmcta__minus {
-    position: relative;
+  /* галочка: лайм на графитовом круге */
+  .fmcta__check {
     width: calc(22 * var(--u));
     height: calc(22 * var(--u));
     flex: 0 0 auto;
     border-radius: 50%;
-    background: var(--fa-dark);
-  }
-
-  .fmcta__minus::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 28%;
-    right: 28%;
-    height: 2px;
-    margin-top: -1px;
-    border-radius: 2px;
-    background: var(--fa-green);
+    background: var(--fa-dark) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4L18 8' fill='none' stroke='%23cefe46' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 62% no-repeat;
   }
 
   /* Появление при прокрутке — только если скрипт включил анимацию */
@@ -307,7 +299,7 @@ const leaks = [
 
     .fmcta__list { gap: 6px; }
     .fmcta__item { gap: 10px; padding: 11px 12px; border-radius: 10px; font-size: 13px; line-height: 16px; }
-    .fmcta__minus { width: 20px; height: 20px; }
+    .fmcta__check { width: 20px; height: 20px; }
   }
 
   @media (prefers-reduced-motion: reduce) {

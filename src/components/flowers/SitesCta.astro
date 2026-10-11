@@ -1,0 +1,339 @@
+---
+/** «У вас уже есть сайт, но он не продаёт?» — лаймовый блок-призыв
+    после блока «Интернет-магазин». Стилистика лендинга: лайм #cefe46,
+    графит #202020, скругление секции как у соседних, кнопка-пилюля
+    с кругом-стрелкой как на первом экране. Масштаб от макета 1200.
+
+    Справа — типичные места потерь: это частые проблемы сайтов
+    цветочных, а не диагноз конкретного магазина. */
+
+const leaks = [
+  'Долго открывается с телефона',
+  'Нельзя оплатить заказ онлайн',
+  'Заявки теряются в почте и личке',
+  'Не видно, какая реклама приносит заказы',
+];
+---
+
+<section class="fmcta" data-fmcta>
+  <div class="fmcta__viewport">
+    <div class="fmcta__copy">
+      <div class="fmcta__tag">Аудит сайта</div>
+      <h2 class="fmcta__title">У вас уже есть сайт, <br />но он не продаёт?</h2>
+      <p class="fmcta__text">Давайте расскажем, где вы теряете на нём деньги каждый день.</p>
+
+      <a class="fmcta__button" href="#popup:myform" role="button" aria-haspopup="dialog">
+        <span>Бесплатная консультация</span>
+        <span class="fmcta__button-arrow" aria-hidden="true">
+          <svg viewBox="0 0 44 44">
+            <circle cx="22" cy="22" r="22" fill="#CEFE46"></circle>
+            <path
+              d="M16 28L28 16M20 16H28V24"
+              fill="none"
+              stroke="#202020"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+          </svg>
+        </span>
+      </a>
+    </div>
+
+    <div class="fmcta__card">
+      <div class="fmcta__card-head">
+        <img
+          class="fmcta__card-img"
+          src="/img/flowers/39313263-Frame_2131329682jpgw.png"
+          alt=""
+          decoding="async"
+        />
+        <div class="fmcta__card-title">Где обычно уходят деньги</div>
+      </div>
+
+      <ul class="fmcta__list">
+        {
+          leaks.map((item) => (
+            <li class="fmcta__item">
+              <span class="fmcta__minus" aria-hidden="true" />
+              {item}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .fmcta {
+    --fa-dark: #202020;
+    --fa-green: #cefe46;
+    position: relative;
+    width: 100%;
+    padding: 15px 0 0;
+    background: #fff;
+    color: var(--fa-dark);
+    font-family: 'Inter Tight', Inter, Arial, sans-serif;
+    container-type: inline-size;
+  }
+
+  .fmcta,
+  .fmcta * {
+    box-sizing: border-box;
+  }
+
+  .fmcta__viewport {
+    --u: calc(100cqw / 1200);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: calc(48 * var(--u));
+    width: 100%;
+    padding: calc(80 * var(--u)) calc(120 * var(--u));
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 85% 10%, rgba(255, 255, 255, 0.55), transparent 38%),
+      var(--fa-green);
+    border-radius: clamp(42px, 6.25vw, 120px);
+  }
+
+  .fmcta__copy {
+    display: flex;
+    flex: 0 1 calc(520 * var(--u));
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .fmcta__tag {
+    padding: calc(7 * var(--u)) calc(10 * var(--u));
+    border-radius: 100px;
+    background: var(--fa-dark);
+    color: #fff;
+    font-size: calc(11 * var(--u));
+    line-height: calc(13 * var(--u));
+  }
+
+  .fmcta__title {
+    margin: calc(24 * var(--u)) 0 0;
+    font-size: calc(44 * var(--u));
+    line-height: 1;
+    font-weight: 600;
+    letter-spacing: -1.35px;
+  }
+
+  .fmcta__text {
+    margin: calc(16 * var(--u)) 0 0;
+    max-width: calc(420 * var(--u));
+    color: rgba(32, 32, 32, 0.72);
+    font-size: calc(16 * var(--u));
+    line-height: calc(21 * var(--u));
+    font-weight: 500;
+  }
+
+  .fmcta__button {
+    display: inline-flex;
+    align-items: center;
+    gap: calc(13 * var(--u));
+    min-height: calc(55 * var(--u));
+    margin-top: calc(34 * var(--u));
+    padding: calc(5 * var(--u)) calc(5 * var(--u)) calc(5 * var(--u)) calc(25 * var(--u));
+    border-radius: 100px;
+    background: var(--fa-dark);
+    color: #fff;
+    font-size: calc(14.8 * var(--u));
+    line-height: calc(16 * var(--u));
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: transform 0.25s ease;
+  }
+
+  .fmcta__button:hover { transform: translateY(-2px); }
+
+  .fmcta__button-arrow {
+    width: calc(44 * var(--u));
+    height: calc(44 * var(--u));
+    flex: 0 0 auto;
+  }
+
+  .fmcta__button-arrow svg { display: block; width: 100%; height: 100%; }
+
+  /* Карточка «где уходят деньги» */
+  .fmcta__card {
+    flex: 0 0 calc(400 * var(--u));
+    padding: calc(26 * var(--u));
+    border-radius: calc(30 * var(--u));
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 20px 50px rgba(32, 32, 32, 0.12);
+    transform: rotate(2deg);
+  }
+
+  .fmcta__card-head {
+    display: flex;
+    align-items: center;
+    gap: calc(14 * var(--u));
+    margin-bottom: calc(18 * var(--u));
+  }
+
+  .fmcta__card-img {
+    width: calc(64 * var(--u));
+    height: calc(64 * var(--u));
+    flex: 0 0 auto;
+    border-radius: calc(14 * var(--u));
+    object-fit: cover;
+  }
+
+  .fmcta__card-title {
+    font-size: calc(19 * var(--u));
+    line-height: 1.08;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+  }
+
+  .fmcta__list {
+    display: flex;
+    flex-direction: column;
+    gap: calc(8 * var(--u));
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .fmcta__item {
+    display: flex;
+    align-items: center;
+    gap: calc(12 * var(--u));
+    padding: calc(13 * var(--u)) calc(14 * var(--u));
+    border-radius: calc(12 * var(--u));
+    background: #f3f3f3;
+    font-size: calc(13 * var(--u));
+    line-height: calc(16 * var(--u));
+    font-weight: 500;
+  }
+
+  .fmcta__minus {
+    position: relative;
+    width: calc(22 * var(--u));
+    height: calc(22 * var(--u));
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: var(--fa-dark);
+  }
+
+  .fmcta__minus::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 28%;
+    right: 28%;
+    height: 2px;
+    margin-top: -1px;
+    border-radius: 2px;
+    background: var(--fa-green);
+  }
+
+  /* Появление при прокрутке — только если скрипт включил анимацию */
+  .fmcta.is-anim .fmcta__copy,
+  .fmcta.is-anim .fmcta__card { opacity: 0; }
+
+  .fmcta.is-anim.is-ready .fmcta__copy { animation: fmcta-in 0.7s cubic-bezier(0.16, 0.82, 0.21, 1) both; }
+  .fmcta.is-anim.is-ready .fmcta__card { animation: fmcta-card-in 0.8s cubic-bezier(0.16, 0.82, 0.21, 1) 0.15s both; }
+
+  @keyframes fmcta-in {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  @keyframes fmcta-card-in {
+    from { opacity: 0; transform: translateY(30px) rotate(6deg); }
+    to { opacity: 1; transform: rotate(2deg); }
+  }
+
+  /* ПЛАНШЕТ: макет 800, карточка под текстом */
+  @media (max-width: 979px) {
+    .fmcta__viewport {
+      --u: calc(100cqw / 800);
+      flex-direction: column;
+      align-items: flex-start;
+      padding: calc(64 * var(--u)) calc(60 * var(--u));
+    }
+
+    .fmcta__copy { flex: 0 0 auto; }
+    .fmcta__card { flex: 0 0 auto; width: calc(480 * var(--u)); align-self: flex-end; }
+  }
+
+  /* ТЕЛЕФОН */
+  @media (max-width: 640px) {
+    .fmcta { background: transparent; }
+
+    .fmcta__viewport {
+      gap: 30px;
+      padding: 44px 18px 30px;
+      border-radius: 36px;
+    }
+
+    .fmcta__tag { padding: 7px 10px; font-size: 11px; line-height: 13px; }
+
+    .fmcta__title {
+      margin-top: 18px;
+      font-size: clamp(29px, 8.3vw, 40px);
+      line-height: 0.98;
+      letter-spacing: -0.9px;
+    }
+
+    .fmcta__title br { display: none; }
+
+    .fmcta__text { max-width: none; margin-top: 12px; font-size: 15px; line-height: 20px; }
+
+    .fmcta__button {
+      position: relative;
+      justify-content: center;
+      width: 100%;
+      min-height: 55px;
+      margin-top: 24px;
+      padding: 5px 55px;
+      font-size: 14px;
+      line-height: 16px;
+    }
+
+    .fmcta__button-arrow { position: absolute; top: 50%; right: 5px; width: 44px; height: 44px; transform: translateY(-50%); }
+
+    .fmcta__card { width: 100%; padding: 18px; border-radius: 24px; transform: none; }
+    .fmcta.is-anim.is-ready .fmcta__card { animation-name: fmcta-in; }
+
+    .fmcta__card-head { gap: 12px; margin-bottom: 14px; }
+    .fmcta__card-img { width: 52px; height: 52px; border-radius: 12px; }
+    .fmcta__card-title { font-size: clamp(18px, 5vw, 20px); }
+
+    .fmcta__list { gap: 6px; }
+    .fmcta__item { gap: 10px; padding: 11px 12px; border-radius: 10px; font-size: 13px; line-height: 16px; }
+    .fmcta__minus { width: 20px; height: 20px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fmcta.is-anim .fmcta__copy,
+    .fmcta.is-anim .fmcta__card { opacity: 1 !important; animation: none !important; }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    var root = document.querySelector('[data-fmcta]');
+    if (!root || !('IntersectionObserver' in window)) return;
+
+    root.classList.add('is-anim');
+
+    var io = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          root.classList.add('is-ready');
+          io.disconnect();
+        });
+      },
+      { threshold: 0.2 },
+    );
+
+    io.observe(root);
+  })();
+</script>

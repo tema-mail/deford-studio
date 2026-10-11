@@ -95,10 +95,11 @@ REF=https://targetfactory.ru/flowers NEW=http://localhost:4322/flowers \
   node scripts/compare.mjs "#rec4182830401" steps 375
 ```
 
-Черновики новых блоков (в лендинг не вставлены):
-- «Интернет-магазин» — `src/components/flowers/Sites.astro`, смотреть на
-  https://tema-mail.github.io/deford-studio/drafts/flowers-sites/ ; цифры кейса примерные
-  (500 заказов, 7%, 1 200 ₽) — перед вставкой в лендинг заменить на реальные.
+Новые блоки, которых нет на оригинале (стоят после «Этапов работы»):
+- «Интернет-магазин» — `src/components/flowers/Sites.astro`; цифры кейса примерные
+  (500 заказов, 7%, 1 200 ₽) — заменить на цифры реального кейса;
+- «Аудит сайта» (лаймовый призыв) — `src/components/flowers/SitesCta.astro`.
+Отдельно оба блока: https://tema-mail.github.io/deford-studio/drafts/flowers-sites/
 
 ## Чего на странице ещё нет
 

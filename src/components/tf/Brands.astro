@@ -1,0 +1,121 @@
+---
+/** «Компании и бренды, которые выбрали наше агентство» — 30 логотипов
+    с оригинала тремя бегущими строками, как на нём; строки едут
+    в разные стороны и встают при наведении. Логотипы — на тёмных
+    карточках. Без анимации (настройка «меньше движения») — обычная
+    сетка. */
+
+const logos = Array.from({ length: 30 }, (_, i) => `b${String(i + 1).padStart(2, '0')}`);
+const rows = [logos.slice(0, 10), logos.slice(10, 20), logos.slice(20, 30)];
+---
+
+<section class="tf-section tfbrands" data-tfbrands>
+  <div class="tf-panel tf-panel--dark tfbrands__panel">
+    <header class="tf-head" data-reveal>
+      <div class="tf-tag tfbrands__tag">Клиенты</div>
+      <h2 class="tf-h2">Компании и бренды, которые выбрали наше агентство для продвижения ВКонтакте</h2>
+    </header>
+
+    <div class="tfbrands__rows">
+      {
+        rows.map((row, r) => (
+          <div class={`tfbrands__row${r === 1 ? ' tfbrands__row--back' : ''}`}>
+            <div class="tfbrands__track">
+              {[...row, ...row].map((logo, i) => (
+                <div class="tfbrands__tile" aria-hidden={i >= row.length ? 'true' : undefined}>
+                  <img src={`/img/tf/brands/${logo}.webp`} alt="" loading="lazy" decoding="async" />
+                </div>
+              ))}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .tfbrands__panel { padding: calc(80 * var(--u)) 0; }
+  .tfbrands__tag { background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.14); color: #fff; }
+  .tfbrands .tf-head { width: calc(820 * var(--u)); }
+
+  .tfbrands__rows {
+    display: flex;
+    flex-direction: column;
+    gap: calc(14 * var(--u));
+    margin-top: calc(48 * var(--u));
+    /* края строк растворяются */
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+  }
+
+  .tfbrands__row { overflow: hidden; }
+
+  .tfbrands__track {
+    display: flex;
+    gap: calc(14 * var(--u));
+    width: max-content;
+    animation: tfbrands-run 48s linear infinite;
+  }
+
+  .tfbrands__row--back .tfbrands__track { animation-direction: reverse; animation-duration: 56s; }
+  .tfbrands__rows:hover .tfbrands__track { animation-play-state: paused; }
+
+  @keyframes tfbrands-run {
+    from { transform: translateX(0); }
+    /* дорожка — две копии строки, сдвиг на одну копию с учётом зазора */
+    to { transform: translateX(calc(-50% - 7 * var(--u))); }
+  }
+
+  .tfbrands__tile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(230 * var(--u));
+    height: calc(118 * var(--u));
+    flex: 0 0 auto;
+    padding: calc(18 * var(--u)) calc(26 * var(--u));
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: calc(18 * var(--u));
+    background: linear-gradient(180deg, #232323 0%, #171717 100%);
+  }
+
+  /* вписываем в карточку по обеим сторонам — высокие логотипы не обрезаются */
+  .tfbrands__tile img { width: auto; height: auto; max-width: 100%; max-height: 100%; object-fit: contain; }
+
+  @media (max-width: 640px) {
+    .tfbrands__panel { padding: 46px 0 36px; }
+    .tfbrands .tf-head { width: 100%; }
+    .tfbrands__rows { gap: 8px; margin-top: 28px; }
+    .tfbrands__track { gap: 8px; }
+    .tfbrands__tile { width: 140px; height: 76px; padding: 12px 16px; border-radius: 14px; }
+
+    @keyframes tfbrands-run {
+      from { transform: translateX(0); }
+      to { transform: translateX(calc(-50% - 4px)); }
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tfbrands__rows { -webkit-mask-image: none; mask-image: none; }
+    .tfbrands__row { overflow: visible; }
+    .tfbrands__track { flex-wrap: wrap; justify-content: center; width: auto; padding: 0 18px; animation: none; }
+    .tfbrands__tile[aria-hidden='true'] { display: none; }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    /* Логотипы лениво грузятся, только когда сами въезжают в кадр, —
+       в бегущей строке они мелькали бы пустыми. Как только блок
+       подходит к экрану, грузим все сразу. */
+    var root = document.querySelector('[data-tfbrands]');
+    if (!root || !('IntersectionObserver' in window)) return;
+    var io = new IntersectionObserver(function (entries) {
+      if (!entries[0].isIntersecting) return;
+      root.querySelectorAll('img[loading="lazy"]').forEach(function (img) { img.loading = 'eager'; });
+      io.disconnect();
+    }, { rootMargin: '800px 0px' });
+    io.observe(root);
+  })();
+</script>

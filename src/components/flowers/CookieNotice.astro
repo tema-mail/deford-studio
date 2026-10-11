@@ -1,0 +1,137 @@
+---
+/** Уведомление о cookie. Оригинал — служебный блок платформы
+    rec4182947101: своей вёрстки у него нет, он собирается
+    из общих стилей Тильды. Повторено собственным кодом по
+    параметрам, снятым с живой страницы: карточка 340×164
+    в правом нижнем углу, текст Montserrat 12/18.6, кнопка
+    #ceff31 с радиусом 30. Согласие запоминается в браузере. */
+---
+
+<div class="fm-cookie" data-fm-cookie hidden>
+  <div class="fm-cookie__card" role="alertdialog" aria-modal="false">
+    <p class="fm-cookie__text">
+      Используя данный сайт, вы даете согласие на использование файлов cookie,
+      помогающих нам сделать его удобнее для вас
+    </p>
+    <button type="button" class="fm-cookie__accept">Ок</button>
+    <button
+      type="button"
+      class="fm-cookie__close"
+      aria-label="Закрыть уведомление"
+    >
+      <svg viewBox="0 0 23 23" width="10" height="10" aria-hidden="true">
+        <g fill="#000" fill-rule="evenodd">
+          <rect
+            transform="translate(11.313708, 11.313708) rotate(-45) translate(-11.313708, -11.313708)"
+            x="10.3137085"
+            y="-3.6862915"
+            width="2"
+            height="30"></rect>
+          <rect
+            transform="translate(11.313708, 11.313708) rotate(-315) translate(-11.313708, -11.313708)"
+            x="10.3137085"
+            y="-3.6862915"
+            width="2"
+            height="30"></rect>
+        </g>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<style>
+  .fm-cookie {
+    position: fixed;
+    right: 30px;
+    bottom: 30px;
+    width: 340px;
+    max-width: calc(100% - 40px);
+    z-index: 100001;
+  }
+
+  .fm-cookie[hidden] {
+    display: none;
+  }
+
+  .fm-cookie__card {
+    position: relative;
+    padding: 20px 30px;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.3);
+  }
+
+  .fm-cookie__text {
+    margin: 0;
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 300;
+    line-height: 18.6px;
+    color: #000;
+  }
+
+  .fm-cookie__accept {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 15px;
+    padding: 8.4px 15px;
+    border: 0;
+    border-radius: 30px;
+    background: #ceff31;
+    color: #202020;
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.4;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+  }
+
+  .fm-cookie__accept:hover {
+    background: #c2f21c;
+  }
+
+  .fm-cookie__close {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    var KEY = 'fm-cookie-accepted';
+    var box = document.querySelector('[data-fm-cookie]');
+    if (!box) return;
+
+    var stored = null;
+    try {
+      stored = localStorage.getItem(KEY);
+    } catch (e) {
+      /* приватный режим — показываем уведомление как обычно */
+    }
+
+    if (stored === 'yes') return;
+    box.hidden = false;
+
+    function hide() {
+      box.hidden = true;
+      try {
+        localStorage.setItem(KEY, 'yes');
+      } catch (e) {}
+    }
+
+    box.querySelector('.fm-cookie__accept').addEventListener('click', hide);
+    box.querySelector('.fm-cookie__close').addEventListener('click', hide);
+  })();
+</script>

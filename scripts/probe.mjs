@@ -4,6 +4,8 @@
  * служебные виджеты Тильды собственным кодом.
  *
  *   node scripts/probe.mjs "<селектор>" [ширина]
+ *
+ * Страница по умолчанию — главная, другая задаётся через REF.
  */
 import { chromium } from 'playwright';
 
@@ -17,7 +19,7 @@ const page = await browser.newPage({
   hasTouch: width <= 640,
 });
 
-await page.goto('https://deford-studio.ru/', { waitUntil: 'load', timeout: 90_000 });
+await page.goto(process.env.REF ?? 'https://deford-studio.ru/', { waitUntil: 'load', timeout: 90_000 });
 await page.waitForTimeout(12_000);
 
 const data = await page.evaluate((sel) => {

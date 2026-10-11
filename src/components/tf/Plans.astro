@@ -1,0 +1,252 @@
+---
+/** Тарифы — «Выбирайте формат сотрудничества». Тексты, цены и состав —
+    с оригинала (якорь service). Три карточки, как на оригинале: белая,
+    красная (выделенная) и тёмная; кнопка «Оплатить полностью» открывает
+    заявку со своим тарифом (номер формы оригинала задаёт попап). */
+
+const plans = [
+  {
+    tone: 'light',
+    icon: 'plan-consult',
+    title: 'Консультация по рекламе ВКонтакте',
+    sub: 'Идеально для микробизнеса и начинающих предпринимателей',
+    price: '15 000 ₽',
+    items: [
+      'Аудит рекламного кабинета: аудитории, тексты, креативы',
+      'Рекомендации по упаковке сообщества и контенту',
+      'Подсказки по обработке заявок и воронке продаж',
+      'Онлайн-сессия 1,5 – 2 часа',
+      'Вы получите чёткий план действий: сможете самостоятельно запустить рекламу или контролировать работу таргетолога',
+    ],
+    gifts: [],
+    hook: '#zeropopupconsult',
+  },
+  {
+    tone: 'red',
+    icon: 'plan-target',
+    title: 'Настройка таргетированной рекламы',
+    sub: 'Для предпринимателей, которые хотят получать клиентов уже в первый месяц',
+    price: '30 000 ₽',
+    items: [
+      'Аудит сообщества + рекомендации по улучшению',
+      'Разработка стратегии продвижения',
+      'Сбор и анализ целевой аудитории',
+      'Настройка рекламного кабинета',
+      'Создание креативов и текстов',
+      'Запуск и ведение рекламы — 1 месяц',
+      'Оптимизация, масштабирование, ежедневная работа с результатами',
+    ],
+    gifts: ['Оформление и дизайн сообщества', 'Установка чат-бота', 'Рекомендации по контенту и продажам'],
+    hook: '#zeropopuptarget',
+  },
+  {
+    tone: 'dark',
+    icon: 'plan-key',
+    title: 'Продвижение под ключ — «Таргет + СММ»',
+    sub: 'Вы делаете продажи. Всё остальное — берём на себя.',
+    price: '60 000 ₽/мес',
+    items: [
+      'Всё из пакета по таргету +',
+      '20–30 постов в месяц',
+      'Контент-план, продуманный под ЦА, боли, страхи, возражения',
+      'Посты, которые не просто украшают ленту, а ведут к заявкам и продажам',
+      'Подходит тем, кто хочет полностью делегировать рекламу и контент — и не тратить время на публикации и тексты.',
+    ],
+    gifts: [],
+    hook: '#zeropopuptargetsmm',
+  },
+];
+---
+
+<section class="tf-section tfplans" id="service">
+  <div class="tf-panel tf-panel--light tfplans__panel">
+    <header class="tf-head tfplans__head" data-reveal>
+      <div class="tf-tag">Услуги</div>
+      <h2 class="tf-h2">Выбирайте формат сотрудничества, <br />который подходит именно вам</h2>
+      <p class="tf-lead">— от консультации до полного ведения под ключ.</p>
+    </header>
+
+    <div class="tf-wrap tfplans__grid">
+      {
+        plans.map((p, i) => (
+          <article class={`tfplans__card tfplans__card--${p.tone}`} data-reveal style={`--reveal-delay: ${i * 0.08}s`}>
+            <div class="tfplans__top">
+              <img class="tfplans__icon" src={`/img/tf/${p.icon}.webp`} alt="" loading="lazy" decoding="async" />
+              <div>
+                <h3 class="tfplans__title">{p.title}</h3>
+                <p class="tfplans__sub">{p.sub}</p>
+              </div>
+            </div>
+
+            <div class="tfplans__label">Что получите:</div>
+            <ul class="tfplans__list">
+              {p.items.map((item) => <li>{item}</li>)}
+            </ul>
+
+            {p.gifts.length > 0 && (
+              <div class="tfplans__gifts">
+                <div class="tfplans__label">Дарим бесплатно:</div>
+                <ul class="tfplans__list tfplans__list--gift">
+                  {p.gifts.map((g) => <li>{g}</li>)}
+                </ul>
+              </div>
+            )}
+
+            <div class="tfplans__bottom">
+              <div class="tfplans__from">Стоимость от</div>
+              <div class="tfplans__price">{p.price}</div>
+              <a class={`tf-btn ${p.tone === 'light' ? 'tf-btn--red' : 'tf-btn--light'} tfplans__btn`} href={p.hook}>
+                <span>Оплатить полностью</span>
+                <span class="tf-btn__arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"></path></svg></span>
+              </a>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .tfplans__panel { padding: calc(80 * var(--u)) 0; }
+  .tfplans__head { width: calc(760 * var(--u)); }
+
+  .tfplans__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: calc(20 * var(--u));
+    align-items: stretch;
+    margin-top: calc(48 * var(--u));
+  }
+
+  .tfplans__card {
+    display: flex;
+    flex-direction: column;
+    padding: calc(28 * var(--u));
+    border-radius: calc(27 * var(--u));
+    background: linear-gradient(180deg, #ffffff 0%, #f6f6f6 100%);
+    color: var(--tf-ink);
+  }
+
+  .tfplans__card--red {
+    background:
+      radial-gradient(circle at 100% 0%, rgba(255, 255, 255, 0.18), transparent 45%),
+      var(--tf-grad);
+    color: #fff;
+    box-shadow: 0 24px 60px rgba(238, 0, 0, 0.25);
+  }
+
+  .tfplans__card--dark { background: linear-gradient(180deg, #232323 0%, #161616 100%); color: #fff; }
+
+  .tfplans__top { display: flex; align-items: flex-start; gap: calc(16 * var(--u)); }
+
+  .tfplans__icon {
+    width: calc(64 * var(--u));
+    height: calc(64 * var(--u));
+    flex: 0 0 auto;
+    object-fit: contain;
+  }
+
+  .tfplans__title { font-size: calc(21 * var(--u)); line-height: 1.08; font-weight: 600; letter-spacing: -0.5px; }
+
+  .tfplans__sub {
+    margin-top: calc(8 * var(--u));
+    color: var(--tf-muted);
+    font-size: calc(12 * var(--u));
+    line-height: calc(16 * var(--u));
+    font-weight: 500;
+  }
+
+  .tfplans__card--red .tfplans__sub,
+  .tfplans__card--dark .tfplans__sub { color: rgba(255, 255, 255, 0.7); }
+
+  .tfplans__label {
+    margin-top: calc(26 * var(--u));
+    font-size: calc(14 * var(--u));
+    font-weight: 600;
+  }
+
+  .tfplans__list {
+    display: flex;
+    flex-direction: column;
+    gap: calc(9 * var(--u));
+    margin-top: calc(12 * var(--u));
+    padding: 0;
+    list-style: none;
+  }
+
+  .tfplans__list li {
+    position: relative;
+    padding-left: calc(24 * var(--u));
+    font-size: calc(13 * var(--u));
+    line-height: calc(18 * var(--u));
+    font-weight: 500;
+  }
+
+  .tfplans__list li::before {
+    content: '';
+    position: absolute;
+    top: calc(2 * var(--u));
+    left: 0;
+    width: calc(15 * var(--u));
+    height: calc(15 * var(--u));
+    border-radius: 50%;
+    /* слои через запятую: галочка поверх красного градиента */
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4L18 8' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 70% no-repeat, var(--tf-grad);
+  }
+
+  .tfplans__card--red .tfplans__list li::before {
+    background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4L18 8' fill='none' stroke='%23e00' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 70% no-repeat;
+  }
+
+  /* подарки — значок подарка (подарки есть только у красного тарифа) */
+  .tfplans__card .tfplans__list--gift li::before,
+  .tfplans__card--red .tfplans__list--gift li::before {
+    background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 7v13M5 11h14v9H5zM4 7h16v4H4zM12 7c-2-3-5-3-5-1s5 1 5 1zm0 0c2-3 5-3 5-1s-5 1-5 1z' fill='none' stroke='%23e00' stroke-width='2.2' stroke-linejoin='round'/%3E%3C/svg%3E") center / 66% no-repeat;
+  }
+
+  .tfplans__gifts {
+    margin-top: calc(6 * var(--u));
+    padding: calc(2 * var(--u)) calc(16 * var(--u)) calc(16 * var(--u));
+    border-radius: calc(16 * var(--u));
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  .tfplans__gifts .tfplans__label { margin-top: calc(14 * var(--u)); }
+
+  .tfplans__bottom { margin-top: auto; padding-top: calc(28 * var(--u)); }
+
+  .tfplans__from { color: var(--tf-muted); font-size: calc(12 * var(--u)); font-weight: 500; }
+  .tfplans__card--red .tfplans__from,
+  .tfplans__card--dark .tfplans__from { color: rgba(255, 255, 255, 0.65); }
+
+  .tfplans__price { margin-top: calc(4 * var(--u)); font-size: calc(34 * var(--u)); line-height: 1; font-weight: 600; letter-spacing: -1px; }
+
+  .tfplans__btn { justify-content: space-between; width: 100%; margin-top: calc(20 * var(--u)); }
+
+  /* Планшет: тарифы столбиком, по ширине макета 800 */
+  @media (max-width: 979px) {
+    .tfplans__head { width: calc(640 * var(--u)); }
+    .tfplans__grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 640px) {
+    .tfplans__panel { padding: 46px 0 30px; }
+    .tfplans__head { width: 100%; }
+    .tfplans__grid { gap: 12px; margin-top: 30px; }
+    .tfplans__card { padding: 22px 20px; border-radius: 24px; }
+    .tfplans__icon { width: 54px; height: 54px; }
+    .tfplans__title { font-size: clamp(19px, 5.4vw, 22px); }
+    .tfplans__sub { font-size: 13px; line-height: 17px; }
+    .tfplans__label { margin-top: 20px; font-size: 14px; }
+    .tfplans__list { gap: 8px; margin-top: 10px; }
+    .tfplans__list li { padding-left: 24px; font-size: 14px; line-height: 19px; }
+    .tfplans__list li::before { top: 2px; width: 15px; height: 15px; }
+    .tfplans__gifts { padding: 2px 14px 14px; border-radius: 14px; }
+    .tfplans__gifts .tfplans__label { margin-top: 12px; }
+    .tfplans__bottom { padding-top: 22px; }
+    .tfplans__from { font-size: 12px; }
+    .tfplans__price { font-size: 30px; }
+    .tfplans__btn { margin-top: 16px; }
+  }
+</style>

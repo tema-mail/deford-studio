@@ -1,0 +1,121 @@
+---
+/** «8 причин доверить продвижение нам». Тексты и иллюстрации — с оригинала,
+    порядок — как на нём. Тёмная подложка, сетка 4 × 2 (планшет — 2 в ряд):
+    иллюстрация сверху на тёмной карточке, заголовок и текст снизу.
+    На телефоне карточка горизонтальная, иллюстрация слева, чтобы
+    восемь карточек не растягивали страницу. */
+
+const reasons = [
+  { img: 'why-dive', title: 'Погружаемся в ваш бизнес', text: 'Перед запуском анализируем нишу, ЦА и конкурентов. Мы не запускаем рекламу вслепую, а выстраиваем систему, которая реально работает под ваш продукт.' },
+  { img: 'why-launch', title: 'Запуск за 1 день + поддержка 24/7', text: 'Всегда на связи — даже в выходные. Ежедневные и еженедельные отчёты + регулярная обратная связь в чате.' },
+  { img: 'why-personal', title: 'Персональный подход', text: 'Никакой шаблонной работы. Каждому проекту — своя стратегия. Офферы, креативы, воронка подбираются персонально.' },
+  { img: 'why-team', title: 'Команда профессионалов', text: 'Все специалисты в нашей команде с богатым опытом, постоянно проходят обязательное обучение и повышение квалификации.' },
+  { img: 'why-money', title: 'Считаем деньги, а не лайки', text: 'Отчётность по важным метрикам: стоимость клиента, ДРР, окупаемость и другие важные показатели. Работаем в вашем кабинете — у вас полный доступ и контроль.' },
+  { img: 'why-design', title: 'Дизайн группы — бесплатно', text: 'Оформление от дизайнера и настройка разделов. То, за что другие берут 5–15 тыс — мы делаем в подарок.' },
+  { img: 'why-bot', title: 'Настройка чат-бота + автоворонка', text: 'Быстрая коммуникация, автоответы, сбор заявок, рассылки и прогрев — поможем всё внедрить.' },
+  { img: 'why-contract', title: 'Работаем по договору', text: 'Даже с физлицами. Оплата — на расчётный счёт или СБП. С ИП и ООО — ЭДО. Юридическая чистота на каждом этапе.' },
+];
+---
+
+<section class="tf-section tfreasons">
+  <div class="tf-panel tf-panel--dark tfreasons__panel">
+    <header class="tf-head" data-reveal>
+      <div class="tf-tag">Наш подход</div>
+      <h2 class="tf-h2">8 причин доверить <br />продвижение нам</h2>
+    </header>
+
+    <div class="tf-wrap tfreasons__grid">
+      {
+        reasons.map((r, i) => (
+          <article class="tfreasons__card" data-reveal style={`--reveal-delay: ${(i % 4) * 0.07}s`}>
+            <div class="tfreasons__media">
+              <img src={`/img/tf/${r.img}.webp`} alt="" loading="lazy" decoding="async" />
+            </div>
+            <div class="tfreasons__copy">
+              <h3 class="tfreasons__title">{r.title}</h3>
+              <p class="tfreasons__text">{r.text}</p>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .tfreasons__panel { padding: calc(80 * var(--u)) 0; }
+  .tfreasons .tf-head .tf-tag { background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.14); color: #fff; }
+
+  .tfreasons__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: calc(20 * var(--u));
+    margin-top: calc(48 * var(--u));
+  }
+
+  .tfreasons__card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: calc(27 * var(--u));
+    background: linear-gradient(180deg, #202020 0%, #171717 100%);
+    transition: border-color 0.3s ease, transform 0.3s ease;
+  }
+
+  .tfreasons__card:hover { border-color: rgba(238, 0, 0, 0.45); }
+
+  .tfreasons__media {
+    position: relative;
+    aspect-ratio: 1 / 0.9;
+    background: radial-gradient(circle at 50% 55%, rgba(238, 0, 0, 0.32), transparent 62%);
+  }
+
+  .tfreasons__media img {
+    position: absolute;
+    inset: calc(14 * var(--u));
+    width: calc(100% - 28 * var(--u));
+    height: calc(100% - 28 * var(--u));
+    object-fit: contain;
+    transition: transform 0.5s cubic-bezier(0.2, 0.75, 0.25, 1);
+  }
+
+  .tfreasons__card:hover .tfreasons__media img { transform: scale(1.04); }
+
+  .tfreasons__copy { padding: calc(4 * var(--u)) calc(22 * var(--u)) calc(24 * var(--u)); }
+
+  .tfreasons__title {
+    font-size: calc(18 * var(--u));
+    line-height: 1.1;
+    font-weight: 600;
+    letter-spacing: -0.4px;
+  }
+
+  .tfreasons__text {
+    margin-top: calc(10 * var(--u));
+    color: rgba(255, 255, 255, 0.6);
+    font-size: calc(12 * var(--u));
+    line-height: calc(17 * var(--u));
+    font-weight: 500;
+  }
+
+  @media (max-width: 979px) {
+    .tfreasons__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  @media (max-width: 640px) {
+    .tfreasons__panel { padding: 46px 0 30px; }
+    .tfreasons__grid { grid-template-columns: 1fr; gap: 10px; margin-top: 30px; }
+
+    .tfreasons__card { flex-direction: row; align-items: center; border-radius: 22px; }
+    .tfreasons__media { flex: 0 0 104px; width: 104px; aspect-ratio: 1; }
+    .tfreasons__media img { inset: 8px; width: calc(100% - 16px); height: calc(100% - 16px); }
+    .tfreasons__copy { padding: 14px 16px 14px 4px; }
+    .tfreasons__title { font-size: clamp(16px, 4.5vw, 18px); }
+    .tfreasons__text { margin-top: 6px; font-size: 12px; line-height: 16px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tfreasons__media img, .tfreasons__card { transition: none; }
+  }
+</style>

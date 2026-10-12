@@ -5,7 +5,7 @@
  *
  * Что делает:
  *  1. Собирает список страниц: /keys_all, /reviews, 13 разделов портфолио
- *     (ссылки /keys_* с /keys_all) и все кейсы — адреса товаров каталога.
+ *     (ссылки /keys_* с /keys_all) и все кейсы – адреса товаров каталога.
  *  2. Режет каждую страницу на блоки Тильды (div.t-rec). Блоки, которые есть
  *     почти на всех страницах (шапка, меню, подвал, попап заявки, виджеты), –
  *     общая оболочка: src/data/portfolio/shell.json. Остальные – свои блоки
@@ -166,7 +166,10 @@ function mapLinks(s) {
 
 function clean(html) {
   let s = html
-    .replace(/<script\b[\s\S]*?<\/script>/g, '')
+    .replace(/<script\b[\s\S]*?<\/script>/gi, '')
+    /* обработчики on* и javascript:-ссылки в разметку сайта не пускаем */
+    .replace(/\son[a-z]+\s*=\s*("[^"]*"|'[^']*')/gi, '')
+    .replace(/href=(["'])\s*(?:denied:)?javascript:[^"']*\1/gi, 'href=$1#$1')
     .replace(/<template\b[\s\S]*?<\/template>/g, '')
     .replace(/<!--(?!\s*\/?noindex)[\s\S]*?-->/g, '')
     /* заглушки ленивой загрузки: src → настоящая картинка */

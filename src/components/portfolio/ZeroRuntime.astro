@@ -98,6 +98,7 @@
       }
 
       /* 2-й проход – положение по осям */
+      var bottom = 0;
       for (var j = 0; j < els.length; j++) {
         var e = els[j];
         var t = e.getAttribute('data-elem-type');
@@ -123,6 +124,16 @@
         var top = (inWin ? 0 : offY) + (ay === 'center' ? (cH - eh) / 2 + y : ay === 'bottom' ? cH - eh + y : y);
         e.style.left = left + 'px';
         e.style.top = top + 'px';
+        bottom = Math.max(bottom, top + eh);
+      }
+
+      /* высота «по содержимому» (heightmode=hug): по низу элементов;
+         отступ data-artboard-padding уже задан в CSS блока */
+      if (ab.getAttribute('data-artboard-heightmode') === 'hug' && bottom > 0) {
+        var hh = bottom;
+        ab.style.height = hh + 'px';
+        var ly = ab.parentNode.querySelectorAll('.t396__carrier, .t396__filter');
+        for (var q = 0; q < ly.length; q++) ly[q].style.height = hh + 'px';
       }
     }
 
@@ -255,10 +266,30 @@
       var body = new URLSearchParams(new FormData(form));
       var pref = form.querySelectorAll('[data-prefix]');
       for (var p = 0; p < pref.length; p++) body.set(pref[p].name, pref[p].getAttribute('data-prefix') + ' ' + pref[p].value);
+      /* служебные поля, как у форм Тильды: проект, страница, ключ форм */
+      var ar = document.getElementById('allrecords');
       body.append('tildaspec-referer', location.href);
-      fetch(FORM_ACTION, { method: 'POST', mode: 'no-cors', body: body }).catch(function () {});
-      form.reset();
-      document.dispatchEvent(new CustomEvent('pf:sent', { detail: form }));
+      body.append('tildaspec-formid', 'form' + ((form.closest('.t-rec') || {}).id || '').replace('rec', ''));
+      if (ar) {
+        body.append('tildaspec-formskey', ar.getAttribute('data-tilda-formskey') || '');
+        body.append('tildaspec-projectid', ar.getAttribute('data-tilda-project-id') || '');
+        body.append('tildaspec-pageid', ar.getAttribute('data-tilda-page-id') || '');
+      }
+      var btn = form.querySelector('.pf-zform__submit');
+      if (btn) btn.disabled = true;
+      /* no-cors: ответ не читается, но обрыв сети ловится – тогда «успешно» не показываем */
+      fetch(FORM_ACTION, { method: 'POST', mode: 'no-cors', body: body })
+        .then(function () {
+          form.reset();
+          document.dispatchEvent(new CustomEvent('pf:sent', { detail: form }));
+        })
+        .catch(function () {
+          var last = form.querySelector('.pf-zform__error:last-of-type') || form.querySelector('.pf-zform__error');
+          if (last) last.textContent = 'Не удалось отправить. Проверьте интернет и попробуйте ещё раз.';
+        })
+        .then(function () {
+          if (btn) btn.disabled = false;
+        });
     };
 
     /* фиксированные артборды (data-artboard-pos=fixed): прозрачны и не ловят

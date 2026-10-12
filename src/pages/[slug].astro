@@ -1,0 +1,26 @@
+---
+/** Все страницы портфолио и отзывов, перенесённые с Тильды:
+    /keys_all, 13 разделов /keys_*, /reviews и 173 кейса.
+    Данные – src/data/portfolio/pages/*.json (scripts/tilda-port.mjs).
+    Блоки выводятся по порядку: разметка Тильды как есть, каталог – своим
+    компонентом. */
+import Portfolio from '../layouts/Portfolio.astro';
+
+type Rec = { id: string; type: string; html?: string; open?: string; style?: string; products?: string[]; options?: Record<string, string> };
+type Page = { slug: string; title: string; description: string; ogTitle: string; ogImage: string; records: Rec[] };
+
+export function getStaticPaths() {
+  const files = import.meta.glob<Page>('../data/portfolio/pages/*.json', { eager: true, import: 'default' });
+  return Object.values(files).map((page) => ({ params: { slug: page.slug }, props: { page } }));
+}
+
+const { page } = Astro.props as { page: Page };
+---
+
+<Portfolio slug={page.slug} title={page.title} description={page.description} ogTitle={page.ogTitle} ogImage={page.ogImage}>
+  {
+    page.records.map((r) =>
+      r.type === 'catalog' ? null : <Fragment set:html={r.html} />,
+    )
+  }
+</Portfolio>

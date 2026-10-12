@@ -1,0 +1,278 @@
+---
+/** Движок Zero-блоков вместо tilda-zero*.js – для страниц портфолио.
+
+    CSS блоков Тильды задаёт не всё: координаты, совпадающие со «старшим»
+    макетом, в мобильные media не попадают, их Тильда дописывает скриптом.
+    Здесь то же самое по атрибутам data-field-*:
+    1. макет = самая широкая ширина из data-artboard-screens, не больше окна;
+    2. значение поля – с этого макета, иначе с ближайшего более широкого;
+    3. контейнер grid – сетка ширины макета по центру, window – всё окно;
+       оси left/center/right и top/center/bottom, единицы px и %;
+    4. режим upscale=window – масштаб «ширина окна / ширина макета»
+       (zoom на артборде, позиции считаются в координатах макета);
+    5. Zero-формы (tn-atom__form) собираются из списка полей и отправляются
+       на прежний адрес приёма заявок Тильды с теми же получателями. */
+---
+
+<script is:inline>
+  (function () {
+    var DEF = '320,480,640,960,1200';
+    var FORM_ACTION = 'https://forms.tildacdn.com/procces/';
+
+    function screensOf(ab) {
+      return (ab.getAttribute('data-artboard-screens') || DEF)
+        .split(',')
+        .map(Number)
+        .sort(function (a, b) {
+          return a - b;
+        });
+    }
+
+    function resOf(screens, w) {
+      var r = screens[0];
+      for (var i = 0; i < screens.length; i++) if (w >= screens[i]) r = screens[i];
+      return r;
+    }
+
+    /* значение поля для макета res: сам макет, затем более широкие, затем базовое */
+    function field(el, prefix, name, res, screens) {
+      var top = screens[screens.length - 1];
+      for (var i = screens.indexOf(res); i >= 0 && i < screens.length; i++) {
+        var s = screens[i];
+        if (s === top) break;
+        var v = el.getAttribute(prefix + name + '-res-' + s + (prefix === 'data-field-' ? '-value' : ''));
+        if (v !== null) return v;
+      }
+      return el.getAttribute(prefix + name + (prefix === 'data-field-' ? '-value' : ''));
+    }
+
+    var num = function (v) {
+      var n = parseFloat(v);
+      return isNaN(n) ? 0 : n;
+    };
+
+    function layoutBoard(ab, W) {
+      var screens = screensOf(ab);
+      var res = resOf(screens, W);
+      var s = ab.getAttribute('data-artboard-upscale') === 'window' ? W / res : 1;
+      ab.style.zoom = s === 1 ? '' : String(s);
+      var L = W / s;
+
+      var h = num(field(ab, 'data-artboard-', 'height', res, screens));
+      var vh = num(field(ab, 'data-artboard-', 'height_vh', res, screens));
+      if (vh) h = Math.max(h, (window.innerHeight * vh) / 100 / s);
+      if (h) {
+        ab.style.height = h + 'px';
+        var layers = ab.parentNode.querySelectorAll('.t396__carrier, .t396__filter');
+        for (var k = 0; k < layers.length; k++) layers[k].style.height = h + 'px';
+      }
+
+      var els = ab.querySelectorAll(':scope > .t396__elem');
+      var f = function (el, n) {
+        return field(el, 'data-field-', n, res, screens);
+      };
+
+      /* 1-й проход – размеры */
+      for (var i = 0; i < els.length; i++) {
+        var el = els[i];
+        var type = el.getAttribute('data-elem-type');
+        var win = f(el, 'container') === 'window';
+        var cw = win ? L : res;
+        var wv = f(el, 'width');
+        if (wv !== null && wv !== '') el.style.width = (f(el, 'widthunits') === '%' ? (cw * num(wv)) / 100 : num(wv)) + 'px';
+        var hv = f(el, 'height');
+        /* текст, картинка и форма «по содержимому» – высоту не задаём */
+        if (type !== 'text' && type !== 'image' && f(el, 'heightmode') !== 'hug' && hv !== null && hv !== '')
+          el.style.height = (f(el, 'heightunits') === '%' ? (h * num(hv)) / 100 : num(hv)) + 'px';
+        if (type === 'form') {
+          buildForm(el);
+          styleForm(el, function (x, n) {
+            return field(x, 'data-field-', n, res, screens);
+          });
+        }
+      }
+
+      /* 2-й проход – положение по осям */
+      for (var j = 0; j < els.length; j++) {
+        var e = els[j];
+        var t = e.getAttribute('data-elem-type');
+        var inWin = f(e, 'container') === 'window';
+        var cW = inWin ? L : res;
+        var offX = inWin ? 0 : (L - res) / 2;
+        var cs = getComputedStyle(e);
+        var ew = parseFloat(cs.width) || 0;
+        var eh = parseFloat(cs.height) || 0;
+        if (t === 'image') {
+          var fw = num(f(e, 'filewidth'));
+          var fh = num(f(e, 'fileheight'));
+          if (fw && fh && ew) eh = (ew * fh) / fw;
+        }
+        var x = num(f(e, 'left'));
+        if (f(e, 'leftunits') === '%') x = (cW * x) / 100;
+        var ax = f(e, 'axisx') || 'left';
+        var left = offX + (ax === 'center' ? (cW - ew) / 2 + x : ax === 'right' ? cW - ew + x : x);
+        var y = num(f(e, 'top'));
+        if (f(e, 'topunits') === '%') y = (h * y) / 100;
+        var ay = f(e, 'axisy') || 'top';
+        var top = ay === 'center' ? (h - eh) / 2 + y : ay === 'bottom' ? h - eh + y : y;
+        e.style.left = left + 'px';
+        e.style.top = top + 'px';
+      }
+    }
+
+    function layoutAll() {
+      var W = document.documentElement.clientWidth;
+      var boards = document.querySelectorAll('.t396__artboard');
+      for (var i = 0; i < boards.length; i++) layoutBoard(boards[i], W);
+    }
+
+    /* ---------- Zero-формы ---------- */
+
+    /* DOM формы – один раз; оформление – на каждый макет (styleForm) */
+    function buildForm(el) {
+      var atom = el.querySelector('.tn-atom__form');
+      if (!atom || atom.querySelector('form')) return;
+      var list = [];
+      try {
+        list = JSON.parse((el.querySelector('.tn-atom__inputs-textarea') || {}).value || '[]');
+      } catch (e) {}
+      var form = document.createElement('form');
+      form.className = 't-form t-form_inputs-total_' + list.length + ' pf-zform';
+      form.noValidate = true;
+      form.action = FORM_ACTION;
+      form.method = 'POST';
+      var hidden = (el.getAttribute('data-field-receivers-value') || '')
+        .split(',')
+        .filter(Boolean)
+        .map(function (v) {
+          return ['formservices[]', v];
+        });
+      hidden.push(['tildaspec-elemid', el.getAttribute('data-elem-id')]);
+      hidden.forEach(function (p) {
+        var i = document.createElement('input');
+        i.type = 'hidden';
+        i.name = p[0];
+        i.value = p[1];
+        form.appendChild(i);
+      });
+      var box = document.createElement('div');
+      box.className = 't-form__inputsbox';
+      list.forEach(function (d) {
+        var grp = document.createElement('div');
+        grp.className = 't-input-group t-input-group_' + d.li_type;
+        var input = document.createElement(d.li_type === 'ta' ? 'textarea' : 'input');
+        if (input.tagName === 'INPUT') input.type = d.li_type === 'ph' ? 'tel' : d.li_type === 'em' ? 'email' : 'text';
+        input.name = d.li_name || d.li_nm || 'field';
+        input.className = 't-input pf-zform__input';
+        if (d.li_req === 'y') input.setAttribute('data-req', '1');
+        if (d.li_type === 'ph') input.autocomplete = 'tel';
+        if (d.li_type === 'nm') input.autocomplete = 'name';
+        /* телефон с маской страны, как у Тильды: флаг и +7 слева */
+        if (d.li_type === 'ph' && d.li_masktype) {
+          var pre = document.createElement('span');
+          pre.className = 'pf-zform__prefix';
+          pre.textContent = '\uD83C\uDDF7\uD83C\uDDFA  +7';
+          grp.appendChild(pre);
+          grp.classList.add('pf-zform__group_mask');
+          input.placeholder = '(000) 000-00-00';
+          input.setAttribute('data-prefix', '+7');
+        } else input.placeholder = d.li_ph || '';
+        var err = document.createElement('div');
+        err.className = 't-input-error pf-zform__error';
+        grp.appendChild(input);
+        grp.appendChild(err);
+        box.appendChild(grp);
+      });
+      var btn = document.createElement('button');
+      btn.type = 'submit';
+      btn.className = 't-submit pf-zform__submit';
+      btn.textContent = el.getAttribute('data-field-buttontitle-value') || 'Отправить';
+      box.appendChild(btn);
+      form.appendChild(box);
+      atom.appendChild(form);
+      form.addEventListener('submit', function (ev) {
+        ev.preventDefault();
+        window.pfSendForm(form);
+      });
+    }
+
+    function styleForm(el, f) {
+      var form = el.querySelector('form.pf-zform');
+      if (!form) return;
+      var g = function (n, d) {
+        var v = f(el, n);
+        return v === null || v === '' ? d : v;
+      };
+      var bb = g('inputsstyle', '') === 'y';
+      var color = g('inputcolor', '#000');
+      var bs = g('inputbordersize', '1');
+      var bc = g('inputbordercolor', color);
+      var groups = form.querySelectorAll('.t-input-group');
+      for (var i = 0; i < groups.length; i++) groups[i].style.marginBottom = g('inputmargbottom', '20') + 'px';
+      var inputs = form.querySelectorAll('.pf-zform__input');
+      for (var k = 0; k < inputs.length; k++)
+        inputs[k].style.cssText =
+          'height:' + g('inputheight', '50') + 'px;font-size:' + g('inputfontsize', '16') + 'px;font-weight:' +
+          g('inputfontweight', '400') + ';color:' + color + ';background-color:' + (bb ? 'transparent' : g('inputbgcolor', 'transparent')) +
+          ';border-radius:' + (bb ? '0' : g('inputradius', '0')) + 'px;' +
+          (bb ? 'border:0;border-bottom:' + bs + 'px solid ' + bc + ';' : 'border:' + bs + 'px solid ' + bc + ';padding:0 20px;');
+      var pres = form.querySelectorAll('.pf-zform__prefix');
+      for (var m = 0; m < pres.length; m++) {
+        pres[m].style.color = color;
+        pres[m].style.fontSize = g('inputfontsize', '16') + 'px';
+        pres[m].style.lineHeight = g('inputheight', '50') + 'px';
+      }
+      var btn = form.querySelector('.pf-zform__submit');
+      var bw = num(g('buttonwidth', '0'));
+      var bh = num(g('buttonheight', '0'));
+      btn.style.cssText =
+        bw && bh
+          ? 'width:' + bw + 'px;height:' + bh + 'px;margin-top:' + g('buttonmargtop', '0') + 'px;font-size:' +
+            g('buttonfontsize', '14') + 'px;font-weight:' + g('buttonfontweight', '600') + ';color:' + g('buttoncolor', '#fff') +
+            ';background-color:' + g('buttonbgcolor', '#000') + ';border-radius:' + g('buttonradius', '0') + 'px;'
+          : 'position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;';
+    }
+
+    /* отправка: проверка обязательных полей, затем заявка в Тильду
+       (no-cors – ответ не читается, как и у форм платформы на чужом домене) */
+    window.pfSendForm = function (form) {
+      var ok = true;
+      var inputs = form.querySelectorAll('[data-req]');
+      for (var i = 0; i < inputs.length; i++) {
+        var inp = inputs[i];
+        var bad = !inp.value.trim() || (inp.type === 'tel' && inp.value.replace(/\D/g, '').length < 10);
+        var err = inp.parentNode.querySelector('.pf-zform__error');
+        if (err) err.textContent = bad ? (inp.type === 'tel' ? 'Укажите телефон' : 'Обязательное поле') : '';
+        if (bad) ok = false;
+      }
+      if (!ok) return;
+      var body = new URLSearchParams(new FormData(form));
+      var pref = form.querySelectorAll('[data-prefix]');
+      for (var p = 0; p < pref.length; p++) body.set(pref[p].name, pref[p].getAttribute('data-prefix') + ' ' + pref[p].value);
+      body.append('tildaspec-referer', location.href);
+      fetch(FORM_ACTION, { method: 'POST', mode: 'no-cors', body: body }).catch(function () {});
+      form.reset();
+      document.dispatchEvent(new CustomEvent('pf:sent', { detail: form }));
+    };
+
+    window.pfLayoutZero = layoutAll;
+    document.addEventListener('DOMContentLoaded', layoutAll);
+    window.addEventListener('load', layoutAll);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(layoutAll);
+    var timer;
+    window.addEventListener('resize', function () {
+      clearTimeout(timer);
+      timer = setTimeout(layoutAll, 60);
+    });
+  })();
+</script>
+
+<style is:global>
+  .pf-zform .t-input-group { position: relative; }
+  .pf-zform__input { width: 100%; box-sizing: border-box; outline: none; padding: 0; font-family: 'Montserrat', Arial, sans-serif; }
+  .pf-zform__group_mask .pf-zform__input { padding-left: 64px; }
+  .pf-zform__prefix { position: absolute; top: 0; left: 0; font-family: 'Montserrat', Arial, sans-serif; pointer-events: none; white-space: pre; }
+  .pf-zform__input::placeholder { color: inherit; opacity: 0.5; }
+  .pf-zform__error { min-height: 0; color: #e0352b; font-size: 12px; line-height: 1.3; }
+  .pf-zform__submit { display: block; border: 0; cursor: pointer; font-family: 'Montserrat', Arial, sans-serif; }
+</style>

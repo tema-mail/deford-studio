@@ -1,0 +1,60 @@
+---
+/** Оболочка страниц портфолио и отзывов, перенесённых с Тильды
+    (scripts/tilda-port.mjs): шапка и подвал – общие блоки из shell.json,
+    между ними – свои блоки страницы. Стили платформы – /pf/tilda.css.
+
+    Поведение вместо скриптов Тильды – свои компоненты: раскладка и формы
+    Zero-блоков – ZeroRuntime. */
+import shell from '../data/portfolio/shell.json';
+import ZeroRuntime from '../components/portfolio/ZeroRuntime.astro';
+
+interface Props {
+  slug: string;
+  title: string;
+  description?: string;
+  ogTitle?: string;
+  ogImage?: string;
+}
+
+const { slug, title, description = '', ogTitle = '', ogImage = '' } = Astro.props;
+const canonical = `https://deford-studio.ru/${slug}`;
+const attrs = (s: string) => Object.fromEntries([...s.matchAll(/([\w-]+)="([^"]*)"/g)].map((m) => [m[1], m[2]]));
+const allrecords = { ...attrs(shell.allrecords), 'data-tilda-page-alias': slug };
+const footer = attrs(shell.footer);
+const header = attrs(shell.header);
+const head = shell.head.map((r) => r.html).join('\n');
+const foot = shell.foot.map((r) => r.html).join('\n');
+---
+
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={ogTitle || title} />
+    {description && <meta property="og:description" content={description} />}
+    <meta property="og:type" content="website" />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    <link rel="canonical" href={canonical} />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&subset=latin,cyrillic" rel="stylesheet" />
+    <link rel="stylesheet" href="/pf/tilda.css" />
+    <ZeroRuntime />
+  </head>
+  <body class="t-body" style="margin:0;">
+    <div id="allrecords" {...allrecords}>
+      <header id="t-header" {...header}>
+        <Fragment set:html={head} />
+      </header>
+      <slot />
+    </div>
+    <footer id="t-footer" {...footer}>
+      <Fragment set:html={foot} />
+    </footer>
+    <slot name="after" />
+  </body>
+</html>

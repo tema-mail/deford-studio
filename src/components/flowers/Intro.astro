@@ -1,15 +1,20 @@
 ---
-/** Заставка при загрузке /flowers — по референсу Артёма (Pinterest, Steve Edge
+/** Заставка при загрузке /flowers – по референсу Артёма (Pinterest, Steve Edge
     Design): по экрану из точек распускаются цветы, затем всё плавно уходит.
     Отличия по ТЗ: белый фон, без надписей студии; по центру фраза
-    «Делаем цветочные салоны богаче» — плавно появляется и уходит.
+    «Делаем цветочные салоны богаче» – плавно появляется и уходит.
 
-    Цветы — 8 реалистичных бутонов (сгенерированы Codex, вырезаны на прозрачном
-    фоне, тень запечена), public/img/flowers/intro/*.webp, ~390 КБ всего.
-    Раскладку по экрану делает скрипт. Отсчёт стартует, когда цветы
-    загрузились (но не позже 1,5 с).
+    Цветы – по просьбе клиента (Денис, 12.10): то, что любят флористы –
+    розы, пионовидные розы, пионы, гортензии, ранункулюсы. 12 фотореалистичных
+    бутонов (сгенерированы Codex, вырезаны на прозрачном фоне, тень запечена),
+    public/img/flowers/intro/*.webp.
 
-    Показ: один раз за сеанс, клик или Esc — пропустить, ?intro — показать снова.
+    Раскладка – как у флориста, а не россыпь: плотная рамка по краям,
+    к центру цветы мельче, по центру чисто под фразу. Гортензии крупнее
+    и лежат снизу, ранункулюсы мелкие и сверху, одинаковые рядом не встают.
+    Отсчёт стартует, когда цветы загрузились (но не позже 1,5 с).
+
+    Показ: один раз за сеанс, клик или Esc – пропустить, ?intro – показать снова.
     Без скрипта заставки нет. Пока она идёт, анимация первого экрана стоит
     на паузе и стартует, когда заставка начинает уходить. */
 ---
@@ -40,13 +45,34 @@
     html.classList.add('fm-intro-on');
     root.hidden = false;
 
+    /* вид → слой (снизу вверх) и размер относительно соседей */
+    var KIND = {
+      hydrangea: { layer: 0, scale: 1.12 },
+      peony: { layer: 1, scale: 1.05 },
+      prose: { layer: 2, scale: 1 },
+      rose: { layer: 3, scale: 0.9 },
+      ranunculus: { layer: 4, scale: 0.78 },
+    };
+
+    /* w – как часто встречается; main – основа рамки, fill – мелочь в просветы.
+       Бордовый ранункулюс – редкий акцент (малый вес) */
     var FLOWERS = [
-      'rose-orange', 'peony-peach', 'ranunculus-blue', 'rose-cream',
-      'hellebore-green', 'peony-pink', 'anemone-lilac', 'dahlia-coral',
+      { f: 'rose-ivory', k: 'rose', w: 3, main: 1, fill: 1 },
+      { f: 'rose-dusty', k: 'rose', w: 2, main: 1 },
+      { f: 'prose-apricot', k: 'prose', w: 3, main: 1 },
+      { f: 'prose-pink', k: 'prose', w: 3, main: 1 },
+      { f: 'peony-blush', k: 'peony', w: 3, main: 1 },
+      { f: 'peony-white', k: 'peony', w: 2, main: 1 },
+      { f: 'peony-coral', k: 'peony', w: 2, main: 1 },
+      { f: 'hydrangea-lilac', k: 'hydrangea', w: 1.5, main: 1 },
+      { f: 'hydrangea-white', k: 'hydrangea', w: 1.5, main: 1 },
+      { f: 'ranunculus-burgundy', k: 'ranunculus', w: 1, main: 1 },
+      { f: 'ranunculus-blush', k: 'ranunculus', w: 2, fill: 1 },
+      { f: 'ranunculus-peach', k: 'ranunculus', w: 2, fill: 1 },
     ];
 
-    /* детерминированный «случай» — раскладка одинаковая от загрузки к загрузке */
-    var seed = 11;
+    /* детерминированный «случай» – раскладка одинаковая от загрузки к загрузке */
+    var seed = 7;
     function rnd() {
       seed = (seed * 16807) % 2147483647;
       return (seed - 1) / 2147483646;
@@ -57,54 +83,143 @@
     var field = root.querySelector('[data-fmintro-field]');
     var W = window.innerWidth;
     var H = window.innerHeight;
+    var cx = W / 2;
+    var cy = H / 2;
     var minSide = Math.min(W, H);
     var mobile = W < 640;
-    var count = mobile ? 20 : W < 1100 ? 28 : 36;
-    var placed = [];
-    var tries = 0;
+    var cap = mobile ? 36 : W < 1100 ? 48 : 64;
 
-    while (placed.length < count && tries < count * 60) {
-      tries++;
-      var x = -0.04 * W + rnd() * W * 1.08;
-      var y = -0.06 * H + rnd() * H * 1.12;
-      /* у центра оставляем место под фразу */
-      var dx = (x - W / 2) / (W * (mobile ? 0.46 : 0.27));
-      var dy = (y - H / 2) / (H * (mobile ? 0.1 : 0.12));
-      if (dx * dx + dy * dy < 1) continue;
-      var size = minSide * (mobile ? 0.3 + rnd() * 0.32 : 0.2 + rnd() * 0.3);
-      var ok = true;
-      for (var j = 0; j < placed.length; j++) {
-        var q = placed[j];
-        if (Math.hypot(q.x - x, q.y - y) < (q.s + size) * 0.3) {
-          ok = false;
-          break;
-        }
-      }
-      if (ok) placed.push({ x: x, y: y, s: size });
+    /* чистое место под фразу: на компьютере овал, на телефоне фраза во всю
+       ширину – там полоса со скруглёнными краями (степень P), цветы сверху и снизу */
+    var P = mobile ? 4 : 2;
+    /* размер места – по фактическим строкам фразы, с запасом */
+    var range = document.createRange();
+    range.selectNodeContents(root.querySelector('.fmintro__text'));
+    var tr = range.getBoundingClientRect();
+    var RX = mobile ? W * 0.62 : Math.max(tr.width / 2 + W * 0.05, W * 0.24);
+    var RY = Math.max(tr.height / 2 + H * 0.05, H * (mobile ? 0.08 : 0.13));
+    function norm(dx, dy) {
+      return Math.pow(Math.pow(Math.abs(dx), P) + Math.pow(Math.abs(dy), P), 1 / P);
+    }
+    /* размер цветка: у овала – мельче, к углам – крупнее */
+    var S_MIN = minSide * (mobile ? 0.32 : 0.2);
+    var S_MAX = minSide * (mobile ? 0.52 : 0.38);
+    var D_MAX = norm(cx / RX, cy / RY);
+    /* видимый радиус цветка в картинке и допустимое наложение */
+    var R_VIS = 0.42;
+    var TIGHT = 0.7;
+
+    function sizeAt(x, y) {
+      var d = norm((x - cx) / RX, (y - cy) / RY);
+      var t = Math.min(1, Math.max(0, (d - 1) / (D_MAX - 1)));
+      return { s: S_MIN + (S_MAX - S_MIN) * Math.sqrt(t), t: t };
     }
 
-    var imgs = [];
-    placed.forEach(function (pt, i) {
+    /* цветок целиком снаружи чистого места (оно раздуто на радиус цветка) */
+    function outsideOval(x, y, r) {
+      return norm((x - cx) / (RX + r), (y - cy) / (RY + r)) >= 1;
+    }
+
+    var placed = [];
+
+    /* лучший из кандидатов: тот, у кого больше всего места до соседей,
+       так рамка заполняется ровно, без дыр и кучек */
+    function bestSpot(k) {
+      var best = null;
+      for (var c = 0; c < 64; c++) {
+        var x = -0.05 * W + rnd() * W * 1.1;
+        var y = -0.06 * H + rnd() * H * 1.12;
+        var z = sizeAt(x, y);
+        var s = z.s * k * (0.9 + rnd() * 0.2);
+        if (!outsideOval(x, y, s * R_VIS)) continue;
+        var gap = Infinity;
+        for (var j = 0; j < placed.length; j++) {
+          var q = placed[j];
+          var g = Math.hypot(q.x - x, q.y - y) - TIGHT * R_VIS * (q.s + s);
+          if (g < gap) gap = g;
+        }
+        if (!best || gap > best.gap) best = { x: x, y: y, s: s, t: z.t, gap: gap };
+      }
+      return best && best.gap >= 0 ? best : null;
+    }
+
+    /* вид для места: не повторяем цветы трёх ближайших соседей */
+    function pickFlower(pt, pool) {
+      var near = placed
+        .map(function (q) {
+          return { f: q.f, d: Math.hypot(q.x - pt.x, q.y - pt.y) };
+        })
+        .sort(function (a, b) {
+          return a.d - b.d;
+        })
+        .slice(0, 3)
+        .map(function (q) {
+          return q.f;
+        });
+      var ok = pool.filter(function (fl) {
+        return near.indexOf(fl.f) < 0;
+      });
+      if (!ok.length) ok = pool;
+      var sum = ok.reduce(function (a, fl) {
+        return a + fl.w;
+      }, 0);
+      var r = rnd() * sum;
+      for (var i = 0; i < ok.length; i++) {
+        r -= ok[i].w;
+        if (r <= 0) return ok[i];
+      }
+      return ok[ok.length - 1];
+    }
+
+    var main = FLOWERS.filter(function (fl) {
+      return fl.main;
+    });
+    var small = FLOWERS.filter(function (fl) {
+      return fl.fill;
+    });
+
+    /* 1-й проход – основа рамки; 2-й – мелкие цветы в оставшиеся просветы */
+    [
+      { pool: main, k: 1, n: Math.round(cap * 0.82), late: 0 },
+      /* мелочи немного, иначе на больших экранах рябит */
+      { pool: small, k: 0.6, extra: Math.round(cap * 0.2), late: 0.25 },
+    ].forEach(function (pass) {
+      var n = pass.extra ? Math.min(cap, placed.length + pass.extra) : pass.n;
+      for (var miss = 0; placed.length < n && miss < 12; ) {
+        var pt = bestSpot(pass.k);
+        if (!pt) {
+          miss++;
+          continue;
+        }
+        var fl = pickFlower(pt, pass.pool);
+        pt.s *= KIND[fl.k].scale;
+        pt.f = fl.f;
+        pt.k = fl.k;
+        pt.late = pass.late;
+        placed.push(pt);
+      }
+    });
+
+    var imgs = placed.map(function (pt) {
       var img = document.createElement('img');
       img.className = 'fmintro__flower';
       img.alt = '';
       img.decoding = 'async';
-      img.src = '/img/flowers/intro/' + FLOWERS[(i * 5 + Math.floor(rnd() * 3)) % FLOWERS.length] + '.webp';
+      img.src = '/img/flowers/intro/' + pt.f + '.webp';
       var s = Math.round(pt.s);
       img.width = s;
       img.height = s;
       img.style.left = Math.round(pt.x - s / 2) + 'px';
       img.style.top = Math.round(pt.y - s / 2) + 'px';
-      /* распускаются волной от краёв к центру */
-      var far = Math.hypot(pt.x - W / 2, pt.y - H / 2) / Math.hypot(W / 2, H / 2);
-      img.style.setProperty('--delay', ((1 - far) * 0.9 + rnd() * 0.45).toFixed(2) + 's');
-      img.style.setProperty('--dur', (1.6 + rnd() * 0.8).toFixed(2) + 's');
-      img.style.setProperty('--rot', Math.round(-40 - rnd() * 80) + 'deg');
-      img.style.setProperty('--end', Math.round(rnd() * 40 - 20) + 'deg');
-      /* мелкие — сверху, как ближние */
-      img.style.zIndex = String(Math.round(2000 - s));
+      /* распускаются волной от углов к центру, мелкие – последними */
+      img.style.setProperty('--delay', ((1 - pt.t) * 0.85 + pt.late + rnd() * 0.35).toFixed(2) + 's');
+      img.style.setProperty('--dur', (1.7 + rnd() * 0.7).toFixed(2) + 's');
+      img.style.setProperty('--rot', Math.round(-50 - rnd() * 60) + 'deg');
+      /* поворот в конце небольшой: запечённая тень остаётся снизу */
+      img.style.setProperty('--end', Math.round(rnd() * 44 - 22) + 'deg');
+      img.style.zIndex = String(KIND[pt.k].layer * 1000 + Math.round(1000 - s));
       field.appendChild(img);
-      imgs.push(img);
+      return img;
     });
 
     /* ---------- ход заставки ---------- */
@@ -159,7 +274,7 @@
 
   .fmintro[hidden] { display: none; }
 
-  /* пока идёт заставка — страница под ней не прокручивается,
+  /* пока идёт заставка – страница под ней не прокручивается,
      анимации первого экрана ждут */
   html.fm-intro-on,
   html.fm-intro-on body { overflow: hidden; }
@@ -198,10 +313,12 @@
   /* фраза по центру: проявляется из размытия и так же уходит */
   .fmintro__text {
     position: absolute;
-    z-index: 5000;
+    z-index: 6000;
     top: 50%;
     left: 50%;
-    width: min(88vw, 820px);
+    /* ширина в 10 em – фраза в две строки (на узких экранах может быть три),
+       место под неё скрипт считает по фактическим строкам */
+    width: min(88vw, 10em);
     margin: 0;
     color: #202020;
     font-family: 'Inter Tight', Inter, Arial, sans-serif;
@@ -214,7 +331,7 @@
     opacity: 0;
     transform: translate(-50%, -50%);
     filter: blur(12px);
-    /* белый ореол — фраза читается, даже если рядом раскрылся цветок */
+    /* белый ореол – фраза читается, даже если рядом раскрылся цветок */
     text-shadow: 0 0 34px #fff, 0 0 18px #fff, 0 0 8px #fff;
   }
 

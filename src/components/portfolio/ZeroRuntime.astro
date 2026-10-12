@@ -11,7 +11,8 @@
     4. режим upscale=window – масштаб «ширина окна / ширина макета»
        (zoom на артборде, позиции считаются в координатах макета);
     5. Zero-формы (tn-atom__form) собираются из списка полей и отправляются
-       на прежний адрес приёма заявок Тильды с теми же получателями. */
+       на прежний адрес приёма заявок Тильды с теми же получателями;
+    6. фиксированные артборды появляются после прокрутки (как tilda-zero-fixed). */
 ---
 
 <script is:inline>
@@ -60,7 +61,11 @@
 
       var h = num(field(ab, 'data-artboard-', 'height', res, screens));
       var vh = num(field(ab, 'data-artboard-', 'height_vh', res, screens));
+      var baseH = h;
       if (vh) h = Math.max(h, (window.innerHeight * vh) / 100 / s);
+      /* артборд выше макета (vh): сетка сдвигается по data-artboard-valign */
+      var va = ab.getAttribute('data-artboard-valign');
+      var offY = va === 'center' ? (h - baseH) / 2 : va === 'bottom' ? h - baseH : 0;
       if (h) {
         ab.style.height = h + 'px';
         var layers = ab.parentNode.querySelectorAll('.t396__carrier, .t396__filter');
@@ -114,7 +119,8 @@
         var y = num(f(e, 'top'));
         if (f(e, 'topunits') === '%') y = (h * y) / 100;
         var ay = f(e, 'axisy') || 'top';
-        var top = ay === 'center' ? (h - eh) / 2 + y : ay === 'bottom' ? h - eh + y : y;
+        var cH = inWin ? h : baseH;
+        var top = (inWin ? 0 : offY) + (ay === 'center' ? (cH - eh) / 2 + y : ay === 'bottom' ? cH - eh + y : y);
         e.style.left = left + 'px';
         e.style.top = top + 'px';
       }
@@ -254,6 +260,21 @@
       form.reset();
       document.dispatchEvent(new CustomEvent('pf:sent', { detail: form }));
     };
+
+    /* фиксированные артборды (data-artboard-pos=fixed): прозрачны и не ловят
+       клики, пока страница не прокручена дальше data-artboard-fixed-trigger */
+    function fixedBoards() {
+      var boards = document.querySelectorAll('.t396__artboard[data-artboard-pos="fixed"]');
+      for (var i = 0; i < boards.length; i++) {
+        var ab = boards[i];
+        var on = window.pageYOffset > num(ab.getAttribute('data-artboard-fixed-trigger'));
+        ab.classList.add('t396__artboard-fixed-no-bg');
+        ab.classList.toggle('t396__artboard-fixed-active', on);
+        ab.classList.toggle('t396__artboard-fixed-innactive', !on);
+      }
+    }
+    window.addEventListener('scroll', fixedBoards, { passive: true });
+    document.addEventListener('DOMContentLoaded', fixedBoards);
 
     window.pfLayoutZero = layoutAll;
     document.addEventListener('DOMContentLoaded', layoutAll);

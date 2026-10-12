@@ -1,0 +1,193 @@
+---
+/** Поведение общих блоков страниц портфолио – вместо скриптов Тильды
+    и модулей Nolim. Разметка и стили блоков – с оригинала (shell.json).
+
+    - #zayavka – попап заявки: Zero-блок rec645434447 поверх страницы
+      (nlm020); внутри попапа та же ссылка отправляет форму (nlm001),
+      элемент с классом close и Esc закрывают;
+    - после отправки любой формы – окно «Сообщение об успешной отправке!»;
+    - #menuopen – мобильное меню t450; #back – назад (nlm025);
+    - t890 «наверх», t886 cookie (тот же ключ хранения, что у Тильды),
+      якоря #contacts / #up с плавной прокруткой (t270);
+    - #popup:<имя> – видеоотзывы t331: окно с плеером YouTube. */
+---
+
+<script is:inline>
+  (function () {
+    var POPUP = '#rec645434447';
+    var $ = function (s, r) {
+      return (r || document).querySelector(s);
+    };
+    var $$ = function (s, r) {
+      return Array.prototype.slice.call((r || document).querySelectorAll(s));
+    };
+
+    /* ---------- попап заявки ---------- */
+    function openLead() {
+      var p = $(POPUP);
+      if (!p) return;
+      p.classList.add('pf-open');
+      if (window.pfLayoutZero) window.pfLayoutZero();
+      var first = p.querySelector('.pf-zform__input');
+      if (first) setTimeout(function () { first.focus({ preventScroll: true }); }, 50);
+    }
+    function closeLead() {
+      var p = $(POPUP);
+      if (p) p.classList.remove('pf-open');
+    }
+
+    /* ---------- окно «успешно отправлено» ---------- */
+    document.addEventListener('pf:sent', function () {
+      closeLead();
+      var ok = $('#nolimtildaformsuccesspopup');
+      if (ok) ok.style.display = 'block';
+    });
+
+    /* ---------- меню t450 ---------- */
+    function menu(open) {
+      $$('.t450, .t450__overlay').forEach(function (el) {
+        el.classList.toggle('t450__menu_show', open);
+      });
+      document.body.classList.toggle('t450__body_menushowed', open);
+    }
+
+    /* ---------- видеоотзывы t331 ---------- */
+    function openVideo(hook) {
+      var pop = $('.t-popup[data-tooltip-hook="' + hook + '"]');
+      if (!pop) return false;
+      var box = pop.querySelector('.t-video-lazyload');
+      var wrap = pop.querySelector('.t331__wrap-video');
+      if (box && !box.querySelector('iframe')) {
+        var f = document.createElement('iframe');
+        f.src = 'https://www.youtube.com/embed/' + box.getAttribute('data-videolazy-id') + '?autoplay=1&rel=0';
+        f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+        f.allowFullscreen = true;
+        f.style.cssText = 'width:100%;height:100%;border:0;display:block;';
+        box.style.height = '100%';
+        box.appendChild(f);
+      }
+      pop.style.display = 'block';
+      /* высота плеера – по ширине окна, 16:9 (как t331 на мобильных) */
+      if (wrap) {
+        var vw = Number(wrap.getAttribute('data-video-width')) || 960;
+        var w = Math.min(vw, pop.clientWidth - 40);
+        if (w > 0) wrap.style.height = Math.round((w * 9) / 16) + 'px';
+      }
+      requestAnimationFrame(function () { pop.classList.add('t-popup_show'); });
+      document.body.classList.add('t-body_scroll-locked');
+      return true;
+    }
+    function closeVideo(pop) {
+      pop.classList.remove('t-popup_show');
+      var f = pop.querySelector('iframe');
+      if (f) f.remove();
+      setTimeout(function () { pop.style.display = 'none'; }, 300);
+      document.body.classList.remove('t-body_scroll-locked');
+    }
+
+    /* ---------- якоря ---------- */
+    function scrollToHash(hash) {
+      var name = hash.slice(1);
+      if (!name) return false;
+      var t = document.getElementById(name) || $('a[name="' + name + '"]');
+      if (!t) return false;
+      var y = t.getBoundingClientRect().top + window.pageYOffset - 3;
+      window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+      return true;
+    }
+
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest ? e.target.closest('a[href]') : null;
+      var lead = $(POPUP);
+
+      /* закрытие попапа заявки: крестик (класс close) или клик мимо карточки */
+      if (lead && lead.classList.contains('pf-open')) {
+        if (e.target.closest('.close')) return e.preventDefault(), closeLead();
+        if (!e.target.closest('.tn-elem') && lead.contains(e.target)) return closeLead();
+      }
+      var ok = e.target.closest('#nolimtildaformsuccesspopup');
+      if (ok) return void (ok.style.display = 'none');
+
+      var vpop = e.target.closest('.t-popup');
+      if (vpop && (e.target === vpop || e.target.closest('.t-popup__close'))) return closeVideo(vpop);
+
+      if (!a) {
+        if (e.target.closest('.t450__close-button, .t450__overlay')) menu(false);
+        return;
+      }
+      var href = a.getAttribute('href');
+      if (href === '#zayavka') {
+        e.preventDefault();
+        if (lead && lead.contains(a)) {
+          var form = lead.querySelector('form.pf-zform');
+          if (form && window.pfSendForm) window.pfSendForm(form);
+        } else openLead();
+        return;
+      }
+      if (href === '#menuopen') return e.preventDefault(), menu(true);
+      if (href === '#back') {
+        e.preventDefault();
+        if (document.referrer && document.referrer.indexOf(location.host) > -1 && history.length > 1) history.back();
+        else location.href = '/';
+        return;
+      }
+      if (href.indexOf('#popup:') === 0) {
+        if (openVideo(href)) e.preventDefault();
+        return;
+      }
+      if (a.closest('.t450')) menu(false);
+      if (href.charAt(0) === '#' && href.length > 1 && scrollToHash(href)) e.preventDefault();
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') return;
+      closeLead();
+      menu(false);
+      $$('.t-popup.t-popup_show').forEach(closeVideo);
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+      /* t890 «наверх» – после 1000 px прокрутки */
+      var up = $('.t890');
+      if (up) {
+        var onScroll = function () {
+          up.style.display = window.pageYOffset > 1000 ? 'block' : 'none';
+        };
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+        up.addEventListener('click', function () {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      }
+
+      /* t886 cookie */
+      var ck = $('.t886');
+      if (ck) {
+        var key = ck.getAttribute('data-storage-item') || 't886cookie';
+        var seen = false;
+        try {
+          seen = !!localStorage.getItem(key);
+        } catch (e) {}
+        if (!seen) ck.classList.remove('t886_closed');
+        var btn = ck.querySelector('.t886__btn');
+        if (btn)
+          btn.addEventListener('click', function () {
+            ck.classList.add('t886_closed');
+            try {
+              localStorage.setItem(key, '1');
+            } catch (e) {}
+          });
+      }
+
+      if (location.hash && location.hash !== '#') setTimeout(function () { scrollToHash(location.hash); }, 300);
+    });
+  })();
+</script>
+
+<style is:global>
+  /* попап заявки: стили nlm020 с оригинала держат .t396 скрытым и fixed,
+     открытие – показать его */
+  #rec645434447.pf-open .t396 { display: block; }
+  #rec645434447 .close { cursor: pointer; }
+  .t-body_scroll-locked { overflow: hidden; }
+</style>

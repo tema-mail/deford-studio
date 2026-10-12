@@ -4,9 +4,10 @@
     между ними – свои блоки страницы. Стили платформы – /pf/tilda.css.
 
     Поведение вместо скриптов Тильды – свои компоненты: раскладка и формы
-    Zero-блоков – ZeroRuntime. */
+    Zero-блоков – ZeroRuntime, меню, попапы, виджеты и видео – Behaviors. */
 import shell from '../data/portfolio/shell.json';
 import ZeroRuntime from '../components/portfolio/ZeroRuntime.astro';
+import Behaviors from '../components/portfolio/Behaviors.astro';
 
 interface Props {
   slug: string;
@@ -56,5 +57,6 @@ const foot = shell.foot.map((r) => r.html).join('\n');
       <Fragment set:html={foot} />
     </footer>
     <slot name="after" />
+    <Behaviors />
   </body>
 </html>

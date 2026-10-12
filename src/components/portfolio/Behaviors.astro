@@ -9,7 +9,8 @@
     - #menuopen – мобильное меню t450; #back – назад (nlm025);
     - t890 «наверх», t886 cookie (тот же ключ хранения, что у Тильды),
       якоря #contacts / #up с плавной прокруткой (t270);
-    - #popup:<имя> – видеоотзывы t331: окно с плеером YouTube. */
+    - #popup:<имя> – видеоотзывы t331: окно с плеером YouTube;
+    - фоновые картинки Zero (data-pf-bg) – лениво, как у Тильды. */
 ---
 
 <script is:inline>
@@ -178,6 +179,29 @@
             } catch (e) {}
           });
       }
+
+      /* ленивые фоновые картинки Zero (t-bgimg): ставим за экран до показа */
+      var bgs = $$('[data-pf-bg]');
+      var setBg = function (el) {
+        el.style.backgroundImage = "url('" + el.getAttribute('data-pf-bg') + "')";
+        el.removeAttribute('data-pf-bg');
+      };
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(
+          function (list) {
+            list.forEach(function (en) {
+              if (en.isIntersecting) {
+                setBg(en.target);
+                io.unobserve(en.target);
+              }
+            });
+          },
+          { rootMargin: '600px 0px' },
+        );
+        bgs.forEach(function (el) {
+          io.observe(el);
+        });
+      } else bgs.forEach(setBg);
 
       if (location.hash && location.hash !== '#') setTimeout(function () { scrollToHash(location.hash); }, 300);
     });

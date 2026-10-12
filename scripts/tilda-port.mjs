@@ -175,7 +175,11 @@ function clean(html) {
     /* заглушки ленивой загрузки: src → настоящая картинка */
     .replace(/(<img\b[^>]*?)\sdata-original=(['"])([^'"]+)\2([^>]*?)\ssrc=(['"])[^'"]*\5/g, '$1 src=$2$3$2$4 loading="lazy" decoding="async"')
     .replace(/(<img\b[^>]*?)\ssrc=(['"])[^'"]*\2([^>]*?)\sdata-original=(['"])([^'"]+)\4/g, '$1 src=$4$5$4$3 loading="lazy" decoding="async"')
-    .replace(/(<div\b[^>]*?)\sdata-original=(['"])([^'"]+)\2([^>]*?)\sstyle=(['"])background-image:\s*url\([^)]*\);?/g, "$1$4 style=$5background-image:url('$3');")
+    /* фоновые картинки (t-bgimg): без своего style – ленивая подгрузка
+       по data-pf-bg (Behaviors), со style – оставляем как есть */
+    .replace(/<(a|div)\b([^>]*?)\sdata-original=(['"])([^'"]+)\3([^>]*)>/g, (_m, tag, a1, _q, url, a2) =>
+      /style=["'][^"']*background-image/.test(a1 + a2) ? `<${tag}${a1}${a2}>` : `<${tag}${a1} data-pf-bg="${url}"${a2}>`,
+    )
     .replace(/\sdata-original=(['"])[^'"]*\1/g, '');
   s = mapImages(s);
   s = mapLinks(s);

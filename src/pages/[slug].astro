@@ -5,6 +5,7 @@
     Блоки выводятся по порядку: разметка Тильды как есть, каталог – своим
     компонентом. */
 import Portfolio from '../layouts/Portfolio.astro';
+import Catalog from '../components/portfolio/Catalog.astro';
 
 type Rec = { id: string; type: string; html?: string; open?: string; style?: string; products?: string[]; options?: Record<string, string> };
 type Page = { slug: string; title: string; description: string; ogTitle: string; ogImage: string; records: Rec[] };
@@ -20,7 +21,7 @@ const { page } = Astro.props as { page: Page };
 <Portfolio slug={page.slug} title={page.title} description={page.description} ogTitle={page.ogTitle} ogImage={page.ogImage}>
   {
     page.records.map((r) =>
-      r.type === 'catalog' ? null : <Fragment set:html={r.html} />,
+      r.type === 'catalog' ? <Catalog rec={r} /> : <Fragment set:html={r.html} />,
     )
   }
 </Portfolio>

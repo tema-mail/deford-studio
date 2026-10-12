@@ -1,0 +1,63 @@
+---
+/** Каталог работ (блок Тильды t786) – вместо магазина, который Тильда
+    подгружает скриптом из своего API. Карточки – из src/data/portfolio/catalog.json
+    (картинка, название, ссылка на кейс), разметка и классы – как у платформы,
+    чтобы работали её стили и правки страницы (скругление 10 px, без подписи).
+    Как на оригинале: первые 15 работ, дальше – кнопкой «Load more» по 15. */
+import catalog from '../../data/portfolio/catalog.json';
+
+interface Props {
+  rec: { id: string; open?: string; style?: string; products?: string[]; options?: Record<string, string> };
+}
+
+const { rec } = Astro.props;
+const PAGE = 15;
+const products = catalog.products as Record<string, { title: string; img: string; href: string }>;
+const cols = Number(rec.options?.blocksInRow) || 3;
+const colClass = `t-store__stretch-col_${cols === 4 ? 25 : cols === 2 ? 50 : 33}`;
+const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+
+const cards = (rec.products ?? [])
+  .map((uid, i) => {
+    const p = products[uid];
+    if (!p) return '';
+    const hidden = i >= PAGE ? ' data-pf-hidden' : '';
+    return `<div class="js-product t-store__card t-store__stretch-col ${colClass} t-align_center t-item" data-product-uid="${uid}"${hidden}>
+<a href="${esc(p.href)}"><div class="t-store__card__imgwrapper t-store__card__imgwrapper_original-ratio t-store__card__imgwrapper_16-9">
+<img class="js-product-img t-store__card__img t-img loaded" src="${esc(p.img)}" alt="${esc(p.title)}" loading="${i < 6 ? 'eager' : 'lazy'}" decoding="async"></div></a>
+<div class="t-store__card__wrap_txt-and-btns"><div class="store__card__wrap_txt-and-opts"><a href="${esc(p.href)}"><div class="t-store__card__textwrapper">
+<div class="js-store-prod-name js-product-name t-store__card__title t-typography__title t-name t-name_md">${esc(p.title)}</div></div></a></div></div></div>`;
+  })
+  .join('');
+
+const more = (rec.products?.length ?? 0) > PAGE;
+const html =
+  (rec.open ?? `<div id="rec${rec.id}" class="r t-rec" data-record-type="786">`) +
+  `<div class="t786"><div class="t-store js-store">` +
+  `<div class="js-store-grid-cont t-store__grid-cont t-store__grid-cont_col-width_stretch t-container_100 t-store__grid-cont_mobile-grid" data-col-gap="20">` +
+  `<div class="t-store__card-list" style="row-gap: 1px;">${cards}</div></div>` +
+  (more
+    ? `<div class="t-store__load-more-btn-wrap t-align_center"><button class="t-btn t-btnflex t-btnflex_type_button t-btnflex_sm js-store-load-more-btn t-store__load-more-btn" type="button" data-pf-more="${PAGE}"><span class="t-btnflex__text js-store-load-more-btn-text">Load more</span></button></div>`
+    : '') +
+  `</div></div>${rec.style ?? ''}</div>`;
+---
+
+<Fragment set:html={html} />
+
+<style is:global>
+  /* у карточек Тильды display:flex !important – скрываем тем же весом */
+  .t-store__card[data-pf-hidden] { display: none !important; }
+</style>
+
+<script is:inline>
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest && e.target.closest('[data-pf-more]');
+    if (!btn) return;
+    var list = btn.closest('.t-store').querySelectorAll('.js-product[data-pf-hidden]');
+    var n = Number(btn.getAttribute('data-pf-more')) || 15;
+    for (var i = 0; i < list.length && i < n; i++) {
+      list[i].removeAttribute('data-pf-hidden');
+    }
+    if (list.length <= n) btn.parentNode.style.display = 'none';
+  });
+</script>

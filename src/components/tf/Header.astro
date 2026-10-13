@@ -1,8 +1,7 @@
 ---
-/** Шапка Target Factory. Устройство — как у шапки лендинга /flowers:
-    фиксированная, прозрачная, элементы-пилюли, которые читаются на любом
-    фоне. Слева логотип в тёмной пилюле, в центре меню, справа круг-телефон
-    и кнопка «Бесплатная консультация». На телефоне — логотип, телефон
+/** Шапка Target Factory по макету Figma: фиксированная стеклянная плашка
+    1300 × 81, слева логотип, в центре меню, справа телефон текстом
+    («Звоните, мы на месте») и кнопка-контур «Бесплатная консультация». На телефоне — логотип, телефон
     и бургер с выпадающим меню. Ссылки и контакты — с targetfactory.ru. */
 
 const menu = [
@@ -28,7 +27,7 @@ const phoneIcon =
 <header class="tfh" data-tfh>
   <div class="tfh__inner">
     <a class="tfh__logo" href="#top" aria-label="Target Factory — наверх">
-      <img src="/img/tf/logo.png" alt="Target Factory" width="300" height="138" />
+      <img src="/img/tf/fig/logo.webp" alt="Target Factory" width="360" height="166" />
     </a>
 
     <nav class="tfh__nav" aria-label="Меню">
@@ -79,114 +78,89 @@ const phoneIcon =
     pointer-events: none;
   }
 
+  /* по макету: стеклянная плашка 1300 × 81 по центру, скругление 10 */
   .tfh__inner {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 16px;
-    padding: 24px 42px;
-    pointer-events: auto;
-  }
-
-  .tfh__logo {
-    display: flex;
-    align-items: center;
-    height: 44px;
-    padding: 0 18px;
-    border-radius: 100px;
-    background: var(--tf-ink);
-  }
-
-  .tfh__logo img { width: 72px; height: auto; }
-
-  .tfh__nav {
-    display: flex;
-    gap: 34px;
+    width: min(calc(100vw * 1300 / 1440), 1300px);
+    height: 81px;
+    margin: 16px auto 0;
     padding: 0 20px;
-    border-radius: 100px;
-    background: var(--tf-ink);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    background: rgba(16, 16, 16, 0.2);
+    -webkit-backdrop-filter: blur(4.9px);
+    backdrop-filter: blur(4.9px);
+    pointer-events: auto;
+    transition: background-color 0.3s ease;
   }
+
+  /* после прокрутки плашка плотнее – меню читается поверх светлых блоков */
+  .tfh.is-scrolled .tfh__inner { background: rgba(16, 16, 16, 0.78); }
+
+  .tfh__logo { display: flex; align-items: center; }
+  .tfh__logo img { width: 88px; height: 40px; object-fit: contain; }
+
+  .tfh__nav { display: flex; gap: 20px; }
 
   .tfh__nav a {
-    display: inline-flex;
-    align-items: center;
-    min-height: 44px;
-    color: #fff;
+    color: rgba(255, 255, 255, 0.5);
     font-size: 14px;
-    line-height: 17px;
-    font-weight: 600;
+    line-height: 1.5;
+    font-weight: 400;
     text-decoration: none;
     white-space: nowrap;
     transition: color 0.25s ease;
   }
 
-  .tfh__nav a:hover { color: #ff4d4d; }
+  .tfh__nav a:hover { color: #fff; }
 
-  .tfh__actions { display: flex; align-items: center; gap: 6px; }
+  .tfh__actions { display: flex; align-items: center; gap: 19px; }
 
+  /* телефон текстом: номер и «Звоните, мы на месте» с зелёной точкой */
   .tfh__phone {
-    position: relative;
-    display: grid;
-    place-items: center;
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    background: var(--tf-grad);
+    display: flex;
+    flex-direction: column;
     color: #fff;
     text-decoration: none;
   }
 
-  .tfh__phone svg { width: 18px; height: 18px; fill: currentColor; }
-
-  /* номер выезжает подсказкой при наведении */
-  .tfh__phone-tip {
-    position: absolute;
-    top: calc(100% + 8px);
-    right: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    padding: 10px 14px;
-    border-radius: 14px;
-    background: var(--tf-ink);
-    white-space: nowrap;
-    opacity: 0;
-    transform: translateY(-4px);
-    transition: opacity 0.2s ease, transform 0.2s ease;
-    pointer-events: none;
-  }
-
-  .tfh__phone:hover .tfh__phone-tip,
-  .tfh__phone:focus-visible .tfh__phone-tip { opacity: 1; transform: none; }
-
-  .tfh__phone-num { font-size: 15px; font-weight: 600; }
+  .tfh__phone svg { display: none; }
+  .tfh__phone-tip { display: contents; }
+  .tfh__phone-num { font-size: 14px; line-height: 1.5; font-weight: 400; white-space: nowrap; }
 
   .tfh__phone-note {
     display: flex;
     align-items: center;
-    gap: 6px;
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 12px;
+    gap: 5px;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 10px;
+    line-height: 1.5;
+    font-weight: 300;
+    white-space: nowrap;
   }
 
-  .tfh__phone-note i { width: 7px; height: 7px; border-radius: 50%; background: #3bd16f; }
+  .tfh__phone-note i { width: 4px; height: 4px; border-radius: 50%; background: #00d427; }
 
   .tfh__cta {
     display: flex;
     align-items: center;
-    min-height: 44px;
-    padding: 0 24px;
+    height: 45px;
+    padding: 0 21px;
+    border: 1px solid rgba(255, 255, 255, 0.6);
     border-radius: 100px;
-    background: var(--tf-grad);
-    color: #fff;
+    color: rgba(255, 255, 255, 0.6);
     font-size: 14px;
-    font-weight: 600;
+    line-height: 1.5;
+    font-weight: 400;
     text-decoration: none;
     white-space: nowrap;
-    transition: transform 0.25s ease;
+    transition: color 0.25s ease, border-color 0.25s ease, background-color 0.25s ease;
   }
 
-  .tfh__cta:hover { transform: translateY(-2px); }
+  .tfh__cta:hover { border-color: #fff; background: #fff; color: var(--tf-page); }
 
   .tfh__burger {
     position: relative;
@@ -222,16 +196,24 @@ const phoneIcon =
   .tfh__mobile { display: none; }
 
   @media (max-width: 1180px) {
-    .tfh__inner { padding: 20px 24px; }
-    .tfh__nav { gap: 20px; }
+    .tfh__nav { gap: 14px; }
     .tfh__nav a { font-size: 13px; }
+    .tfh__actions { gap: 12px; }
   }
 
   /* Планшет и телефон: бургер вместо меню */
   @media (max-width: 979px) {
-    .tfh__inner { padding: 14px 16px; }
+    .tfh__inner { width: auto; height: 64px; margin: 10px 12px 0; padding: 0 8px 0 14px; }
     .tfh__nav, .tfh__cta { display: none; }
-    .tfh__phone { width: 46px; height: 46px; }
+    .tfh__phone {
+      display: grid;
+      place-items: center;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: var(--tf-red);
+    }
+    .tfh__phone svg { display: block; width: 18px; height: 18px; fill: #fff; }
     .tfh__phone-tip { display: none; }
     .tfh__actions { margin-left: auto; }
     .tfh__burger { display: block; }
@@ -309,5 +291,11 @@ const phoneIcon =
     document.addEventListener('keydown', function (event) {
       if (event.key === 'Escape') setOpen(false);
     });
+
+    var onScroll = function () {
+      root.classList.toggle('is-scrolled', window.scrollY > 40);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
   })();
 </script>

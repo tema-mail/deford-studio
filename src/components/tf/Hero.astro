@@ -1,58 +1,44 @@
 ---
-/** Первый экран. Тексты — с targetfactory.ru; регистр обычный, как во всей
-    системе лендинга /flowers (на оригинале — капслок). Устройство — как у
-    первого экрана /flowers: тёмная подложка со скруглением снизу, слева
-    тег, заголовок, описание и кнопка, справа фото с плавающими плашками
-    заявок. Фото — композиция с оригинала без рваного нижнего края.
-    Десктоп и планшет — масштаб от макета 1200, телефон — в пикселях. */
+/** Первый экран по макету Figma («Ден – MCP», кадр 3, 1440 × 810).
+    Композиция из слоёв макета в его координатах: графики (screen, 30 %),
+    красное свечение, сетка (multiply), две размытые плашки заявок,
+    фото Дениса по маске. Слой тени по краю фото (Group 1171274881) не
+    перенесён: в браузере он выходит за силуэт ореолом, а в макете не виден. Всё в единицах --f =
+    ширина / 1440, поэтому на любом десктопе картинка та же.
+    Планшет и телефон: текст сверху, под ним правая часть композиции
+    (фото и плашки) – та же сцена, сдвинутая влево. Тексты – с оригинала. */
 ---
 
 <section class="tfhero" id="top">
   <div class="tfhero__panel">
-    <picture>
-      <source media="(max-width: 640px)" srcset="/img/tf/hero-m.jpg" />
-      <img
-        class="tfhero__bg"
-        src="/img/tf/hero.jpg"
-        alt="Денис Коротаев, основатель агентства Target Factory"
-        width="1920"
-        height="1040"
-        fetchpriority="high"
-      />
-    </picture>
+    <div class="tfhero__stage" aria-hidden="true">
+      <img class="tfhero__l tfhero__chart tfhero__chart--a" src="/img/tf/fig/hero-chart.webp" alt="" width="1024" height="576" />
+      <img class="tfhero__l tfhero__chart tfhero__chart--b" src="/img/tf/fig/hero-chart.webp" alt="" width="1024" height="576" />
+      <div class="tfhero__l tfhero__glow"><img src="/img/tf/fig/hero-glow.svg" alt="" /></div>
+      <div class="tfhero__l tfhero__grid"><img src="/img/tf/fig/hero-grid.webp" alt="" width="1400" height="788" /></div>
+      <div class="tfhero__l tfhero__box tfhero__card-a"><img src="/img/tf/fig/hero-card-a.webp" alt="" width="1100" height="1100" /></div>
+      <div class="tfhero__l tfhero__box tfhero__card-b"><img src="/img/tf/fig/hero-card-b.webp" alt="" width="1100" height="1100" /></div>
+      <div class="tfhero__l tfhero__box tfhero__photo">
+        <img src="/img/tf/fig/hero-photo.webp" alt="" width="739" height="1024" fetchpriority="high" />
+      </div>
+    </div>
 
     <div class="tfhero__copy">
-      <div class="tf-tag tf-tag--red tfhero__tag">С окупаемостью х3–х15</div>
+      <div class="tf-tag tf-tag--red tfhero__tag">с окупаемостью х3–х15</div>
       <h1 class="tfhero__title">
         Стабильно привлекаем клиентов через ВК, даже если раньше реклама не работала
         или «сливался» бюджет
       </h1>
       <p class="tfhero__text">
-        Запускаем рекламу, которая приносит заявки и прибыль. <span>Более 200 успешных
-        проектов и 500+ млн ₽ рекламных бюджетов только за последние 2 года работы</span>
+        Запускаем рекламу, которая приносит заявки и прибыль. Более 200 успешных проектов
+        и 500+ млн ₽ рекламных бюджетов только за последние 2 года работы
       </p>
-      <a class="tf-btn tf-btn--red tfhero__btn" href="#zeropopup">
-        <span>Получить бесплатную консультацию</span>
+      <a class="tf-btn tf-btn--light tfhero__btn" href="#zeropopup">
+        <span>Бесплатная консультация</span>
         <span class="tf-btn__arrow" aria-hidden="true">
           <svg viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"></path></svg>
         </span>
       </a>
-    </div>
-
-    <div class="tfhero__lead tfhero__lead--a" aria-hidden="true">
-      <span class="tfhero__lead-icon">VK</span>
-      <span class="tfhero__lead-copy">
-        <span class="tfhero__lead-label">Новая заявка</span>
-        <span class="tfhero__lead-title">ВКонтакте</span>
-      </span>
-    </div>
-
-    <div class="tfhero__lead tfhero__lead--b" aria-hidden="true">
-      <span class="tfhero__lead-icon">VK</span>
-      <span class="tfhero__lead-copy">
-        <span class="tfhero__lead-label">Новая заявка</span>
-        <span class="tfhero__lead-title">из рекламы</span>
-      </span>
     </div>
   </div>
 </section>
@@ -66,148 +52,202 @@
   }
 
   .tfhero__panel {
-    --u: calc(100cqw / 1200);
+    --f: calc(100cqw / 1440);
     position: relative;
-    height: calc(675 * var(--u));
+    height: calc(810 * var(--f));
     overflow: hidden;
-    border-radius: 0 0 var(--tf-radius) var(--tf-radius);
-    background: var(--tf-dark);
+    border-radius: 0 0 calc(90 * var(--f)) calc(90 * var(--f));
+    background: #000;
   }
 
-  .tfhero__bg {
+  /* ---------- сцена: слои в координатах макета ---------- */
+  .tfhero__stage {
     position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0 auto auto 0;
+    width: calc(1440 * var(--f));
+    height: calc(810 * var(--f));
+  }
+
+  .tfhero__l { position: absolute; display: block; max-width: none; pointer-events: none; user-select: none; }
+  .tfhero__l img { display: block; max-width: none; }
+
+  .tfhero__chart {
+    width: calc(1533 * var(--f));
+    height: calc(864 * var(--f));
     object-fit: cover;
-    object-position: 70% 0%;
+    opacity: 0.3;
+    mix-blend-mode: screen;
   }
 
-  /* затемнение слева — для читаемости текста поверх графиков */
-  .tfhero__panel::before {
-    content: '';
-    position: absolute;
-    z-index: 1;
-    inset: 0;
-    background: linear-gradient(90deg, rgba(20, 20, 20, 0.92) 0%, rgba(20, 20, 20, 0.7) 38%, rgba(20, 20, 20, 0) 62%);
-    pointer-events: none;
+  .tfhero__chart--a { left: calc(-336 * var(--f)); top: calc(48 * var(--f)); }
+  .tfhero__chart--b { left: calc(833 * var(--f)); top: calc(471 * var(--f)); }
+
+  .tfhero__glow {
+    left: calc(-676 * var(--f));
+    top: calc(-639 * var(--f));
+    width: calc(2452.823 * var(--f));
+    height: calc(2313.857 * var(--f));
   }
 
+  .tfhero__glow img { width: 102.29%; height: 100%; }
+
+  .tfhero__grid {
+    left: calc(867 * var(--f));
+    top: 0;
+    width: calc(606 * var(--f));
+    height: calc(832 * var(--f));
+    overflow: hidden;
+    opacity: 0.5;
+    mix-blend-mode: multiply;
+  }
+
+  .tfhero__grid img { position: absolute; top: 0; left: -144.13%; width: 244.18%; height: 100%; }
+
+  /* обёртка-рамка повёрнутого слоя: размер – габарит после поворота */
+  .tfhero__box { display: grid; place-items: center; }
+
+  .tfhero__card-a { left: calc(1022 * var(--f)); top: calc(70 * var(--f)); width: calc(658.54 * var(--f)); height: calc(658.54 * var(--f)); }
+
+  .tfhero__card-a img {
+    width: calc(530.566 * var(--f));
+    height: calc(530.566 * var(--f));
+    object-fit: cover;
+    opacity: 0.4;
+    filter: blur(calc(1.7 * var(--f)));
+    transform: rotate(-16.36deg);
+  }
+
+  .tfhero__card-b { left: calc(560 * var(--f)); top: calc(358 * var(--f)); width: calc(556.794 * var(--f)); height: calc(479.243 * var(--f)); }
+
+  .tfhero__card-b img {
+    width: calc(498.171 * var(--f));
+    height: calc(429.898 * var(--f));
+    object-fit: cover;
+    opacity: 0.5;
+    filter: blur(calc(2.701 * var(--f)));
+    transform: rotate(6.15deg) skewX(-2.12deg);
+  }
+
+  .tfhero__photo { left: calc(711.79 * var(--f)); top: calc(-1.69 * var(--f)); width: calc(626.453 * var(--f)); height: calc(850.259 * var(--f)); }
+
+  .tfhero__photo img {
+    width: calc(599.847 * var(--f));
+    height: calc(831.268 * var(--f));
+    object-fit: cover;
+    transform: rotate(-1.86deg);
+    -webkit-mask: url('/img/tf/fig/hero-photo-mask.webp') calc(-0.773 * var(--f)) calc(-1.042 * var(--f)) / calc(626.453 * var(--f)) calc(850.259 * var(--f)) no-repeat;
+    mask: url('/img/tf/fig/hero-photo-mask.webp') calc(-0.773 * var(--f)) calc(-1.042 * var(--f)) / calc(626.453 * var(--f)) calc(850.259 * var(--f)) no-repeat;
+  }
+
+  /* ---------- текст ---------- */
   .tfhero__copy {
     position: absolute;
     z-index: 2;
-    top: calc(150 * var(--u));
-    left: calc(60 * var(--u));
-    width: calc(560 * var(--u));
+    top: calc(189 * var(--f));
+    left: calc(70 * var(--f));
+    width: calc(600 * var(--f));
     display: flex;
     flex-direction: column;
     align-items: flex-start;
   }
 
-  .tfhero__tag { margin-bottom: calc(22 * var(--u)); }
+  .tfhero .tfhero__tag {
+    height: calc(40 * var(--f));
+    padding: 0 calc(12 * var(--f));
+    font-size: calc(16 * var(--f));
+    line-height: calc(15.6 * var(--f));
+  }
 
   .tfhero__title {
-    font-size: calc(42 * var(--u));
-    line-height: 1.02;
-    font-weight: 600;
-    letter-spacing: -1.35px;
+    width: calc(589 * var(--f));
+    margin-top: calc(19.8 * var(--f));
+    margin-left: calc(1 * var(--f));
+    color: #fff;
+    font-size: calc(53.324 * var(--f));
+    line-height: 1;
+    letter-spacing: calc(-1.616 * var(--f));
   }
 
   .tfhero__text {
-    margin-top: calc(22 * var(--u));
-    width: calc(470 * var(--u));
-    color: #fff;
-    font-size: calc(15 * var(--u));
-    line-height: calc(21 * var(--u));
+    width: calc(489 * var(--f));
+    margin-top: calc(19.5 * var(--f));
+    margin-left: calc(1 * var(--f));
+    color: var(--tf-muted-light);
+    font-size: calc(16.8 * var(--f));
+    line-height: calc(21 * var(--f));
     font-weight: 500;
   }
 
-  .tfhero__text span { color: rgba(255, 255, 255, 0.6); }
-
-  .tfhero__btn { margin-top: calc(34 * var(--u)); }
-
-  /* Плашки заявок — как на первом экране /flowers */
-  .tfhero__lead {
-    position: absolute;
-    z-index: 2;
-    display: flex;
-    align-items: center;
-    gap: calc(8 * var(--u));
-    padding: calc(12 * var(--u)) calc(16 * var(--u)) calc(12 * var(--u)) calc(10 * var(--u));
-    border-radius: calc(10 * var(--u));
-    background: rgba(255, 255, 255, 0.9);
-    color: var(--tf-ink);
-    -webkit-backdrop-filter: blur(6px);
-    backdrop-filter: blur(6px);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
-    animation: tfhero-float 6s ease-in-out infinite;
+  .tfhero .tfhero__btn {
+    gap: calc(16.16 * var(--f));
+    min-height: calc(65.32 * var(--f));
+    margin-top: calc(40 * var(--f));
+    padding: calc(6 * var(--f)) calc(6 * var(--f)) calc(6 * var(--f)) calc(30 * var(--f));
+    font-size: calc(17.775 * var(--f));
+    line-height: calc(19.39 * var(--f));
   }
 
-  .tfhero__lead--a { top: calc(190 * var(--u)); left: calc(640 * var(--u)); }
-  .tfhero__lead--b { top: calc(268 * var(--u)); left: calc(610 * var(--u)); background: rgba(20, 20, 20, 0.85); color: #fff; animation-delay: -3s; }
+  .tfhero .tfhero__btn .tf-btn__arrow { width: calc(53.324 * var(--f)); height: calc(53.324 * var(--f)); }
 
-  .tfhero__lead-icon {
-    display: grid;
-    place-items: center;
-    width: calc(34 * var(--u));
-    height: calc(34 * var(--u));
-    border-radius: calc(8 * var(--u));
-    background: #0077ff;
-    color: #fff;
-    font-size: calc(12 * var(--u));
-    font-weight: 700;
-  }
-
-  .tfhero__lead-copy { display: flex; flex-direction: column; }
-  .tfhero__lead-label { font-size: calc(10 * var(--u)); line-height: calc(13 * var(--u)); opacity: 0.7; }
-  .tfhero__lead-title { font-size: calc(14 * var(--u)); line-height: calc(15 * var(--u)); font-weight: 700; white-space: nowrap; }
-
-  @keyframes tfhero-float {
-    0%, 100% { translate: 0 0; }
-    50% { translate: 0 calc(-8 * var(--u)); }
-  }
-
-  /* ТЕЛЕФОН: текст сверху, фото снизу */
-  @media (max-width: 640px) {
+  /* ---------- планшет и телефон: текст сверху, сцена снизу ---------- */
+  @media (max-width: 979px) {
     .tfhero__panel {
+      /* под сценой – правая часть кадра (x 560…1420 макета) */
+      --f: calc(100cqw / 860);
+      display: flex;
+      flex-direction: column;
       height: auto;
-      min-height: 780px;
-      padding: 104px 18px 360px;
       border-radius: 0 0 36px 36px;
+      background:
+        radial-gradient(90% 40% at 100% 0%, rgba(184, 7, 14, 0.45), transparent 70%),
+        #000;
     }
 
-    .tfhero__bg { object-position: 50% 100%; }
-
-    .tfhero__panel::before {
-      background: linear-gradient(180deg, rgba(20, 20, 20, 0.85) 0%, rgba(20, 20, 20, 0.55) 45%, rgba(20, 20, 20, 0) 70%);
+    .tfhero__copy {
+      position: relative;
+      top: auto;
+      left: auto;
+      width: 100%;
+      padding: 112px 24px 0;
     }
 
-    .tfhero__copy { position: relative; top: auto; left: auto; width: 100%; }
-    .tfhero__tag { margin-bottom: 16px; }
+    .tfhero .tfhero__tag { height: auto; padding: 9px 12px; font-size: 14px; line-height: 1.3; }
+    .tfhero__title { width: 100%; max-width: 620px; margin-top: 16px; font-size: clamp(28px, 6.4vw, 46px); letter-spacing: -0.03em; }
+    .tfhero__text { width: 100%; max-width: 520px; margin-top: 14px; font-size: 15px; line-height: 20px; }
 
-    .tfhero__title {
-      font-size: clamp(27px, 7.6vw, 38px);
-      line-height: 1;
-      letter-spacing: -0.9px;
+    .tfhero .tfhero__btn {
+      gap: 14px;
+      min-height: 58px;
+      margin-top: 24px;
+      padding: 5px 5px 5px 24px;
+      font-size: 16px;
+      line-height: 18px;
     }
 
-    .tfhero__text { width: 100%; margin-top: 14px; font-size: 14px; line-height: 19px; }
-    .tfhero__btn { margin-top: 22px; }
+    .tfhero .tfhero__btn .tf-btn__arrow { position: static; transform: none; width: 48px; height: 48px; }
 
-    .tfhero__lead { gap: 7px; padding: 8px 12px 8px 8px; border-radius: 8px; }
-    .tfhero__lead--a { top: auto; bottom: 230px; left: 18px; }
-    .tfhero__lead--b { top: auto; bottom: 120px; right: 18px; }
-    .tfhero__lead-icon { width: 28px; height: 28px; border-radius: 6px; font-size: 10px; }
-    .tfhero__lead-label { font-size: 9px; line-height: 11px; }
-    .tfhero__lead-title { font-size: 12px; line-height: 13px; }
+    .tfhero__stage {
+      order: 2;
+      position: relative;
+      overflow: hidden;
+      flex: 0 0 auto;
+      inset: auto;
+      margin-top: calc(-60 * var(--f));
+      margin-left: calc(-560 * var(--f));
+    }
 
-    @keyframes tfhero-float {
-      0%, 100% { translate: 0 0; }
-      50% { translate: 0 -5px; }
+    /* стык текста и сцены – плавно в чёрный */
+    .tfhero__stage::after {
+      content: '';
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: calc(260 * var(--f));
+      background: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0) 100%);
     }
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .tfhero__lead { animation: none; }
+  @media (max-width: 640px) {
+    .tfhero__copy { padding: 100px 18px 0; }
+    .tfhero .tfhero__btn { width: auto; padding-right: 5px; justify-content: flex-start; }
   }
 </style>

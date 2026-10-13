@@ -198,6 +198,7 @@ a {
 }
 
 .tf-panel--white .tf-h2 { color: var(--tf-ink); }
+.tf-panel--white .tf-lead { color: var(--tf-muted); }
 
 .tf-lead {
   max-width: calc(560 * var(--u));

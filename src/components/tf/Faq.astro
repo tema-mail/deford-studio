@@ -7,7 +7,7 @@ import faq from '../../data/tf-faq.json';
 ---
 
 <section class="tf-section tffaq">
-  <div class="tf-panel tf-panel--light tffaq__panel">
+  <div class="tf-panel tf-panel--white tffaq__panel">
     <header class="tf-head" data-reveal>
       <div class="tf-tag">Вопросы</div>
       <h2 class="tf-h2">Этот блок для вас, <br />если остались сомнения</h2>
@@ -46,14 +46,15 @@ import faq from '../../data/tf-faq.json';
   .tffaq__item {
     overflow: hidden;
     border-radius: calc(20 * var(--u));
-    border: 1px solid var(--tf-line);
-    background: linear-gradient(180deg, #1f1f23 0%, #19191c 100%);
-    color: var(--tf-text);
-    transition: border-color 0.3s ease;
+    /* белая секция в духе тарифов макета: светлые карточки без рамки */
+    border: 1px solid transparent;
+    background: #f4f4f5;
+    color: var(--tf-ink);
+    transition: border-color 0.3s ease, background-color 0.3s ease;
   }
 
-  .tffaq__item:hover { border-color: rgba(255, 255, 255, 0.14); }
-  .tffaq__item[open] { border-color: rgba(227, 19, 27, 0.4); }
+  .tffaq__item:hover { background: #efeff0; }
+  .tffaq__item[open] { border-color: rgba(129, 0, 5, 0.25); background: #fff; }
 
   .tffaq__q {
     display: flex;
@@ -105,7 +106,7 @@ import faq from '../../data/tf-faq.json';
 
   .tffaq__a-in {
     padding: 0 calc(28 * var(--u)) calc(26 * var(--u));
-    color: var(--tf-muted-light);
+    color: var(--tf-muted);
     font-size: calc(14 * var(--u));
     line-height: calc(21 * var(--u));
     font-weight: 500;

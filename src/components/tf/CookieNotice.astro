@@ -33,10 +33,14 @@
     align-items: flex-start;
     gap: 14px;
     padding: 20px 22px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 20px;
-    background: #fff;
-    color: var(--tf-ink);
-    box-shadow: 0 16px 50px rgba(0, 0, 0, 0.25);
+    /* стекло, как подложки подписей в макете */
+    background: rgba(19, 19, 19, 0.82);
+    -webkit-backdrop-filter: blur(9px);
+    backdrop-filter: blur(9px);
+    color: rgba(255, 255, 255, 0.75);
+    box-shadow: 0 16px 50px rgba(0, 0, 0, 0.4);
   }
 
   .tfcookie__text { font-size: 13px; line-height: 18px; font-weight: 500; }
@@ -47,8 +51,8 @@
     padding: 0 18px;
     border: 0;
     border-radius: 100px;
-    background: var(--tf-grad);
-    color: #fff;
+    background: #fff;
+    color: var(--tf-page);
     font-family: inherit;
     font-size: 13px;
     font-weight: 600;

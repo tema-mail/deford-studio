@@ -184,6 +184,9 @@ const plans = [
   .tfplans__col--dark .tfplans__metal { background-image: linear-gradient(155deg, #d8d8d8 0%, #fff 38.6%, #d8d8d8 76.5%); }
 
   .tfplans__name {
+    /* над плиткой: хромированный предмет выходит за неё под текст */
+    position: relative;
+    z-index: 1;
     align-self: start;
     font-family: var(--tf-display);
     font-size: calc(33.62 * var(--f));

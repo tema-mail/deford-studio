@@ -53,7 +53,6 @@ html {
 
 body {
   margin: 0;
-  /* шапка фиксированная и прозрачная – свой отступ у первого экрана */
   background: var(--tf-page);
   color: var(--tf-text);
   font-family: var(--tf-font);

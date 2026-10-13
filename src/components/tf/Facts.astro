@@ -197,20 +197,26 @@ const facts = [
     var x0 = 0;
     var s0 = 0;
     var down = false;
+    function stop() {
+      if (!down) return;
+      down = false;
+      rail.classList.remove('is-drag');
+    }
     rail.addEventListener('pointerdown', function (e) {
-      if (e.pointerType !== 'mouse') return;
+      if (e.pointerType !== 'mouse' || e.button !== 0) return;
       down = true;
       x0 = e.clientX;
       s0 = rail.scrollLeft;
       rail.classList.add('is-drag');
     });
     window.addEventListener('pointermove', function (e) {
-      if (down) rail.scrollLeft = s0 - (e.clientX - x0);
-    });
-    window.addEventListener('pointerup', function () {
       if (!down) return;
-      down = false;
-      rail.classList.remove('is-drag');
+      /* кнопку отпустили за окном – перетаскивание заканчивается */
+      if (!(e.buttons & 1)) return stop();
+      rail.scrollLeft = s0 - (e.clientX - x0);
     });
+    window.addEventListener('pointerup', stop);
+    window.addEventListener('pointercancel', stop);
+    window.addEventListener('blur', stop);
   })();
 </script>

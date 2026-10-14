@@ -19,7 +19,7 @@
       <div class="tfhero__l tfhero__box tfhero__card-a"><img src="/img/tf/fig/hero-card-a.webp" alt="" width="1100" height="1100" /></div>
       <div class="tfhero__l tfhero__box tfhero__card-b"><img src="/img/tf/fig/hero-card-b.webp" alt="" width="1100" height="1100" /></div>
       <div class="tfhero__l tfhero__box tfhero__photo">
-        <img src="/img/tf/fig/hero-photo.webp" alt="" width="739" height="1024" fetchpriority="high" />
+        <img src="/img/tf/fig/hero-photo.webp" alt="Денис Карпов, основатель Target Factory" width="1400" height="1940" fetchpriority="high" />
       </div>
     </div>
 
@@ -130,13 +130,13 @@
 
   .tfhero__photo { left: calc(711.79 * var(--f)); top: calc(-1.69 * var(--f)); width: calc(626.453 * var(--f)); height: calc(850.259 * var(--f)); }
 
+  /* Фото вырезано в исходнике, пропорции совпадают с рамкой —
+     маска по контуру не нужна. */
   .tfhero__photo img {
     width: calc(599.847 * var(--f));
     height: calc(831.268 * var(--f));
-    object-fit: cover;
+    object-fit: contain;
     transform: rotate(-1.86deg);
-    -webkit-mask: url('/img/tf/fig/hero-photo-mask.webp') calc(-0.773 * var(--f)) calc(-1.042 * var(--f)) / calc(626.453 * var(--f)) calc(850.259 * var(--f)) no-repeat;
-    mask: url('/img/tf/fig/hero-photo-mask.webp') calc(-0.773 * var(--f)) calc(-1.042 * var(--f)) / calc(626.453 * var(--f)) calc(850.259 * var(--f)) no-repeat;
   }
 
   /* ---------- текст ---------- */

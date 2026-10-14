@@ -1,0 +1,198 @@
+---
+/** «Почему выбирают нас» по макету Figma (узлы 5:117, 5:123, 5:411–5:448):
+    сетка 3×2 — пять светлых карточек с визуалами и тёмная карточка
+    с кнопкой на последнем месте. Тексты — в src/data/tf-why.json. */
+
+import why from '../../data/tf-why.json';
+
+const { tag, title, items, cta } = why;
+---
+
+<section class="tf-section tfwhy">
+  <div class="tf-panel tfwhy__panel">
+    <div class="tf-wrap">
+      <div class="tfwhy__head" data-reveal>
+        <div class="tf-tag">{tag}</div>
+        <h2 class="tf-h2 tfwhy__title">{title}</h2>
+      </div>
+
+      <div class="tfwhy__grid">
+        {
+          items.map((item, i) => (
+            <article
+              class="tfwhy__card"
+              data-reveal
+              style={`--reveal-delay: ${(i % 3) * 0.08}s`}
+            >
+              <img
+                class="tfwhy__image"
+                src={`/img/tf/why/${item.image}.webp`}
+                alt=""
+                width="880"
+                height="660"
+                loading="lazy"
+                decoding="async"
+              />
+              <div class="tfwhy__body">
+                <h3 class="tfwhy__card-title">{item.title}</h3>
+                <p class="tfwhy__card-text">{item.text}</p>
+              </div>
+            </article>
+          ))
+        }
+
+        <article class="tfwhy__card tfwhy__card--cta" data-reveal style="--reveal-delay: 0.16s">
+          <div class="tfwhy__body">
+            <h3 class="tfwhy__card-title tfwhy__cta-title">{cta.title}</h3>
+            <p class="tfwhy__card-text tfwhy__cta-text">{cta.text}</p>
+          </div>
+
+          <a class="tfwhy__cta-btn" href="#zeropopup">
+            <span>{cta.button}</span>
+            <img src="/img/tf/why/arrow.svg" alt="" width="53" height="53" loading="lazy" />
+          </a>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .tfwhy__panel {
+    padding: calc(80 * var(--u)) 0;
+  }
+
+  .tfwhy__head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: calc(14 * var(--u));
+    margin-bottom: calc(54 * var(--u));
+    text-align: center;
+  }
+
+  .tfwhy__title {
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  .tfwhy__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: calc(12 * var(--u));
+  }
+
+  /* Карточка: светлая подложка, визуал сверху, текст снизу */
+  .tfwhy__card {
+    display: flex;
+    flex-direction: column;
+    gap: calc(17 * var(--u));
+    padding: calc(29 * var(--u));
+    border-radius: calc(30 * var(--u));
+    background: linear-gradient(180deg, #ffffff 0%, #f6f6f6 100%);
+  }
+
+  .tfwhy__image {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 295 / 210;
+    object-fit: cover;
+    border-radius: calc(10 * var(--u));
+  }
+
+  .tfwhy__body {
+    display: flex;
+    flex-direction: column;
+    gap: calc(6 * var(--u));
+  }
+
+  .tfwhy__card-title {
+    margin: 0;
+    color: #202020;
+    font-size: calc(22 * var(--u));
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -0.025em;
+  }
+
+  .tfwhy__card-text {
+    margin: 0;
+    color: rgba(0, 0, 0, 0.4);
+    font-size: calc(11 * var(--u));
+    font-weight: 500;
+    line-height: 1.18;
+  }
+
+  /* Последняя карточка — тёмная, с кнопкой внизу */
+  .tfwhy__card--cta {
+    justify-content: space-between;
+    border: 1px solid #2e2e2e;
+    background: linear-gradient(97.77deg, #3b3b3b 0%, #000000 96.03%);
+  }
+
+  .tfwhy__cta-title {
+    color: #ededee;
+    font-size: calc(27 * var(--u));
+    line-height: 1.04;
+  }
+
+  .tfwhy__cta-text {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .tfwhy__cta-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: calc(54 * var(--u));
+    padding: calc(5 * var(--u)) calc(5 * var(--u)) calc(5 * var(--u)) calc(25 * var(--u));
+    border-radius: 120px;
+    background: #810005;
+    color: #fff;
+    text-decoration: none;
+    font-size: calc(15 * var(--u));
+    font-weight: 600;
+    white-space: nowrap;
+    transition: filter 0.25s ease;
+  }
+
+  .tfwhy__cta-btn img {
+    width: calc(44 * var(--u));
+    height: calc(44 * var(--u));
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .tfwhy__cta-btn:hover {
+      filter: brightness(1.15);
+    }
+  }
+
+  /* Планшет: две колонки, мобильные: одна */
+  @media (max-width: 1112px) {
+    .tfwhy__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: calc(14 * var(--u));
+    }
+  }
+
+  @media (max-width: 720px) {
+    .tfwhy__grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .tfwhy__card {
+      gap: calc(20 * var(--u));
+      padding: calc(32 * var(--u));
+    }
+
+    .tfwhy__cta-btn {
+      height: calc(62 * var(--u));
+      font-size: calc(17 * var(--u));
+    }
+
+    .tfwhy__cta-btn img {
+      width: calc(50 * var(--u));
+      height: calc(50 * var(--u));
+    }
+  }
+</style>

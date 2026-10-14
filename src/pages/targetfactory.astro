@@ -13,8 +13,7 @@ import Reasons from '../components/tf/Reasons.astro';
 import Plans from '../components/tf/Plans.astro';
 import FirstLeads from '../components/tf/FirstLeads.astro';
 import Cases from '../components/tf/Cases.astro';
-import WhySimple from '../components/tf/WhySimple.astro';
-import WhyAnimated from '../components/tf/WhyAnimated.astro';
+import Why from '../components/tf/Why.astro';
 import Founder from '../components/tf/Founder.astro';
 import Reports from '../components/tf/Reports.astro';
 import Reviews from '../components/tf/Reviews.astro';
@@ -37,11 +36,7 @@ import CookieNotice from '../components/tf/CookieNotice.astro';
   <FirstLeads />
   <Cases />
 
-  <!-- «Почему выбирают нас» в двух вариантах — на выбор, второй потом убрать -->
-  <p class="tf-variant">Вариант 1 — простой</p>
-  <WhySimple />
-  <p class="tf-variant">Вариант 2 — с анимацией</p>
-  <WhyAnimated />
+  <Why />
   <Founder />
   <Reports />
   <Reviews />
@@ -55,21 +50,3 @@ import CookieNotice from '../components/tf/CookieNotice.astro';
   <Quiz />
   <CookieNotice />
 </TargetFactory>
-
-<style>
-  /* подпись варианта для выбора — временная */
-  .tf-variant {
-    max-width: 1080px;
-    margin: 20px auto 8px;
-    padding: 8px 16px;
-    border: 1px dashed rgba(255, 255, 255, 0.22);
-    border-radius: 12px;
-    color: rgba(255, 255, 255, 0.55);
-    font: 600 13px/1.4 'Inter Tight', Arial, sans-serif;
-    text-align: center;
-  }
-
-  @media (max-width: 1112px) {
-    .tf-variant { margin: 20px 16px 0; }
-  }
-</style>

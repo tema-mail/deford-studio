@@ -1,14 +1,16 @@
 ---
-/** Заставка перед страницей: на чёрном экране начинают прилетать
-    уведомления от клиентов — сначала одно-два, потом поток. Через
-    ~2 секунды они разлетаются и остаётся строка «Знаем, где сидят
-    ваши клиенты», после чего заставка уходит.
+/** Заставка перед страницей.
 
-    Источники показаны нейтральными значками и подписью словом —
-    чужие логотипы не используются.
+    Внизу — колокольчик с подписью «Ваша компания» и счётчиком заявок,
+    который набегает до 50. Из него снизу вверх вылетают уведомления:
+    белые карточки, как пуши на телефоне, слегка вразнобой — влево,
+    вправо и с небольшим наклоном. Сначала одно-два, потом поток.
+    К концу они гаснут и остаётся строка «Знаем, где сидят ваши клиенты».
 
-    demo=true добавляет кнопку «Повторить» и отключает запоминание
-    показа: нужно, чтобы смотреть заставку на черновой странице. */
+    Значки источников — свои, простой геометрии.
+
+    demo=true добавляет кнопку «Ещё раз» и не снимает заставку сама:
+    нужно, чтобы смотреть её на черновой странице. */
 
 interface Props {
   demo?: boolean;
@@ -16,33 +18,39 @@ interface Props {
 
 const { demo = false } = Astro.props;
 
-/* kind: vk — сообщение в сообществе, search — переход из поиска, sms — смс.
-   d — задержка появления в секундах: две первые неспешно, дальше поток. */
+/* kind — вид значка; x/r — куда и под каким наклоном уводит карточку;
+   d — задержка в секундах: две первые неспешно, дальше поток. */
 const notes = [
-  { kind: 'vk', who: 'Ирина', text: 'Здравствуйте! Хочу заказать таргет', d: 0 },
-  { kind: 'search', who: 'Из поиска', text: 'Сколько стоит продвижение?', d: 0.45 },
-  { kind: 'sms', who: '+7 913 ···', text: 'Можно записаться на завтра?', d: 0.92 },
-  { kind: 'vk', who: 'Максим', text: 'Нужна реклама для автосервиса', d: 1.02 },
-  { kind: 'search', who: 'Из поиска', text: 'Есть кейсы по моей нише?', d: 1.1 },
-  { kind: 'vk', who: 'Алёна', text: 'Пришлите цены, пожалуйста', d: 1.18 },
-  { kind: 'sms', who: '+7 952 ···', text: 'Готов обсудить бюджет', d: 1.26 },
-  { kind: 'vk', who: 'Сергей', text: 'Остались места на этой неделе?', d: 1.33 },
-  { kind: 'search', who: 'Из поиска', text: 'Работаете с небольшими бюджетами?', d: 1.4 },
-  { kind: 'vk', who: 'Дарья', text: 'Хочу заявки с ВКонтакте', d: 1.47 },
-  { kind: 'sms', who: '+7 983 ···', text: 'Перезвоните, пожалуйста', d: 1.54 },
-  { kind: 'vk', who: 'Павел', text: 'Запустите рекламу к выходным?', d: 1.61 },
-  { kind: 'search', who: 'Из поиска', text: 'Нужен разбор кабинета', d: 1.68 },
-  { kind: 'vk', who: 'Ольга', text: 'Сколько заявок будет в месяц?', d: 1.75 },
+  { kind: 'chat', who: 'Сообщения', text: 'Здравствуйте! Хочу заказать таргет', x: -0.10, r: -3, d: 0.30 },
+  { kind: 'search', who: 'Заявка с сайта', text: 'Сколько стоит продвижение?', x: 0.14, r: 3, d: 0.78 },
+
+  { kind: 'sms', who: 'SMS', text: 'Можно записаться на завтра?', x: -0.30, r: -6, d: 1.06 },
+  { kind: 'chat', who: 'Сообщения', text: 'Нужна реклама для автосервиса', x: 0.26, r: 5, d: 1.16 },
+  { kind: 'search', who: 'Заявка с сайта', text: 'Есть кейсы по моей нише?', x: -0.04, r: -1, d: 1.26 },
+  { kind: 'chat', who: 'Сообщения', text: 'Пришлите цены, пожалуйста', x: 0.40, r: 7, d: 1.36 },
+  { kind: 'sms', who: 'SMS', text: 'Готов обсудить бюджет', x: -0.44, r: -8, d: 1.46 },
+  { kind: 'chat', who: 'Сообщения', text: 'Остались места на этой неделе?', x: 0.08, r: 2, d: 1.56 },
+  { kind: 'search', who: 'Заявка с сайта', text: 'Работаете с небольшими бюджетами?', x: -0.22, r: -4, d: 1.64 },
+  { kind: 'chat', who: 'Сообщения', text: 'Хочу заявки с ВКонтакте', x: 0.33, r: 6, d: 1.72 },
+  { kind: 'sms', who: 'SMS', text: 'Перезвоните, пожалуйста', x: -0.36, r: -5, d: 1.80 },
+  { kind: 'chat', who: 'Сообщения', text: 'Запустите рекламу к выходным?', x: 0.18, r: 4, d: 1.88 },
+  { kind: 'search', who: 'Заявка с сайта', text: 'Нужен разбор кабинета', x: -0.14, r: -2, d: 1.96 },
+  { kind: 'chat', who: 'Сообщения', text: 'Сколько заявок будет в месяц?', x: 0.44, r: 8, d: 2.04 },
+  { kind: 'sms', who: 'SMS', text: 'Подскажите по срокам', x: -0.26, r: -6, d: 2.12 },
+  { kind: 'chat', who: 'Сообщения', text: 'Beauty-студия, нужны клиенты', x: 0.02, r: 1, d: 2.20 },
 ];
 ---
 
 <div class={`tfintro${demo ? ' tfintro--demo' : ''}`} data-tfintro>
-  <div class="tfintro__stage">
+  <div class="tfintro__flow">
     {
       notes.map((n) => (
-        <article class={`tfintro__note tfintro__note--${n.kind}`} style={`--d: ${n.d}s`}>
-          <span class="tfintro__avatar" aria-hidden="true">
-            {n.kind === 'vk' && (
+        <article
+          class={`tfintro__note tfintro__note--${n.kind}`}
+          style={`--d: ${n.d}s; --x: ${n.x}; --r: ${n.r}deg`}
+        >
+          <span class="tfintro__icon" aria-hidden="true">
+            {n.kind === 'chat' && (
               <svg viewBox="0 0 24 24"><path d="M12 4a8 8 0 0 0-6.9 12l-.9 3.4 3.5-.9A8 8 0 1 0 12 4Z" /></svg>
             )}
             {n.kind === 'search' && (
@@ -54,19 +62,31 @@ const notes = [
           </span>
 
           <span class="tfintro__body">
-            <span class="tfintro__who">{n.who}</span>
+            <span class="tfintro__head">
+              <span class="tfintro__who">{n.who}</span>
+              <span class="tfintro__time">сейчас</span>
+            </span>
             <span class="tfintro__text">{n.text}</span>
           </span>
-
-          <span class="tfintro__dot" aria-hidden="true"></span>
         </article>
       ))
     }
   </div>
 
+  <div class="tfintro__bell">
+    <span class="tfintro__bell-circle" aria-hidden="true">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 3a5.5 5.5 0 0 0-5.5 5.5c0 3.2-.8 4.8-1.6 5.8-.5.6-.1 1.6.7 1.6h12.8c.8 0 1.2-1 .7-1.6-.8-1-1.6-2.6-1.6-5.8A5.5 5.5 0 0 0 12 3Z" />
+        <path d="M10 19a2 2 0 0 0 4 0" />
+      </svg>
+      <span class="tfintro__badge" data-tfintro-count>0</span>
+    </span>
+    <span class="tfintro__bell-label">Ваша компания</span>
+  </div>
+
   <p class="tfintro__claim">Знаем, где сидят ваши клиенты</p>
 
-  {demo && <button class="tfintro__again" type="button" data-tfintro-again>Повторить</button>}
+  {demo && <button class="tfintro__again" type="button" data-tfintro-again>Ещё раз</button>}
 </div>
 
 <style is:global>
@@ -74,19 +94,17 @@ const notes = [
     position: fixed;
     inset: 0;
     z-index: 10000002;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     overflow: hidden;
     background:
-      radial-gradient(70% 60% at 100% 0%, rgba(238, 0, 0, 0.35) 0%, rgba(129, 0, 5, 0) 62%),
-      radial-gradient(60% 55% at 0% 100%, rgba(238, 0, 0, 0.28) 0%, rgba(129, 0, 5, 0) 62%),
+      radial-gradient(70% 60% at 100% 0%, rgba(238, 0, 0, 0.32) 0%, rgba(129, 0, 5, 0) 62%),
+      radial-gradient(60% 55% at 0% 100%, rgba(238, 0, 0, 0.26) 0%, rgba(129, 0, 5, 0) 62%),
       #070707;
     font-family: 'Inter Tight', Inter, Arial, sans-serif;
-    animation: tfintro-out 0.55s ease 3.05s both;
+    animation: tfintro-out 0.6s ease 3.55s both;
   }
 
   .tfintro[hidden] { display: none; }
+  .tfintro--demo { animation: none; }
 
   @keyframes tfintro-out {
     to { opacity: 0; visibility: hidden; }
@@ -94,55 +112,66 @@ const notes = [
 
   /* ---------- поток уведомлений ---------- */
 
-  .tfintro__stage {
-    position: relative;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    align-content: center;
-    gap: 10px;
-    width: min(760px, calc(100% - 32px));
-    animation: tfintro-stage-out 0.5s cubic-bezier(0.4, 0, 0.2, 1) 1.95s both;
+  .tfintro__flow {
+    position: absolute;
+    left: 50%;
+    bottom: 150px;
+    width: 0;
+    height: 0;
+    animation: tfintro-flow-out 0.45s ease 2.55s both;
   }
 
-  @keyframes tfintro-stage-out {
-    to { opacity: 0; transform: translateY(-14px) scale(0.97); }
+  @keyframes tfintro-flow-out {
+    to { opacity: 0; }
   }
 
+  /* Белая карточка, как пуш на телефоне: значок, название, время, текст */
   .tfintro__note {
+    position: absolute;
+    left: 0;
+    bottom: 0;
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 12px 14px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 16px;
-    background: rgba(22, 22, 22, 0.92);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+    gap: 11px;
+    width: 332px;
+    margin-left: -166px;
+    padding: 11px 14px;
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
     opacity: 0;
-    transform: translateY(18px) scale(0.96);
-    animation: tfintro-note-in 0.42s cubic-bezier(0.2, 0.75, 0.25, 1) var(--d) both;
+    transform: translate3d(0, 40px, 0) scale(0.92);
+    animation: tfintro-fly 2.1s cubic-bezier(0.22, 0.65, 0.3, 1) var(--d) both;
   }
 
-  @keyframes tfintro-note-in {
-    to { opacity: 1; transform: none; }
+  /* Вылет снизу вверх с уводом в сторону и лёгким наклоном */
+  @keyframes tfintro-fly {
+    0% { opacity: 0; transform: translate3d(0, 40px, 0) scale(0.92) rotate(0deg); }
+    9% { opacity: 1; transform: translate3d(calc(var(--x) * 60px), -10px, 0) scale(1) rotate(calc(var(--r) * 0.3)); }
+    55% { opacity: 1; }
+    100% {
+      opacity: 0;
+      transform: translate3d(calc(var(--x) * 760px), -78vh, 0) scale(0.84) rotate(var(--r));
+    }
   }
 
-  .tfintro__avatar {
+  .tfintro__icon {
     display: flex;
     align-items: center;
     justify-content: center;
     flex: 0 0 38px;
     width: 38px;
     height: 38px;
-    border-radius: 50%;
+    border-radius: 11px;
     background: linear-gradient(95.58deg, #ee0000 0%, #810005 96.03%);
   }
 
-  .tfintro__note--search .tfintro__avatar { background: #2b2b2b; }
-  .tfintro__note--sms .tfintro__avatar { background: #1f1f1f; }
+  .tfintro__note--search .tfintro__icon { background: #202020; }
+  .tfintro__note--sms .tfintro__icon { background: #3b7d4f; }
 
-  .tfintro__avatar svg {
-    width: 18px;
-    height: 18px;
+  .tfintro__icon svg {
+    width: 19px;
+    height: 19px;
     fill: none;
     stroke: #fff;
     stroke-width: 1.7;
@@ -150,34 +179,103 @@ const notes = [
     stroke-linejoin: round;
   }
 
-  .tfintro__body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .tfintro__body { display: flex; flex-direction: column; gap: 3px; min-width: 0; flex: 1 1 auto; }
+
+  .tfintro__head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
 
   .tfintro__who {
-    color: rgba(255, 255, 255, 0.45);
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
+    color: #202020;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
   }
 
+  .tfintro__time { color: #9b9b9b; font-size: 11px; font-weight: 500; }
+
   .tfintro__text {
-    color: #fff;
-    font-size: 14px;
+    color: #3b3b3b;
+    font-size: 13.5px;
     font-weight: 500;
-    line-height: 1.25;
+    line-height: 1.22;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
-  .tfintro__dot {
-    flex: 0 0 7px;
-    width: 7px;
-    height: 7px;
-    margin-left: auto;
+  /* ---------- колокольчик ---------- */
+
+  .tfintro__bell {
+    position: absolute;
+    left: 50%;
+    bottom: 52px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    transform: translateX(-50%);
+    animation: tfintro-bell-out 0.45s ease 2.55s both;
+  }
+
+  @keyframes tfintro-bell-out {
+    to { opacity: 0; transform: translateX(-50%) translateY(14px); }
+  }
+
+  .tfintro__bell-circle {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 74px;
+    height: 74px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
     border-radius: 50%;
-    background: #ee0000;
-    box-shadow: 0 0 10px rgba(238, 0, 0, 0.8);
+    background: rgba(255, 255, 255, 0.07);
+    animation: tfintro-ring 0.55s ease-in-out 0.25s 4;
+    transform-origin: 50% 18%;
+  }
+
+  /* Покачивание — колокольчик звенит, пока идут заявки */
+  @keyframes tfintro-ring {
+    0%, 100% { transform: rotate(0deg); }
+    20% { transform: rotate(11deg); }
+    45% { transform: rotate(-9deg); }
+    70% { transform: rotate(6deg); }
+  }
+
+  .tfintro__bell-circle svg {
+    width: 32px;
+    height: 32px;
+    fill: none;
+    stroke: #fff;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .tfintro__badge {
+    position: absolute;
+    right: -4px;
+    top: -2px;
+    min-width: 30px;
+    height: 30px;
+    padding: 0 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 120px;
+    background: linear-gradient(95.58deg, #ee0000 0%, #810005 96.03%);
+    box-shadow: 0 0 18px rgba(238, 0, 0, 0.55);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .tfintro__bell-label {
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
   }
 
   /* ---------- финальная строка ---------- */
@@ -196,21 +294,19 @@ const notes = [
     text-align: center;
     opacity: 0;
     transform: translate(-50%, -46%);
-    animation: tfintro-claim-in 0.6s cubic-bezier(0.2, 0.75, 0.25, 1) 2.25s both;
+    animation: tfintro-claim-in 0.6s cubic-bezier(0.2, 0.75, 0.25, 1) 2.8s both;
   }
 
   @keyframes tfintro-claim-in {
     to { opacity: 1; transform: translate(-50%, -50%); }
   }
 
-  /* ---------- черновик: кнопка «Повторить» ---------- */
-
   .tfintro__again {
     position: absolute;
     left: 50%;
-    bottom: 40px;
+    bottom: 18px;
     transform: translateX(-50%);
-    padding: 12px 26px;
+    padding: 11px 24px;
     border: 1px solid rgba(255, 255, 255, 0.25);
     border-radius: 120px;
     background: rgba(255, 255, 255, 0.06);
@@ -219,24 +315,44 @@ const notes = [
     font-weight: 600;
     cursor: pointer;
     opacity: 0;
-    animation: tfintro-claim-in 0.4s ease 2.6s both;
+    animation: tfintro-claim-in 0.4s ease 3.1s both;
   }
-
-  .tfintro--demo { animation: none; }
 
   body.tf-introlock { overflow: hidden; }
 
+  /* ---------- телефон: разлёт уже, карточка компактнее ---------- */
+
   @media (max-width: 720px) {
-    .tfintro__stage { grid-template-columns: minmax(0, 1fr); gap: 8px; }
-    .tfintro__note:nth-child(n + 9) { display: none; }
-    .tfintro__text { font-size: 13px; }
+    .tfintro__flow { bottom: 132px; }
+
+    .tfintro__note {
+      width: min(300px, calc(100vw - 40px));
+      margin-left: calc(min(300px, 100vw - 40px) / -2);
+      gap: 9px;
+      padding: 10px 12px;
+      border-radius: 16px;
+    }
+
+    @keyframes tfintro-fly {
+      0% { opacity: 0; transform: translate3d(0, 36px, 0) scale(0.92) rotate(0deg); }
+      9% { opacity: 1; transform: translate3d(calc(var(--x) * 24px), -8px, 0) scale(1) rotate(calc(var(--r) * 0.3)); }
+      55% { opacity: 1; }
+      100% { opacity: 0; transform: translate3d(calc(var(--x) * 150px), -72vh, 0) scale(0.86) rotate(var(--r)); }
+    }
+
+    .tfintro__text { font-size: 12.5px; }
+    .tfintro__bell { bottom: 40px; }
+    .tfintro__bell-circle { width: 64px; height: 64px; }
+    .tfintro__bell-circle svg { width: 28px; height: 28px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .tfintro,
-    .tfintro__stage,
+    .tfintro__flow,
     .tfintro__note,
-    .tfintro__claim { animation-duration: 0.01ms !important; }
+    .tfintro__bell,
+    .tfintro__bell-circle,
+    .tfintro__claim { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
   }
 </style>
 
@@ -248,17 +364,41 @@ const notes = [
     var demo = box.classList.contains('tfintro--demo');
     document.body.classList.add('tf-introlock');
 
-    /* На боевой странице заставка снимается сама после проигрывания */
+    /* Счётчик на колокольчике: добегает до 50 к концу потока */
+    function runCounter(node) {
+      var badge = node.querySelector('[data-tfintro-count]');
+      if (!badge) return;
+
+      var TARGET = 50;
+      var START = 250;
+      var DURATION = 2050;
+      var begun = performance.now();
+
+      function tick(now) {
+        var p = Math.min(1, (now - begun - START) / DURATION);
+        if (p < 0) return requestAnimationFrame(tick);
+
+        /* сначала по одной, ближе к концу — пачками */
+        var value = Math.round(TARGET * Math.pow(p, 1.7));
+        badge.textContent = String(value);
+
+        if (p < 1) requestAnimationFrame(tick);
+      }
+
+      requestAnimationFrame(tick);
+    }
+
+    runCounter(box);
+
     if (!demo) {
       setTimeout(function () {
         box.hidden = true;
         document.body.classList.remove('tf-introlock');
-      }, 3650);
+      }, 4200);
       return;
     }
 
-    /* Черновик: «Повторить» подменяет блок его копией —
-       так все анимации с задержками стартуют заново */
+    /* Черновик: «Ещё раз» подменяет блок копией — анимации стартуют заново */
     function bindAgain(node) {
       var btn = node.querySelector('[data-tfintro-again]');
       if (!btn) return;
@@ -266,6 +406,7 @@ const notes = [
       btn.addEventListener('click', function () {
         var fresh = node.cloneNode(true);
         node.parentNode.replaceChild(fresh, node);
+        runCounter(fresh);
         bindAgain(fresh);
       });
     }

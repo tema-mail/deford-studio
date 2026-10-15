@@ -1,0 +1,30 @@
+---
+/* Черновик заставки для страницы /targetfactory. На саму страницу пока
+   не поставлена: эта страница нужна, чтобы посмотреть заставку отдельно
+   и поправить до включения. Кнопка «Повторить» запускает её заново. */
+import TargetFactory from '../../layouts/TargetFactory.astro';
+import Intro from '../../components/tf/Intro.astro';
+---
+
+<TargetFactory title="Черновик: заставка Target Factory">
+  <div class="draft-note">
+    Заставка перед страницей: прилетают заявки от клиентов, затем остаётся
+    строка «Знаем, где сидят ваши клиенты». Весь показ — около 3 секунд.
+    На боевую страницу не поставлена.
+  </div>
+
+  <Intro demo />
+</TargetFactory>
+
+<style>
+  .draft-note {
+    max-width: 760px;
+    margin: 120px auto 40px;
+    padding: 18px 22px;
+    border: 1px dashed rgba(255, 255, 255, 0.22);
+    border-radius: 16px;
+    color: rgba(255, 255, 255, 0.6);
+    font: 500 14px/1.45 'Inter Tight', Arial, sans-serif;
+    text-align: center;
+  }
+</style>

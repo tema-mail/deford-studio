@@ -1,0 +1,275 @@
+---
+/** Заставка перед страницей: на чёрном экране начинают прилетать
+    уведомления от клиентов — сначала одно-два, потом поток. Через
+    ~2 секунды они разлетаются и остаётся строка «Знаем, где сидят
+    ваши клиенты», после чего заставка уходит.
+
+    Источники показаны нейтральными значками и подписью словом —
+    чужие логотипы не используются.
+
+    demo=true добавляет кнопку «Повторить» и отключает запоминание
+    показа: нужно, чтобы смотреть заставку на черновой странице. */
+
+interface Props {
+  demo?: boolean;
+}
+
+const { demo = false } = Astro.props;
+
+/* kind: vk — сообщение в сообществе, search — переход из поиска, sms — смс.
+   d — задержка появления в секундах: две первые неспешно, дальше поток. */
+const notes = [
+  { kind: 'vk', who: 'Ирина', text: 'Здравствуйте! Хочу заказать таргет', d: 0 },
+  { kind: 'search', who: 'Из поиска', text: 'Сколько стоит продвижение?', d: 0.45 },
+  { kind: 'sms', who: '+7 913 ···', text: 'Можно записаться на завтра?', d: 0.92 },
+  { kind: 'vk', who: 'Максим', text: 'Нужна реклама для автосервиса', d: 1.02 },
+  { kind: 'search', who: 'Из поиска', text: 'Есть кейсы по моей нише?', d: 1.1 },
+  { kind: 'vk', who: 'Алёна', text: 'Пришлите цены, пожалуйста', d: 1.18 },
+  { kind: 'sms', who: '+7 952 ···', text: 'Готов обсудить бюджет', d: 1.26 },
+  { kind: 'vk', who: 'Сергей', text: 'Остались места на этой неделе?', d: 1.33 },
+  { kind: 'search', who: 'Из поиска', text: 'Работаете с небольшими бюджетами?', d: 1.4 },
+  { kind: 'vk', who: 'Дарья', text: 'Хочу заявки с ВКонтакте', d: 1.47 },
+  { kind: 'sms', who: '+7 983 ···', text: 'Перезвоните, пожалуйста', d: 1.54 },
+  { kind: 'vk', who: 'Павел', text: 'Запустите рекламу к выходным?', d: 1.61 },
+  { kind: 'search', who: 'Из поиска', text: 'Нужен разбор кабинета', d: 1.68 },
+  { kind: 'vk', who: 'Ольга', text: 'Сколько заявок будет в месяц?', d: 1.75 },
+];
+---
+
+<div class={`tfintro${demo ? ' tfintro--demo' : ''}`} data-tfintro>
+  <div class="tfintro__stage">
+    {
+      notes.map((n) => (
+        <article class={`tfintro__note tfintro__note--${n.kind}`} style={`--d: ${n.d}s`}>
+          <span class="tfintro__avatar" aria-hidden="true">
+            {n.kind === 'vk' && (
+              <svg viewBox="0 0 24 24"><path d="M12 4a8 8 0 0 0-6.9 12l-.9 3.4 3.5-.9A8 8 0 1 0 12 4Z" /></svg>
+            )}
+            {n.kind === 'search' && (
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6" /><path d="M15.5 15.5 20 20" /></svg>
+            )}
+            {n.kind === 'sms' && (
+              <svg viewBox="0 0 24 24"><rect x="7" y="3" width="10" height="18" rx="2.5" /><path d="M11 18h2" /></svg>
+            )}
+          </span>
+
+          <span class="tfintro__body">
+            <span class="tfintro__who">{n.who}</span>
+            <span class="tfintro__text">{n.text}</span>
+          </span>
+
+          <span class="tfintro__dot" aria-hidden="true"></span>
+        </article>
+      ))
+    }
+  </div>
+
+  <p class="tfintro__claim">Знаем, где сидят ваши клиенты</p>
+
+  {demo && <button class="tfintro__again" type="button" data-tfintro-again>Повторить</button>}
+</div>
+
+<style is:global>
+  .tfintro {
+    position: fixed;
+    inset: 0;
+    z-index: 10000002;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background:
+      radial-gradient(70% 60% at 100% 0%, rgba(238, 0, 0, 0.35) 0%, rgba(129, 0, 5, 0) 62%),
+      radial-gradient(60% 55% at 0% 100%, rgba(238, 0, 0, 0.28) 0%, rgba(129, 0, 5, 0) 62%),
+      #070707;
+    font-family: 'Inter Tight', Inter, Arial, sans-serif;
+    animation: tfintro-out 0.55s ease 3.05s both;
+  }
+
+  .tfintro[hidden] { display: none; }
+
+  @keyframes tfintro-out {
+    to { opacity: 0; visibility: hidden; }
+  }
+
+  /* ---------- поток уведомлений ---------- */
+
+  .tfintro__stage {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-content: center;
+    gap: 10px;
+    width: min(760px, calc(100% - 32px));
+    animation: tfintro-stage-out 0.5s cubic-bezier(0.4, 0, 0.2, 1) 1.95s both;
+  }
+
+  @keyframes tfintro-stage-out {
+    to { opacity: 0; transform: translateY(-14px) scale(0.97); }
+  }
+
+  .tfintro__note {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    background: rgba(22, 22, 22, 0.92);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+    opacity: 0;
+    transform: translateY(18px) scale(0.96);
+    animation: tfintro-note-in 0.42s cubic-bezier(0.2, 0.75, 0.25, 1) var(--d) both;
+  }
+
+  @keyframes tfintro-note-in {
+    to { opacity: 1; transform: none; }
+  }
+
+  .tfintro__avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 38px;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: linear-gradient(95.58deg, #ee0000 0%, #810005 96.03%);
+  }
+
+  .tfintro__note--search .tfintro__avatar { background: #2b2b2b; }
+  .tfintro__note--sms .tfintro__avatar { background: #1f1f1f; }
+
+  .tfintro__avatar svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: #fff;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .tfintro__body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+
+  .tfintro__who {
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  .tfintro__text {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.25;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .tfintro__dot {
+    flex: 0 0 7px;
+    width: 7px;
+    height: 7px;
+    margin-left: auto;
+    border-radius: 50%;
+    background: #ee0000;
+    box-shadow: 0 0 10px rgba(238, 0, 0, 0.8);
+  }
+
+  /* ---------- финальная строка ---------- */
+
+  .tfintro__claim {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: min(820px, calc(100% - 32px));
+    margin: 0;
+    color: #fff;
+    font-size: clamp(28px, 5vw, 56px);
+    font-weight: 600;
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    text-align: center;
+    opacity: 0;
+    transform: translate(-50%, -46%);
+    animation: tfintro-claim-in 0.6s cubic-bezier(0.2, 0.75, 0.25, 1) 2.25s both;
+  }
+
+  @keyframes tfintro-claim-in {
+    to { opacity: 1; transform: translate(-50%, -50%); }
+  }
+
+  /* ---------- черновик: кнопка «Повторить» ---------- */
+
+  .tfintro__again {
+    position: absolute;
+    left: 50%;
+    bottom: 40px;
+    transform: translateX(-50%);
+    padding: 12px 26px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 120px;
+    background: rgba(255, 255, 255, 0.06);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    opacity: 0;
+    animation: tfintro-claim-in 0.4s ease 2.6s both;
+  }
+
+  .tfintro--demo { animation: none; }
+
+  body.tf-introlock { overflow: hidden; }
+
+  @media (max-width: 720px) {
+    .tfintro__stage { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+    .tfintro__note:nth-child(n + 9) { display: none; }
+    .tfintro__text { font-size: 13px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tfintro,
+    .tfintro__stage,
+    .tfintro__note,
+    .tfintro__claim { animation-duration: 0.01ms !important; }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    var box = document.querySelector('[data-tfintro]');
+    if (!box) return;
+
+    var demo = box.classList.contains('tfintro--demo');
+    document.body.classList.add('tf-introlock');
+
+    /* На боевой странице заставка снимается сама после проигрывания */
+    if (!demo) {
+      setTimeout(function () {
+        box.hidden = true;
+        document.body.classList.remove('tf-introlock');
+      }, 3650);
+      return;
+    }
+
+    /* Черновик: «Повторить» подменяет блок его копией —
+       так все анимации с задержками стартуют заново */
+    function bindAgain(node) {
+      var btn = node.querySelector('[data-tfintro-again]');
+      if (!btn) return;
+
+      btn.addEventListener('click', function () {
+        var fresh = node.cloneNode(true);
+        node.parentNode.replaceChild(fresh, node);
+        bindAgain(fresh);
+      });
+    }
+
+    bindAgain(box);
+  })();
+</script>

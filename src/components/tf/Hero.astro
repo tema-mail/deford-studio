@@ -138,8 +138,16 @@
     height: calc(831.268 * var(--f));
     object-fit: contain;
     transform: rotate(-1.86deg);
-    -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 86%, rgba(0, 0, 0, 0) 99%);
-    mask-image: linear-gradient(180deg, #000 0%, #000 86%, rgba(0, 0, 0, 0) 99%);
+    /* Вырезка в исходнике обрывается прямым срезом снизу и справа —
+       уводим оба края в фон, чтобы ступенька не читалась. */
+    -webkit-mask-image:
+      linear-gradient(180deg, #000 0%, #000 84%, rgba(0, 0, 0, 0) 99%),
+      linear-gradient(90deg, #000 0%, #000 82%, rgba(0, 0, 0, 0) 97%);
+    -webkit-mask-composite: source-in;
+    mask-image:
+      linear-gradient(180deg, #000 0%, #000 84%, rgba(0, 0, 0, 0) 99%),
+      linear-gradient(90deg, #000 0%, #000 82%, rgba(0, 0, 0, 0) 97%);
+    mask-composite: intersect;
   }
 
   /* ---------- текст ---------- */

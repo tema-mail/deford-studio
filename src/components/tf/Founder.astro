@@ -206,18 +206,20 @@ const stats = [
     color: var(--tf-text);
   }
 
+  /* По макету цифры белые, не красные */
   .tffounder__value {
-    /* яркий красный макета: тёмный #810005 на тёмной карточке не читается */
-    color: var(--tf-red-hot);
-    font-size: calc(44 * var(--u));
-    line-height: 1;
+    color: #fff;
+    font-size: calc(22 * var(--u));
+    font-weight: 600;
+    line-height: calc(22 * var(--u));
+    letter-spacing: calc(-0.5 * var(--u));
   }
 
   .tffounder__label {
-    margin-top: calc(12 * var(--u));
-    color: var(--tf-muted-light);
-    font-size: calc(13 * var(--u));
-    line-height: calc(18 * var(--u));
+    margin-top: calc(8 * var(--u));
+    color: rgba(255, 255, 255, 0.6);
+    font-size: calc(11 * var(--u));
+    line-height: calc(13 * var(--u));
     font-weight: 500;
   }
 

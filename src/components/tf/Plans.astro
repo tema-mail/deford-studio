@@ -64,7 +64,7 @@ const plans = [
 ---
 
 <section class="tf-section tfplans" id="service">
-  <div class="tf-panel tf-panel--white tfplans__panel">
+  <div class="tf-panel tf-panel--dark tfplans__panel">
     <header class="tfplans__head" data-reveal>
       <div class="tf-tag tfplans__tag">– от консультации до полного ведения под ключ.</div>
       <h2 class="tf-h2 tfplans__title">Выбирайте формат сотрудничества, который подходит именно вам</h2>
@@ -120,12 +120,23 @@ const plans = [
 </section>
 
 <style is:global>
+  /* Фон секции — общий для страницы: чёрное поле с красным свечением */
   .tfplans__panel {
     --f: calc(100cqw / 1440);
     padding: calc(50 * var(--f)) 0 calc(63 * var(--f));
     border-radius: calc(90 * var(--f));
     font-family: 'Inter Tight', Inter, Arial, sans-serif;
   }
+
+  /* Метка над заголовком — белая пилюля */
+  .tfplans .tfplans__tag {
+    background: #fff;
+    border-color: #ededee;
+    color: #202020;
+    font-weight: 400;
+  }
+
+  .tfplans .tfplans__title { color: #fff; }
 
   .tfplans__head { display: flex; flex-direction: column; align-items: center; text-align: center; }
 

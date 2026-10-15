@@ -28,10 +28,12 @@ const VIDEO = 'https://vkvideo.ru/video-213005931_456239276?list=ln-QssLrLS6shpv
         <p class="tfreports__text tfreports__text--strong">Хотите увидеть, как это выглядит на практике?</p>
 
         <a class="tfreports__video" href={VIDEO} target="_blank" rel="noopener">
-          <span class="tfreports__play" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z"></path></svg>
+          <span class="tfreports__video-text">
+            Посмотрите короткое видео — покажем,<br />как выглядит наша работа изнутри
           </span>
-          <span>Посмотрите короткое видео — покажем, как выглядит наша работа изнутри.</span>
+          <span class="tfreports__play" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8" /></svg>
+          </span>
         </a>
       </div>
     </div>
@@ -41,7 +43,11 @@ const VIDEO = 'https://vkvideo.ru/video-213005931_456239276?list=ln-QssLrLS6shpv
 <style is:global>
   .tfreports__panel { padding: calc(70 * var(--u)) 0; }
 
-  .tfreports__grid { display: grid; grid-template-columns: 1fr 1.1fr; align-items: center; gap: calc(50 * var(--u)); }
+  .tfreports__grid { display: grid; grid-template-columns: 1.08fr 1fr; align-items: center; gap: calc(50 * var(--u)); }
+
+  /* По макету текст слева, телефон справа */
+  .tfreports__copy { order: 1; }
+  .tfreports__media { order: 2; }
 
   .tfreports__media { position: relative; min-height: calc(500 * var(--u)); }
 
@@ -90,37 +96,48 @@ const VIDEO = 'https://vkvideo.ru/video-213005931_456239276?list=ln-QssLrLS6shpv
 
   .tfreports__text--strong { color: #fff; font-weight: 600; }
 
+  /* Кнопка по макету: белая пилюля, текст в две строки, стрелка в круге справа */
   .tfreports__video {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: calc(16 * var(--u));
+    justify-content: space-between;
+    gap: calc(18 * var(--u));
+    width: max-content;
+    max-width: 100%;
     margin-top: calc(26 * var(--u));
-    padding: calc(14 * var(--u)) calc(22 * var(--u)) calc(14 * var(--u)) calc(14 * var(--u));
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: calc(20 * var(--u));
-    background: rgba(255, 255, 255, 0.05);
-    color: #fff;
-    font-size: calc(16 * var(--u));
-    line-height: calc(21 * var(--u));
+    padding: calc(6 * var(--u)) calc(6 * var(--u)) calc(6 * var(--u)) calc(26 * var(--u));
+    border: 0;
+    border-radius: 120px;
+    background: #fff;
+    color: #202020;
+    font-size: calc(15 * var(--u));
+    line-height: calc(19 * var(--u));
     font-weight: 600;
     text-decoration: none;
-    transition: border-color 0.25s ease, background-color 0.25s ease;
+    transition: transform 0.25s ease, filter 0.25s ease;
   }
 
-  .tfreports__video:hover { border-color: rgba(238, 0, 0, 0.5); background: rgba(238, 0, 0, 0.08); }
+  .tfreports__video:hover { transform: translateY(-2px); filter: brightness(1.04); }
 
   .tfreports__play {
     display: grid;
     place-items: center;
-    width: calc(56 * var(--u));
-    height: calc(56 * var(--u));
+    width: calc(50 * var(--u));
+    height: calc(50 * var(--u));
     flex: 0 0 auto;
     border-radius: 50%;
     background: var(--tf-grad);
-    box-shadow: 0 0 0 calc(6 * var(--u)) rgba(238, 0, 0, 0.18);
   }
 
-  .tfreports__play svg { width: 44%; height: 44%; margin-left: 8%; fill: #fff; }
+  .tfreports__play svg {
+    width: 40%;
+    height: 40%;
+    fill: none;
+    stroke: #fff;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
 
   @media (max-width: 979px) {
     .tfreports__grid { grid-template-columns: 1fr; gap: calc(30 * var(--u)); }
@@ -134,8 +151,8 @@ const VIDEO = 'https://vkvideo.ru/video-213005931_456239276?list=ln-QssLrLS6shpv
     .tfreports__msg { top: 20px; width: 170px; }
     .tfreports__title { margin-top: 16px; font-size: clamp(27px, 7.6vw, 34px); letter-spacing: -0.8px; }
     .tfreports__text { margin-top: 12px; font-size: 14px; line-height: 19px; }
-    .tfreports__video { gap: 12px; margin-top: 20px; padding: 12px 16px 12px 12px; border-radius: 18px; font-size: 14px; line-height: 19px; }
-    .tfreports__play { width: 48px; height: 48px; box-shadow: 0 0 0 5px rgba(238, 0, 0, 0.18); }
+    .tfreports__video { gap: 12px; width: 100%; margin-top: 20px; padding: 6px 6px 6px 20px; border-radius: 120px; font-size: 13.5px; line-height: 17px; }
+    .tfreports__play { width: 44px; height: 44px; }
   }
 
   @media (prefers-reduced-motion: reduce) {

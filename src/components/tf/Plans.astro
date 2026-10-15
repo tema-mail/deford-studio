@@ -1,13 +1,12 @@
 ---
-/** Тарифы «Выбирайте формат сотрудничества» – по макету Figma (кадр 3,
-    белая секция 1440 × 1643): три колонки 418 px, в каждой – верхняя
-    карточка (иконка-плитка с хромированным предметом, название Oswald
-    капсом, подзаголовок) и нижняя (состав, «стоимость от», цена, кнопка).
-    Белая колонка, красная (выделенная) и чёрная; заголовки – металлический
-    градиент по тексту, списки – Montserrat. На телефоне колонки друг под
-    другом, масштаб – по ширине колонки.
-    Тексты, цены и состав – с оригинала (якорь service). В макете у тарифа
-    «под ключ» 50 000 ₽/мес, на сайте – 60 000 ₽/мес: оставлена цена сайта.
+/** Тарифы «Выбирайте формат сотрудничества» — по макету Figma
+    (узлы 5:234–5:315). Три колонки 418 px: сверху плитка с хромированным
+    предметом и названием, снизу карточка со списком, ценой и кнопкой.
+    Белая, красная (выделенная) и чёрная. Шрифт всего блока — Inter Tight,
+    как в макете.
+
+    Карточки в ряду тянутся до одной высоты, ценовой блок прижат к низу —
+    цены и кнопки стоят на одной линии.
     Кнопка «Оплатить полностью» открывает заявку со своим тарифом. */
 
 const plans = [
@@ -80,12 +79,14 @@ const plans = [
                 <span class="tfplans__tile"></span>
                 <img class={`tfplans__obj tfplans__obj--${p.icon}`} src={`/img/tf/fig/plan-${p.icon}.webp`} alt="" loading="lazy" decoding="async" />
               </div>
-              <h3 class="tfplans__name tfplans__metal">{p.title}</h3>
-              <p class="tfplans__sub">{p.sub}</p>
+              <div class="tfplans__top-text">
+                <h3 class="tfplans__name">{p.title}</h3>
+                <p class="tfplans__sub">{p.sub}</p>
+              </div>
             </div>
 
             <div class="tfplans__card tfplans__card--body">
-              <div class="tfplans__label tfplans__metal">Что получите:</div>
+              <div class="tfplans__label">Что получите:</div>
               <ul class="tfplans__list">
                 {p.items.map((item) => <li>{item}</li>)}
               </ul>
@@ -99,11 +100,17 @@ const plans = [
                 </div>
               )}
 
-              <div class="tfplans__from">стоимость от</div>
-              <div class="tfplans__price tfplans__metal">{p.price}</div>
-              <a class="tfplans__btn" href={p.hook}>
-                <span>Оплатить полностью</span>
-              </a>
+              <div class="tfplans__pay">
+                <div class="tfplans__from">стоимость от</div>
+                <div class="tfplans__price">{p.price}</div>
+
+                <a class="tfplans__btn" href={p.hook}>
+                  <span>Оплатить полностью</span>
+                  <span class="tfplans__btn-arrow" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8" /></svg>
+                  </span>
+                </a>
+              </div>
             </div>
           </article>
         ))
@@ -117,6 +124,7 @@ const plans = [
     --f: calc(100cqw / 1440);
     padding: calc(50 * var(--f)) 0 calc(63 * var(--f));
     border-radius: calc(90 * var(--f));
+    font-family: 'Inter Tight', Inter, Arial, sans-serif;
   }
 
   .tfplans__head { display: flex; flex-direction: column; align-items: center; text-align: center; }
@@ -136,16 +144,21 @@ const plans = [
     letter-spacing: calc(-1.2 * var(--f));
   }
 
+  /* Колонки одной высоты — кнопки встают на одну линию */
   .tfplans__grid {
     display: grid;
-    grid-template-columns: repeat(3, calc(418.5 * var(--f)));
+    grid-template-columns: repeat(3, calc(418 * var(--f)));
     justify-content: center;
-    align-items: start;
-    gap: calc(22.5 * var(--f));
+    align-items: stretch;
+    gap: calc(22 * var(--f));
     margin-top: calc(40 * var(--f));
   }
 
-  .tfplans__col { display: flex; flex-direction: column; gap: calc(15 * var(--f)); }
+  .tfplans__col {
+    display: flex;
+    flex-direction: column;
+    gap: calc(10 * var(--f));
+  }
 
   .tfplans__card {
     position: relative;
@@ -153,149 +166,235 @@ const plans = [
     border-radius: calc(22.56 * var(--f));
   }
 
+  /* ---------- плитка с предметом ---------- */
+
   .tfplans__card--top {
-    display: grid;
-    grid-template-columns: calc(112 * var(--f)) 1fr;
-    column-gap: calc(0 * var(--f));
-    padding: calc(33.6 * var(--f)) calc(20 * var(--f)) calc(34 * var(--f)) calc(33.6 * var(--f));
+    display: flex;
+    align-items: center;
+    gap: calc(16 * var(--f));
+    min-height: calc(157 * var(--f));
+    padding: calc(18 * var(--f)) calc(23 * var(--f)) calc(18 * var(--f)) calc(20 * var(--f));
   }
 
-  .tfplans__card--body { display: flex; flex-direction: column; padding: calc(33.6 * var(--f)) calc(33.6 * var(--f)) calc(34.7 * var(--f)); }
+  .tfplans__badge {
+    position: relative;
+    flex: 0 0 calc(115 * var(--f));
+    width: calc(115 * var(--f));
+    height: calc(110 * var(--f));
+  }
 
-  /* плитка с предметом: предмет выходит за плитку, как в макете */
-  .tfplans__badge { position: relative; width: calc(95.26 * var(--f)); height: calc(109.83 * var(--f)); margin-top: calc(10 * var(--f)); }
-  .tfplans__tile { position: absolute; inset: 0; border: 1.12px solid #303030; border-radius: calc(5.6 * var(--f)); background: var(--tf-grad); }
+  .tfplans__tile {
+    position: absolute;
+    left: calc(10 * var(--f));
+    top: 0;
+    width: calc(95.26 * var(--f));
+    height: calc(109.83 * var(--f));
+    border: 1.12px solid #303030;
+    border-radius: calc(5.6 * var(--f));
+    background: var(--tf-grad);
+  }
+
   .tfplans__col--red .tfplans__tile { background: linear-gradient(97deg, #3b3b3b 0%, #000 96%); }
 
+  /* Предмет выходит за плитку, но остаётся в своей колонке */
   .tfplans__obj { position: absolute; max-width: none; pointer-events: none; }
-  .tfplans__obj--mic { left: calc(-22.4 * var(--f)); top: calc(-28 * var(--f)); width: calc(154 * var(--f)); height: calc(152.4 * var(--f)); object-fit: cover; object-position: left; clip-path: inset(0 23% 0 0); }
-  .tfplans__obj--megaphone { left: calc(14 * var(--f)); top: calc(-12 * var(--f)); width: calc(123.3 * var(--f)); height: calc(107.3 * var(--f)); object-fit: contain; transform: rotate(-156.59deg) scaleY(-1); }
-  .tfplans__obj--key { left: calc(-31.6 * var(--f)); top: calc(-55.9 * var(--f)); width: calc(183.8 * var(--f)); height: calc(183.8 * var(--f)); transform: rotate(21.94deg); }
+  .tfplans__obj--mic { left: calc(-12 * var(--f)); top: calc(-24 * var(--f)); width: calc(154 * var(--f)); height: calc(152.4 * var(--f)); object-fit: cover; object-position: left; clip-path: inset(0 23% 0 0); }
+  .tfplans__obj--megaphone { left: calc(4 * var(--f)); top: calc(-6 * var(--f)); width: calc(123.3 * var(--f)); height: calc(107.3 * var(--f)); object-fit: contain; transform: rotate(-156.59deg) scaleY(-1); }
+  .tfplans__obj--key { left: calc(-20 * var(--f)); top: calc(-37 * var(--f)); width: calc(170 * var(--f)); height: calc(170 * var(--f)); transform: rotate(21.94deg); }
 
-  /* металлический градиент по тексту – как в макете */
-  .tfplans__metal {
-    background: linear-gradient(150deg, #000 0%, #6a6a6a 38.6%, #000 76.5%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+  .tfplans__top-text {
+    display: flex;
+    flex-direction: column;
+    gap: calc(9.6 * var(--f));
+    min-width: 0;
   }
 
-  .tfplans__col--red .tfplans__metal,
-  .tfplans__col--dark .tfplans__metal { background-image: linear-gradient(155deg, #d8d8d8 0%, #fff 38.6%, #d8d8d8 76.5%); }
-
   .tfplans__name {
-    /* над плиткой: хромированный предмет выходит за неё под текст */
-    position: relative;
-    z-index: 1;
-    align-self: start;
-    font-family: var(--tf-display);
-    font-size: calc(33.62 * var(--f));
-    line-height: 1.2;
-    font-weight: 500;
-    letter-spacing: calc(-0.67 * var(--f));
-    text-transform: uppercase;
+    margin: 0;
+    color: #202020;
+    font-size: calc(21 * var(--f));
+    font-weight: 600;
+    line-height: calc(26.4 * var(--f));
+    letter-spacing: calc(-0.6 * var(--f));
   }
 
   .tfplans__sub {
-    grid-column: 1 / -1;
-    margin-top: calc(12 * var(--f));
-    padding-right: calc(40 * var(--f));
-    color: rgba(0, 0, 0, 0.7);
-    font-family: 'Montserrat', Arial, sans-serif;
-    font-size: calc(17.93 * var(--f));
-    line-height: 1.5;
+    margin: 0;
+    color: #a4a4a4;
+    font-size: calc(13.2 * var(--f));
+    font-weight: 500;
+    line-height: calc(15.6 * var(--f));
   }
 
-  .tfplans__label { font-family: var(--tf-display); font-size: calc(26.9 * var(--f)); line-height: 1.2; font-weight: 500; letter-spacing: calc(-0.54 * var(--f)); text-transform: uppercase; }
+  /* ---------- карточка состава ---------- */
+
+  .tfplans__card--body {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    padding: calc(24 * var(--f)) calc(25 * var(--f)) calc(27 * var(--f)) calc(24 * var(--f));
+  }
+
+  .tfplans__label {
+    color: #202020;
+    font-size: calc(21 * var(--f));
+    font-weight: 600;
+    line-height: calc(26.4 * var(--f));
+    letter-spacing: calc(-0.6 * var(--f));
+  }
 
   .tfplans__list {
-    margin: calc(12 * var(--f)) 0 0;
-    padding: 0 0 0 calc(26.9 * var(--f));
-    color: rgba(0, 0, 0, 0.7);
-    font-family: 'Montserrat', Arial, sans-serif;
-    font-size: calc(17.93 * var(--f));
-    line-height: 1.5;
+    margin: calc(9.6 * var(--f)) 0 0;
+    padding: 0 0 0 calc(19.8 * var(--f));
+    color: #a4a4a4;
+    font-size: calc(13.2 * var(--f));
+    font-weight: 500;
+    line-height: calc(15.6 * var(--f));
     list-style: disc;
   }
 
-  .tfplans__list li + li { margin-top: calc(26.9 * var(--f)); }
-  .tfplans__list li::marker { font-size: 0.7em; }
+  .tfplans__list li + li { margin-top: calc(15.6 * var(--f)); }
+  .tfplans__list li::marker { font-size: 0.8em; }
 
-  .tfplans__gifts { margin-top: calc(26.9 * var(--f)); }
-  .tfplans__gifts-title { color: #fff; font-family: 'Montserrat', Arial, sans-serif; font-size: calc(17.93 * var(--f)); line-height: 1.5; font-weight: 700; }
-  .tfplans__list--gift { margin-top: 0; }
-  .tfplans__list--gift li + li { margin-top: 0; }
+  .tfplans__gifts { margin-top: calc(15.6 * var(--f)); }
 
-  .tfplans__from {
-    margin-top: calc(78 * var(--f));
-    padding-left: calc(6.7 * var(--f));
-    color: rgba(0, 0, 0, 0.5);
-    font-family: 'Montserrat', Arial, sans-serif;
-    font-size: calc(15.69 * var(--f));
-    line-height: 1.4;
+  .tfplans__gifts-title {
+    color: #fff;
+    font-size: calc(13.2 * var(--f));
+    font-weight: 700;
+    line-height: calc(15.6 * var(--f));
   }
 
-  .tfplans__price { margin-top: calc(10.5 * var(--f)); font-family: var(--tf-display); font-size: calc(40.35 * var(--f)); line-height: 1.2; font-weight: 500; letter-spacing: calc(-0.81 * var(--f)); text-transform: uppercase; white-space: nowrap; }
+  .tfplans__list--gift { margin-top: calc(4 * var(--f)); }
+  .tfplans__list--gift li + li { margin-top: 0; }
+
+  /* Ценовой блок прижат к низу карточки */
+  .tfplans__pay {
+    margin-top: auto;
+    padding-top: calc(50 * var(--f));
+  }
+
+  .tfplans__from {
+    padding-top: calc(20 * var(--f));
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
+    color: #a4a4a4;
+    font-size: calc(13.2 * var(--f));
+    font-weight: 500;
+    line-height: calc(15.6 * var(--f));
+  }
+
+  .tfplans__price {
+    margin-top: calc(5 * var(--f));
+    color: #202020;
+    font-size: calc(21 * var(--f));
+    font-weight: 600;
+    line-height: calc(26.4 * var(--f));
+    letter-spacing: calc(-0.6 * var(--f));
+    white-space: nowrap;
+  }
 
   .tfplans__btn {
     display: flex;
     align-items: center;
-    justify-content: center;
-    width: calc(359.74 * var(--f));
-    height: calc(101.98 * var(--f));
-    margin-top: calc(39 * var(--f));
-    border-radius: calc(11.2 * var(--f));
-    background: linear-gradient(116deg, #ee0000 0%, #810005 96%);
-    box-shadow: 0 calc(3.36 * var(--f)) 0 #760505;
+    justify-content: space-between;
+    height: calc(65.324 * var(--f));
+    margin-top: calc(32 * var(--f));
+    padding: calc(6 * var(--f)) calc(6 * var(--f)) calc(6 * var(--f)) calc(30 * var(--f));
+    border-radius: 120px;
+    background: #810005;
     color: #fff;
-    font-family: var(--tf-display);
-    font-size: calc(22.41 * var(--f));
-    line-height: 1.2;
-    font-weight: 500;
-    letter-spacing: calc(-0.45 * var(--f));
+    font-size: calc(17.775 * var(--f));
+    font-weight: 600;
+    line-height: calc(19.39 * var(--f));
     text-decoration: none;
-    text-transform: uppercase;
     transition: transform 0.25s ease, filter 0.25s ease;
   }
 
-  .tfplans__btn:hover { transform: translateY(-2px); filter: brightness(1.08); }
-  .tfplans__btn:active { transform: translateY(1px); }
-
-  /* белая колонка */
-  .tfplans__col--light .tfplans__card { background: #fff; }
-
-  /* красная колонка – выделенная */
-  .tfplans__col--red .tfplans__card--top { background: linear-gradient(102deg, #ee0000 0%, #810005 96%); }
-  .tfplans__col--red .tfplans__card--body { background: linear-gradient(93deg, #ee0000 0%, #810005 96%); }
-  .tfplans__col--red .tfplans__card--top { padding-bottom: calc(50 * var(--f)); }
-  .tfplans__col--red .tfplans__sub,
-  .tfplans__col--red .tfplans__list { color: #fff; }
-  .tfplans__col--red .tfplans__from { color: rgba(255, 255, 255, 0.7); }
-  .tfplans__col--red .tfplans__btn { background: linear-gradient(155deg, #d8d8d8 0%, #fff 38.6%, #d8d8d8 76.5%); box-shadow: 0 calc(3.36 * var(--f)) 0 #b1b1b1; }
-
-  .tfplans__col--red .tfplans__btn span {
-    background: linear-gradient(137deg, #ee0000 0%, #810005 96%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+  .tfplans__btn-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 calc(53.324 * var(--f));
+    width: calc(53.324 * var(--f));
+    height: calc(53.324 * var(--f));
+    border-radius: 50%;
+    background: #fff;
   }
 
-  /* чёрная колонка */
-  .tfplans__col--dark .tfplans__card { border-color: #303030; }
-  .tfplans__col--dark .tfplans__card--top { background: linear-gradient(103deg, #3b3b3b 0%, #000 96%); }
-  .tfplans__col--dark .tfplans__card--body { background: linear-gradient(105deg, #3b3b3b 0%, #000 84%), #191919; }
-  .tfplans__col--dark .tfplans__sub { color: #a9a9a9; font-size: calc(20.17 * var(--f)); }
-  .tfplans__col--dark .tfplans__list { color: #a9a9a9; }
-  .tfplans__col--dark .tfplans__list li:first-child { color: #fff; font-weight: 700; }
-  .tfplans__col--dark .tfplans__from { color: rgba(255, 255, 255, 0.7); }
+  .tfplans__btn-arrow svg {
+    width: calc(20 * var(--f));
+    height: calc(20 * var(--f));
+    fill: none;
+    stroke: #810005;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
 
-  /* планшет и телефон: колонки друг под другом, масштаб – по ширине колонки */
+  @media (hover: hover) and (pointer: fine) {
+    .tfplans__btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
+  }
+
+  .tfplans__btn:active { transform: translateY(1px); }
+
+  /* ---------- белая колонка ---------- */
+
+  .tfplans__col--light .tfplans__card { background: #fff; }
+
+  /* ---------- красная колонка ---------- */
+
+  .tfplans__col--red .tfplans__card--top { background: linear-gradient(95.58deg, #ee0000 0%, #810005 96.03%); }
+  .tfplans__col--red .tfplans__card--body { background: linear-gradient(95.58deg, #ee0000 0%, #810005 96.03%); }
+
+  .tfplans__col--red .tfplans__name,
+  .tfplans__col--red .tfplans__label,
+  .tfplans__col--red .tfplans__price { color: #fff; }
+
+  .tfplans__col--red .tfplans__sub,
+  .tfplans__col--red .tfplans__list,
+  .tfplans__col--red .tfplans__from { color: rgba(255, 255, 255, 0.6); }
+
+  .tfplans__col--red .tfplans__from { border-top-color: rgba(255, 255, 255, 0.25); }
+
+  .tfplans__col--red .tfplans__btn { background: #fff; color: #3b3b3b; }
+  .tfplans__col--red .tfplans__btn-arrow { background: #810005; }
+  .tfplans__col--red .tfplans__btn-arrow svg { stroke: #fff; }
+
+  /* ---------- чёрная колонка ---------- */
+
+  .tfplans__col--dark .tfplans__card { border-color: #303030; }
+  .tfplans__col--dark .tfplans__card--top { background: linear-gradient(96.63deg, #3b3b3b 0%, #000 96.03%); }
+  .tfplans__col--dark .tfplans__card--body { background: linear-gradient(96.63deg, #3b3b3b 0%, #000 96.03%); }
+
+  .tfplans__col--dark .tfplans__name,
+  .tfplans__col--dark .tfplans__label,
+  .tfplans__col--dark .tfplans__price { color: #fff; }
+
+  .tfplans__col--dark .tfplans__sub,
+  .tfplans__col--dark .tfplans__list,
+  .tfplans__col--dark .tfplans__from { color: rgba(255, 255, 255, 0.6); }
+
+  .tfplans__col--dark .tfplans__from { border-top-color: rgba(255, 255, 255, 0.18); }
+
+  /* Первый пункт чёрной карточки — подзаголовок «Всё из пакета по таргету +» */
+  .tfplans__col--dark .tfplans__list li:first-child {
+    margin-left: calc(-19.8 * var(--f));
+    color: #fff;
+    font-weight: 700;
+    list-style: none;
+  }
+
+  .tfplans__col--dark .tfplans__btn { background: #fff; color: #3b3b3b; }
+  .tfplans__col--dark .tfplans__btn-arrow { background: #810005; }
+  .tfplans__col--dark .tfplans__btn-arrow svg { stroke: #fff; }
+
+  /* ---------- планшет и телефон ---------- */
+
   @media (max-width: 979px) {
-    .tfplans__panel { --f: min(calc((100cqw - 36px) / 418.5), 1.15px); padding: 44px 0 30px; border-radius: 36px; }
+    .tfplans__panel { --f: min(calc((100cqw - 36px) / 418), 1.15px); padding: 44px 0 30px; border-radius: 36px; }
     .tfplans .tfplans__tag { padding: 7px 11px; font-size: 12px; line-height: 14px; }
     .tfplans .tfplans__title { width: auto; max-width: 560px; margin-top: 14px; padding: 0 18px; font-size: clamp(26px, 6vw, 36px); letter-spacing: -0.03em; }
-    .tfplans__grid { grid-template-columns: calc(418.5 * var(--f)); gap: 28px; margin-top: 30px; }
-    .tfplans__card--top { padding-right: calc(12 * var(--f)); }
-    .tfplans__name { font-size: calc(30 * var(--f)); }
+    .tfplans__grid { grid-template-columns: calc(418 * var(--f)); gap: 24px; margin-top: 30px; }
+    .tfplans__pay { padding-top: calc(32 * var(--f)); }
   }
 </style>

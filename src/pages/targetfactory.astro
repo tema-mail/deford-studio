@@ -4,6 +4,7 @@
    Блоки добавляются по одному в порядке оригинала. Якоря меню —
    id обёрток: service, case, Calculation, command, reviews, contact. */
 import TargetFactory from '../layouts/TargetFactory.astro';
+import Intro from '../components/tf/Intro.astro';
 import Header from '../components/tf/Header.astro';
 import Hero from '../components/tf/Hero.astro';
 import Facts from '../components/tf/Facts.astro';
@@ -29,6 +30,8 @@ import CookieNotice from '../components/tf/CookieNotice.astro';
   title="Стабильно привлекаем клиентов через ВК, даже если раньше реклама не работала или «сливался» бюджет"
   description="Запускаем рекламу, которая приносит заявки и прибыль. Более 200 успешных проектов и 500+ млн ₽ рекламных бюджетов только за последние 2 года работы"
 >
+  <Intro />
+
   <Header />
   <Hero />
   <Facts />

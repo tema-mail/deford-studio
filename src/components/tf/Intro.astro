@@ -376,6 +376,28 @@ const notes = [
     if (!box) return;
 
     var demo = box.classList.contains('tfintro--demo');
+
+    /* На боевой странице заставка идёт один раз за сеанс: вернувшемуся
+       человеку не нужно ждать её снова. ?intro — показать принудительно. */
+    if (!demo) {
+      var KEY = 'tf-intro-shown';
+      var force = /[?&]intro\b/.test(location.search);
+      var seen = false;
+
+      try {
+        seen = sessionStorage.getItem(KEY) === '1';
+      } catch (e) {}
+
+      if (seen && !force) {
+        box.hidden = true;
+        return;
+      }
+
+      try {
+        sessionStorage.setItem(KEY, '1');
+      } catch (e) {}
+    }
+
     document.body.classList.add('tf-introlock');
 
     /* Счётчик: стартует вместе с первой заявкой, добегает до 50 */

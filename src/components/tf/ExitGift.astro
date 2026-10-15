@@ -1,0 +1,341 @@
+---
+/** Окно при уходе со страницы — бесплатный разбор рекламы.
+
+    Когда показывается — один раз за сеанс и не раньше чем через 5 секунд:
+    • компьютер: курсор уходит за верхний край окна — к вкладкам,
+      адресной строке или крестику;
+    • телефон: после трети страницы человек резко листает вверх —
+      так обычно тянутся к адресной строке.
+    Посмотреть без ухода: добавить к адресу ?exitgift
+
+    «Забрать разбор» закрывает это окно и открывает обычную форму
+    заявки — её ловит LeadPopup.astro по ссылке #zeropopup. */
+---
+
+<div class="tfexit" data-tfexit hidden>
+  <div class="tfexit__bg" data-tfexit-close></div>
+
+  <div class="tfexit__card" role="dialog" aria-modal="true" aria-labelledby="tfexit-title">
+    <button class="tfexit__close" type="button" aria-label="Закрыть" data-tfexit-close>
+      <span></span><span></span>
+    </button>
+
+    <div class="tfexit__tag">Бесплатно</div>
+
+    <h2 class="tfexit__title" id="tfexit-title">Не торопитесь уходить</h2>
+
+    <p class="tfexit__text">
+      Дарим разбор вашей рекламы. Найдём, где сливается бюджет и где вы
+      недозарабатываете на том, что уже запущено.
+    </p>
+
+    <ul class="tfexit__list">
+      <li>Посмотрим кабинет: аудитории, объявления, ставки</li>
+      <li>Покажем, какие связки тянут бюджет без заявок</li>
+      <li>Дадим план, что исправить в первую очередь</li>
+    </ul>
+
+    <a class="tfexit__btn" href="#zeropopup" role="button" aria-haspopup="dialog" data-tfexit-take>
+      <span>Забрать разбор</span>
+      <span class="tfexit__btn-arrow" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8" /></svg>
+      </span>
+    </a>
+
+    <button class="tfexit__skip" type="button" data-tfexit-close>Нет, спасибо</button>
+  </div>
+</div>
+
+<style is:global>
+  .tfexit {
+    position: fixed;
+    z-index: 10000001;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    overflow-y: auto;
+    font-family: 'Inter Tight', Inter, Arial, sans-serif;
+  }
+
+  .tfexit[hidden] { display: none; }
+
+  .tfexit__bg {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.72);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+  }
+
+  .tfexit__card {
+    position: relative;
+    width: 100%;
+    max-width: 520px;
+    margin: auto;
+    padding: 40px 40px 32px;
+    border: 1px solid #303030;
+    border-radius: 28px;
+    background:
+      radial-gradient(120% 90% at 100% 0%, rgba(238, 0, 0, 0.5) 0%, rgba(129, 0, 5, 0) 62%),
+      linear-gradient(96.63deg, #3b3b3b 0%, #000 96.03%);
+    color: #fff;
+    animation: tfexit-in 0.35s cubic-bezier(0.2, 0.75, 0.25, 1) both;
+  }
+
+  @keyframes tfexit-in {
+    from { opacity: 0; transform: translateY(16px) scale(0.98); }
+    to { opacity: 1; transform: none; }
+  }
+
+  .tfexit__close {
+    position: absolute;
+    right: 18px;
+    top: 18px;
+    width: 38px;
+    height: 38px;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    cursor: pointer;
+  }
+
+  .tfexit__close span {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 15px;
+    height: 1.6px;
+    border-radius: 2px;
+    background: #fff;
+  }
+
+  .tfexit__close span:first-child { transform: translate(-50%, -50%) rotate(45deg); }
+  .tfexit__close span:last-child { transform: translate(-50%, -50%) rotate(-45deg); }
+
+  .tfexit__tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 7px 12px;
+    border-radius: 120px;
+    background: linear-gradient(95.58deg, #ee0000 0%, #810005 96.03%);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  .tfexit__title {
+    margin: 18px 0 0;
+    font-size: 36px;
+    font-weight: 600;
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+  }
+
+  .tfexit__text {
+    margin: 14px 0 0;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.35;
+  }
+
+  .tfexit__list {
+    margin: 22px 0 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .tfexit__list li {
+    position: relative;
+    padding-left: 28px;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.3;
+  }
+
+  /* Галочка перед пунктом */
+  .tfexit__list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 1px;
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+    background: linear-gradient(95.58deg, #ee0000 0%, #810005 96.03%);
+  }
+
+  .tfexit__list li::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 6px;
+    width: 7px;
+    height: 4px;
+    border: 1.6px solid #fff;
+    border-top: 0;
+    border-right: 0;
+    transform: rotate(-45deg);
+  }
+
+  .tfexit__btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 62px;
+    margin-top: 28px;
+    padding: 6px 6px 6px 28px;
+    border-radius: 120px;
+    background: #fff;
+    color: #3b3b3b;
+    font-size: 17px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform 0.25s ease, filter 0.25s ease;
+  }
+
+  .tfexit__btn-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 50px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(95.58deg, #ee0000 0%, #810005 96.03%);
+  }
+
+  .tfexit__btn-arrow svg {
+    width: 19px;
+    height: 19px;
+    fill: none;
+    stroke: #fff;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .tfexit__btn:hover { transform: translateY(-2px); filter: brightness(1.04); }
+    .tfexit__close:hover { background: rgba(255, 255, 255, 0.16); }
+  }
+
+  .tfexit__skip {
+    display: block;
+    width: 100%;
+    margin-top: 14px;
+    padding: 6px;
+    border: 0;
+    background: none;
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  body.tf-exitlock { overflow: hidden; }
+
+  @media (max-width: 600px) {
+    .tfexit { padding: 14px; }
+    .tfexit__card { padding: 30px 22px 24px; border-radius: 22px; }
+    .tfexit__title { font-size: 28px; }
+    .tfexit__text { font-size: 14px; }
+    .tfexit__btn { height: 58px; padding-left: 22px; font-size: 16px; }
+    .tfexit__btn-arrow { flex-basis: 46px; width: 46px; height: 46px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tfexit__card { animation: none; }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    var box = document.querySelector('[data-tfexit]');
+    if (!box) return;
+
+    var KEY = 'tf-exitgift-shown';
+    var ARM_MS = 5000;
+    var startedAt = Date.now();
+    var done = false;
+
+    try {
+      if (sessionStorage.getItem(KEY) === '1') done = true;
+    } catch (e) {
+      /* приватный режим — покажем один раз за загрузку */
+    }
+
+    /* не перебиваем уже открытое окно заявки или квиз */
+    function otherOpen() {
+      return !!document.querySelector('[data-tfpop]:not([hidden]), [data-tfquiz]:not([hidden])');
+    }
+
+    function show(force) {
+      if (!force && (done || Date.now() - startedAt < ARM_MS || otherOpen())) return;
+      done = true;
+      try {
+        sessionStorage.setItem(KEY, '1');
+      } catch (e) {}
+      box.hidden = false;
+      document.body.classList.add('tf-exitlock');
+    }
+
+    function close() {
+      box.hidden = true;
+      document.body.classList.remove('tf-exitlock');
+    }
+
+    /* Компьютер: курсор ушёл за верхний край окна */
+    document.addEventListener('mouseout', function (event) {
+      if (event.relatedTarget) return;
+      if (event.clientY > 0) return;
+      show(false);
+    });
+
+    /* Телефон: резкий рывок вверх после трети страницы */
+    if (window.matchMedia('(hover: none)').matches) {
+      var marks = [];
+      var deepest = 0;
+
+      window.addEventListener(
+        'scroll',
+        function () {
+          var y = window.scrollY;
+          var t = performance.now();
+          var max = document.documentElement.scrollHeight - window.innerHeight;
+          deepest = Math.max(deepest, y);
+
+          marks.push({ y: y, t: t });
+          while (marks.length && t - marks[0].t > 350) marks.shift();
+
+          if (deepest > max * 0.33 && marks[0].y - y > 400) show(false);
+        },
+        { passive: true },
+      );
+    }
+
+    box.addEventListener('click', function (event) {
+      if (event.target.closest('[data-tfexit-close]')) close();
+    });
+
+    /* «Забрать разбор»: окно закрывается, форма заявки открывается сама */
+    box.querySelector('[data-tfexit-take]').addEventListener('click', close);
+
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && !box.hidden) close();
+    });
+
+    /* Посмотреть без ухода со страницы: ?exitgift */
+    if (/[?&]exitgift\b/.test(location.search)) {
+      setTimeout(function () {
+        show(true);
+      }, 600);
+    }
+  })();
+</script>

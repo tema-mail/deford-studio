@@ -29,6 +29,13 @@ jobs:
       - run: npm run build
       - name: Закрыть сайт от поисковиков (как было на GitHub Pages)
         run: printf 'User-agent: *\nDisallow: /\n' > dist/robots.txt
+      - name: Закрыть кабинет логином и паролем
+        # Шифрует dist/admin целиком. Без секретов падает намеренно,
+        # чтобы админка не уехала на сервер открытой.
+        env:
+          ADMIN_LOGIN: ${{ secrets.ADMIN_LOGIN }}
+          ADMIN_PASS: ${{ secrets.ADMIN_PASS }}
+        run: node scripts/lock-admin.mjs
       - name: Ключ выкладки
         env:
           DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}

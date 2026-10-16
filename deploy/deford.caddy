@@ -1,0 +1,15 @@
+# >>> deford-site: сайт Дефорда – блок добавляет deploy/install.sh репозитория deford-studio
+deford.ru {
+	encode gzip zstd
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		-Server
+	}
+	reverse_proxy deford-site-web:8080
+}
+www.deford.ru {
+	redir https://deford.ru{uri} permanent
+}
+# <<< deford-site

@@ -1,4 +1,8 @@
-name: Сборка и публикация на GitHub Pages
+name: Сборка и выкладка на Beget
+
+# Код живёт здесь, на сервере – только готовые файлы. Каждый пуш в main собирает сайт и выкладывает его на
+# VPS Beget (deford.ru за общим Caddy). Ключ выкладки умеет только загрузить сборку, включить её и откатить
+# (deploy/receive.sh на сервере); последние 5 выкладок хранятся для отката (workflow «Откат сайта»).
 
 on:
   push:
@@ -7,15 +11,13 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: pages
-  cancel-in-progress: true
+  group: deploy-beget
+  cancel-in-progress: false
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -25,36 +27,22 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
-      # Свой домен в настройках Pages (deford.ru) — сайт живёт в корне,
-      # префикс не нужен. Без домена — адрес tema-mail.github.io/deford-studio/.
-      - name: Проставить префикс подпапки GitHub Pages
+      - name: Закрыть сайт от поисковиков (как было на GitHub Pages)
+        run: printf 'User-agent: *\nDisallow: /\n' > dist/robots.txt
+      - name: Ключ выкладки
         env:
-          GH_TOKEN: ${{ github.token }}
+          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
         run: |
-          # без глушения ошибок: не прочитали настройки — сборка падает,
-          # а не публикуется с неверными путями
-          CNAME=$(gh api "repos/${{ github.repository }}/pages" --jq '.cname // ""')
-          echo "домен в настройках Pages: ${CNAME:-нет}"
-          if [ -n "$CNAME" ]; then
-            echo "свой домен $CNAME — пути остаются корневыми"
-          else
-            node scripts/rebase-dist.mjs /deford-studio
-          fi
-      - name: Закрыть копию от поисковиков
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$DEPLOY_KEY" > ~/.ssh/deploy && chmod 600 ~/.ssh/deploy
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
+      - name: Загрузить сборку (только изменённые файлы)
+        run: rsync -a --delete --link-dest=/releases/current -e "ssh -i ~/.ssh/deploy -o BatchMode=yes" dist/ deford-deploy@45.12.72.227:incoming/
+      - name: Включить выкладку
+        run: ssh -i ~/.ssh/deploy -o BatchMode=yes deford-deploy@45.12.72.227 "activate ${GITHUB_SHA::12}"
+      - name: Проверить сайт снаружи
         run: |
-          printf 'User-agent: *\nDisallow: /\n' > dist/robots.txt
-      - name: Запретить Jekyll обрабатывать сборку
-        run: touch dist/.nojekyll
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: dist
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+          code=$(curl -s -o /dev/null -w "%{http_code}" --retry 3 --retry-delay 5 https://deford.ru/)
+          echo "https://deford.ru/ → $code"
+          test "$code" = 200

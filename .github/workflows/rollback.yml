@@ -1,0 +1,31 @@
+name: Откат сайта
+
+# Вернуть предыдущую выкладку за секунду, без пересборки. Повторный запуск откатывает ещё на шаг назад.
+# Чтобы откат пережил следующий пуш – откатите и коммит (git revert).
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-beget
+  cancel-in-progress: false
+
+jobs:
+  rollback:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ключ выкладки
+        env:
+          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+        run: |
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$DEPLOY_KEY" > ~/.ssh/deploy && chmod 600 ~/.ssh/deploy
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
+      - name: Откатить
+        run: |
+          ssh -i ~/.ssh/deploy -o BatchMode=yes deford-deploy@45.12.72.227 rollback
+          ssh -i ~/.ssh/deploy -o BatchMode=yes deford-deploy@45.12.72.227 status

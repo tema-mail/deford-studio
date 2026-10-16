@@ -1,0 +1,66 @@
+---
+/** Админка → Метрика. Раздел «Метрика и каналы» кабинета EV SIBIR один в один:
+    его же код собирает цифры и разметку (scripts/metrika-ev.py →
+    src/data/analytics/metrika-ev.json), здесь только показ и переключение вкладок.
+
+    Товарного спроса нет – у сайта нет товаров, это визитка с заявками.
+    Данные коммерческие: выгрузка не коммитится, в публичной сборке раздел
+    закрыт сейфом (components/admin/Vault.astro). */
+
+import Admin from '../../layouts/Admin.astro';
+import Vault from '../../components/admin/Vault.astro';
+
+type Ev = { fetched_at: string; views: Record<string, string>; errors?: string[] };
+
+const evFiles = import.meta.glob<Ev>('../../data/analytics/metrika-ev.json', {
+  eager: true,
+  import: 'default',
+});
+const ev = Object.values(evFiles)[0];
+---
+
+<Admin title="Метрика" active="metrika">
+  <Vault name="metrika" open={!!ev}>
+    {
+      ev &&
+        Object.entries(ev.views).map(([k, html]) => (
+          <div class="mk-view" data-view={k} hidden={k !== 'ind:month'} set:html={html} />
+        ))
+    }
+  </Vault>
+</Admin>
+
+<style is:global>
+  .mk-later {
+    margin: 0;
+  }
+</style>
+
+<script>
+  /* Вкладки эталона ведут на /admin/metrika?v=…&p=…|c=… – здесь все вкладки уже
+     на странице, поэтому просто показываем нужную. */
+  const keyOf = (q: URLSearchParams) =>
+    q.get('v') === 'cmp' || (!q.get('v') && q.get('c'))
+      ? 'cmp:' + (q.get('c') || 'yoy')
+      : 'ind:' + (q.get('p') || 'month');
+
+  function show(key: string) {
+    const views = document.querySelectorAll<HTMLElement>('.mk-view');
+    if (![...views].some((v) => v.dataset.view === key)) return false;
+    views.forEach((v) => (v.hidden = v.dataset.view !== key));
+    return true;
+  }
+
+  document.addEventListener('vault:open', () => show(keyOf(new URLSearchParams(location.search))));
+
+  document.addEventListener('click', (e) => {
+    const a = (e.target as Element).closest?.('a');
+    const href = a?.getAttribute('href') || '';
+    if (!href.includes('/admin/metrika')) return;
+    const q = new URLSearchParams(href.split('?')[1] || '');
+    if (show(keyOf(q))) {
+      e.preventDefault();
+      history.replaceState(null, '', href);
+    }
+  });
+</script>

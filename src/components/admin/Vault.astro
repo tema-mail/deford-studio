@@ -1,0 +1,49 @@
+---
+/** Данные разделов с коммерческими цифрами (Метрика, SEO-аналитика, Точка А).
+    Сайт статический, а выгрузка аналитики в публичную сборку не попадает, поэтому:
+    – сборка с выгрузкой (open) рисует раздел целиком – scripts/seal-admin.mjs шифрует его разметку
+      логином и паролем владельца в public/admin/vault/<name>.json;
+    – публичная сборка рисует пустое место: после входа в кабинет (scripts/lock-admin.mjs) браузер берёт
+      тот же логин и пароль из sessionStorage и расшифровывает данные сам – второй пароль не нужен. */
+interface Props { name: string; open: boolean }
+const { name, open } = Astro.props;
+---
+
+{
+  open ? (
+    <div id="vault" data-vault={name}><slot /></div><div id="vault-end" hidden></div>
+  ) : (
+    <div id="vault" data-vault={name} data-locked data-src={`/admin/vault/${name}.json`}>
+      <p class="muted vault-msg" role="status" style="text-align:center;padding:40px 0">Открываю данные…</p>
+    </div>
+  )
+}
+
+<script>
+  const b64 = (s: string) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
+  const vault = document.getElementById('vault');
+
+  async function unlock(box: HTMLElement) {
+    const msg = box.querySelector<HTMLElement>('.vault-msg')!;
+    let auth: { login: string; pass: string } | null = null;
+    try { auth = JSON.parse(sessionStorage.getItem('df_admin_auth') || 'null'); } catch {}
+    if (!auth) { msg.textContent = 'Войдите в кабинет заново – обновите страницу.'; return; }
+    try {
+      const res = await fetch(box.dataset.src!, { cache: 'no-store' });
+      if (!res.ok) throw new Error(res.status === 404 ? 'данные ещё не выложены' : 'ответ ' + res.status);
+      const data = await res.json();
+      const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(`${auth.login}\n${auth.pass}`), 'PBKDF2', false, ['deriveKey']);
+      const key = await crypto.subtle.deriveKey({ name: 'PBKDF2', hash: 'SHA-256', salt: b64(data.salt), iterations: data.iter },
+        base, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
+      const plain = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: b64(data.iv) }, key, b64(data.data));
+      box.innerHTML = new TextDecoder().decode(plain);
+      delete box.dataset.locked;
+      document.dispatchEvent(new CustomEvent('vault:open'));
+    } catch (e) {
+      msg.textContent = 'Данные не открылись: ' + (e instanceof Error && e.message ? e.message : 'выгрузка зашифрована другим логином или паролем');
+    }
+  }
+
+  if (vault?.dataset.locked !== undefined) unlock(vault!);
+  else document.dispatchEvent(new CustomEvent('vault:open'));
+</script>

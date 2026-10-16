@@ -1,0 +1,54 @@
+---
+/** Каркас кабинета Deford: шапка-вкладки как в Тильде.
+    Перенесён с кабинета Elite Rose (src/layouts/Admin.astro) — структура,
+    порядок блоков и названия кнопок эталона не менялись.
+    Отличия от эталона: нет вкладок «Товары» и «Продажи» — сайт не магазин
+    (визитка с заявками и портфолио); вместо товаров — «Портфолио».
+    Закрыта от поиска; весь кабинет шифруется замком при публикации. */
+
+import '../styles/admin.css';
+
+interface Props {
+  title: string;
+  active: 'pages' | 'leads' | 'metrika' | 'seo' | 'tochka';
+}
+
+const { title, active } = Astro.props;
+/* В astro.config.mjs site указан как deford-studio.ru (старый сайт на Тильде),
+   а копия живёт на deford.ru — в кабинете показываем рабочий адрес. */
+const site = 'https://deford.ru/';
+
+const tabs = [
+  ['pages', '/admin/', 'Страницы сайта'],
+  ['leads', '/admin/leads/', 'Заявки'],
+  ['metrika', '/admin/metrika/', 'Метрика'],
+  ['seo', '/admin/seo/', 'SEO-аналитика'],
+  ['tochka', '/admin/tochka-a/', 'Точка А'],
+] as const;
+---
+
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>{title} – админка Deford</title>
+  </head>
+  <body class="adm">
+    <nav class="topnav" aria-label="Разделы админки">
+      <span class="brand">DEFORD</span>
+      {
+        tabs.map(([key, href, label]) => (
+          <a class:list={['tab', { on: active === key }]} href={href}>
+            {label}
+          </a>
+        ))
+      }
+      <span class="site">
+        Сайт: <a href={site} target="_blank" rel="noopener">{site.replace(/^https?:\/\//, '')}</a>
+      </span>
+    </nav>
+    <main><slot /></main>
+  </body>
+</html>

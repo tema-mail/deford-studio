@@ -1,0 +1,153 @@
+---
+/** «Страницы сайта» по сущностям — перенесено с кабинета Elite Rose
+    (src/pages/admin/index.astro): те же группы, колонки и раскрывающийся
+    каталог. Вместо каталога товаров — портфолио кейсов.
+
+    Данные настоящие: лендинги из src/pages, разделы и кейсы из
+    src/data/portfolio/catalog.json, страницы портфолио — из
+    src/data/portfolio/pages/*.json. */
+
+import Admin from '../../layouts/Admin.astro';
+import catalog from '../../data/portfolio/catalog.json';
+
+const pageFiles = import.meta.glob<{ slug: string; title: string; description?: string }>(
+  '../../data/portfolio/pages/*.json',
+  { eager: true },
+);
+
+const portfolioPages = Object.values(pageFiles).map((p) => ({
+  slug: p.slug,
+  title: p.title,
+  description: p.description ?? '',
+}));
+
+const bySlug = new Map(portfolioPages.map((p) => [p.slug, p]));
+
+const parts = catalog.parts as { uid: string; title: string }[];
+const products = Object.entries(catalog.products as Record<string, { title?: string; href?: string }>);
+
+const SITE = 'https://deford.ru';
+const full = (path: string) => SITE + path;
+
+/* Лендинги собраны руками: их содержимое лежит в компонентах, а не в данных */
+const landings = [
+  { name: 'Главная', path: '/', note: 'Deford – комплексное сопровождение бизнеса' },
+  { name: 'Цветочный магазин', path: '/flowers/', note: 'Лендинг клиента' },
+  { name: 'Target Factory', path: '/targetfactory/', note: 'Лендинг клиента, с заставкой и квизом' },
+];
+
+const legal = [
+  { name: 'Политика обработки персональных данных', path: '/policy' },
+  { name: 'Пользовательское соглашение', path: '/agreement' },
+];
+
+const drafts = [
+  { name: 'Черновик: блок «Сайты» для /flowers', path: '/drafts/flowers-sites/' },
+  { name: 'Черновик: заставка Target Factory', path: '/drafts/tf-zastavka/' },
+];
+
+const total = landings.length + 1 + parts.length + products.length + legal.length + drafts.length;
+---
+
+<Admin title="Страницы сайта" active="pages">
+  <div class="tools">
+    <h1>Страницы сайта</h1>
+    <span class="muted">{total} страниц</span>
+    <a class="btn" href={SITE} target="_blank" rel="noopener">Открыть сайт ↗</a>
+  </div>
+
+  <div class="pages">
+    <div class="phead">
+      <span></span><span>Страница</span><span>Адрес</span><span style="text-align:right">Сущность</span>
+    </div>
+
+    <div class="pgroup">Лендинги <span>{landings.length}</span></div>
+    {
+      landings.map((l) => (
+        <div class="prow">
+          <span></span>
+          <div>
+            <span class="pname">{l.name}</span>
+            <div class="muted" style="font-size:12px">{l.note}</div>
+          </div>
+          <a class="purl" href={full(l.path)} target="_blank" rel="noopener">{full(l.path)}</a>
+          <span class="pkind">{l.path === '/' ? 'Главная' : 'Лендинг'}</span>
+        </div>
+      ))
+    }
+
+    <div class="pgroup">
+      Портфолио <span>{parts.length} разделов · {products.length} кейсов</span>
+    </div>
+    <details class="pcat">
+      <summary class="prow">
+        <span></span>
+        <div>
+          <span class="pname"><i class="caret"></i>Каталог работ</span>
+          <div class="muted" style="font-size:12px">
+            {products.length} кейсов · {parts.length} разделов
+          </div>
+        </div>
+        <a class="purl" href={full('/portfolio')} target="_blank" rel="noopener">/portfolio</a>
+        <span class="pkind">Каталог</span>
+      </summary>
+
+      {
+        parts.map((pt) => (
+          <div class="prow lvl1">
+            <span></span>
+            <div>
+              <span class="pname">Раздел «{pt.title}»</span>
+              <div class="muted" style="font-size:12px">uid {pt.uid}</div>
+            </div>
+            <a class="purl" href={full(`/${pt.uid}`)} target="_blank" rel="noopener">/{pt.uid}</a>
+            <span class="pkind">Раздел каталога</span>
+          </div>
+        ))
+      }
+
+      {
+        products.map(([uid, p]) => (
+          <div class="prow lvl1">
+            <span></span>
+            <div>
+              <span class="pname">{p.title ?? bySlug.get(uid)?.title ?? uid}</span>
+              <div class="muted" style="font-size:12px">uid {uid}</div>
+            </div>
+            <a class="purl" href={p.href ? full(p.href) : full(`/${uid}`)} target="_blank" rel="noopener">
+              {p.href ?? `/${uid}`}
+            </a>
+            <span class="pkind">Карточка кейса</span>
+          </div>
+        ))
+      }
+    </details>
+
+    <div class="pgroup">Юридические <span>{legal.length}</span></div>
+    {
+      legal.map((t) => (
+        <div class="prow">
+          <span></span>
+          <div>
+            <span class="pname">{t.name}</span>
+            <div class="muted" style="font-size:12px">страницы нет в сборке – ссылка из подвала ведёт на 404</div>
+          </div>
+          <a class="purl" href={full(t.path)} target="_blank" rel="noopener">{full(t.path)}</a>
+          <span class="pkind">Юридическая</span>
+        </div>
+      ))
+    }
+
+    <div class="pgroup">Технические <span>{drafts.length}</span></div>
+    {
+      drafts.map((t) => (
+        <div class="prow">
+          <span></span>
+          <span class="pname">{t.name}</span>
+          <a class="purl" href={full(t.path)} target="_blank" rel="noopener">{full(t.path)}</a>
+          <span class="pkind">Черновик</span>
+        </div>
+      ))
+    }
+  </div>
+</Admin>

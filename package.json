@@ -10,7 +10,9 @@
     "shots": "node scripts/shots.mjs"
   },
   "dependencies": {
-    "astro": "^7.3.8"
+    "@astrojs/preact": "^6.1.0",
+    "astro": "^7.3.8",
+    "preact": "^11.0.1"
   },
   "devDependencies": {
     "playwright": "^1.64.0"

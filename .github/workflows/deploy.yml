@@ -28,7 +28,9 @@ jobs:
       - run: npm ci
       - run: npm run build
       - name: Закрыть сайт от поисковиков (как было на GitHub Pages)
-        run: printf 'User-agent: *\nDisallow: /\n' > dist/robots.txt
+        # Блочный скаляр: внутри строки есть «: », и YAML принимает её только так
+        run: |
+          printf 'User-agent: *\nDisallow: /\n' > dist/robots.txt
       - name: Закрыть кабинет логином и паролем
         # Шифрует dist/admin целиком. Без секретов падает намеренно,
         # чтобы админка не уехала на сервер открытой.

@@ -48,6 +48,9 @@ const tabs = [
       <span class="site">
         Сайт: <a href={site} target="_blank" rel="noopener">{site.replace(/^https?:\/\//, '')}</a>
       </span>
+      {/* выход из кабинета (вход – scripts/lock-admin.mjs: до закрытия вкладки, с галочкой «Оставаться в системе» – и после),
+          как «Выйти» у EV и ALEX KROWN; стирает оба входа */}
+      <button type="button" class="logout" onclick="try{sessionStorage.removeItem('df_admin_auth');localStorage.removeItem('df_admin_keep')}catch(e){};location.reload()" style="background:none;border:0;color:rgba(255,255,255,.75);font:inherit;font-size:13px;cursor:pointer;padding:0">Выйти</button>
     </nav>
     <main><slot /></main>
   </body>

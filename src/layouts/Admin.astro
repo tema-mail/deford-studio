@@ -10,7 +10,7 @@ import '../styles/admin.css';
 
 interface Props {
   title: string;
-  active: 'pages' | 'leads' | 'metrika' | 'seo' | 'tochka';
+  active: 'pages' | 'leads' | 'metrika' | 'seo' | 'positions' | 'tochka' | 'recommendations';
 }
 
 const { title, active } = Astro.props;
@@ -23,7 +23,9 @@ const tabs = [
   ['leads', '/admin/leads/', 'Заявки'],
   ['metrika', '/admin/metrika/', 'Метрика'],
   ['seo', '/admin/seo/', 'SEO-аналитика'],
+  ['positions', '/admin/positions/', 'Позиции'], // закрыт замком (components/admin/Locked.astro), пока владелец не откроет
   ['tochka', '/admin/tochka-a/', 'Точка А'],
+  ['recommendations', '/admin/recommendations/', 'Рекомендации'], // закрыт замком
 ] as const;
 ---
 

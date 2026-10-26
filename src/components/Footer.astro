@@ -67,7 +67,7 @@
                     Пользовательское соглашение
                 </a> <a class="dff-legal-link" href="/policy" target="_blank">
                     Политика конфиденциальности
-                </a> </div> <a class="dff-credit" href="/">
+                </a> </div> <a class="dff-destroy" href="https://destroy.spritefusion.com/?from=badge&url=https%3A%2F%2Fdeford.ru%2Fdestroy.html" target="_blank" rel="noopener"> <img src="https://destroy.spritefusion.com/badge.svg" alt="Разнести этот сайт – игра" width="180" height="40" loading="lazy"> </a> <a class="dff-credit" href="/">
                 Разработка сайта
             </a> </div> </div> </footer>
 
@@ -393,6 +393,26 @@
 }
 
 
+/* Игра Destroy Any Website: снимок главной – public/destroy.html */
+
+#deford-footer-v1 .dff-destroy {
+    align-self: flex-end;
+    display: block;
+    line-height: 0;
+    opacity: .85;
+    transition: opacity .2s;
+}
+
+#deford-footer-v1 .dff-destroy:hover {
+    opacity: 1;
+}
+
+#deford-footer-v1 .dff-destroy img {
+    width: min(180px, 12.5vw);
+    height: auto;
+}
+
+
 /* =========================================================
    MOBILE — ONE ADAPTIVE 300–640
    ========================================================= */
@@ -531,8 +551,13 @@
         line-height: 1.25;
     }
 
-    #deford-footer-v1 .dff-credit {
+    #deford-footer-v1 .dff-credit,
+    #deford-footer-v1 .dff-destroy {
         align-self: flex-start;
+    }
+
+    #deford-footer-v1 .dff-destroy img {
+        width: 160px;
     }
 
 }

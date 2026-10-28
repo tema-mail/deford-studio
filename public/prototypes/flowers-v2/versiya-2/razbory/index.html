@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Прототип – Разборы</title>
+<style>/* Комплект чёрно-белого прототипа (маркетолог → site-prototype).
+   Прототип показывает смысл, текст, порядок и действие – не дизайн. Цвета только серые; дизайнер делает визуал после «да» владельца.
+   Блок: <section class="w-block" data-n="1" data-name="Первый экран" data-question="вопрос клиента" data-proof="опора"> */
+:root {
+  --ink: #141414; --muted: #5f5f5f; --line: #b9b9b9; --fill: #ececec; --fill2: #f6f6f6; --paper: #ffffff;
+  --note: #fff6c8; --note-line: #c9b44a; --ask: #7a1f1f;
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --mono: ui-monospace, Menlo, Consolas, monospace;
+  --wrap: 1180px;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.55 var(--font); }
+img { max-width: 100%; }
+a { color: var(--ink); }
+h1, h2, h3 { margin: 0; line-height: 1.2; text-wrap: balance; }
+h1 { font-size: clamp(28px, 4.2vw, 46px); }
+h2 { font-size: clamp(22px, 3vw, 32px); }
+h3 { font-size: 18px; }
+p { margin: 0; }
+.w-wrap { max-width: var(--wrap); margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.w-stack { display: grid; gap: 14px; }
+.w-muted { color: var(--muted); }
+
+/* Панель прототипа: переключатели «Логика» и «Комментарии» */
+.w-bar { position: sticky; top: 0; z-index: 50; background: var(--ink); color: #fff; font: 13px/1.3 var(--mono); }
+.w-bar .w-wrap { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; padding-block: 8px; }
+.w-bar b { font-weight: 600; }
+.w-bar label { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; }
+
+/* Блок и его подпись логики */
+.w-block { border-top: 1px dashed var(--line); padding-block: 40px; position: relative; }
+.w-logic { display: none; font: 12.5px/1.45 var(--mono); background: var(--fill2); border: 1px solid var(--line); padding: 8px 10px; margin-bottom: 18px; }
+body.show-logic .w-logic { display: block; }
+.w-logic b { font-weight: 700; }
+.w-note { display: none; background: var(--note); border: 1px dashed var(--note-line); padding: 8px 10px; font-size: 13.5px; margin-top: 12px; }
+body.show-notes .w-note { display: block; }
+.w-note::before { content: "Дизайнеру: "; font-weight: 700; }
+.w-seo { display: none; font: 13px/1.5 var(--mono); background: #eef3ff; border: 1px solid #8aa0d6; padding: 12px 14px; margin: 12px auto; max-width: var(--wrap); }
+body.show-seo .w-seo { display: block; }
+.w-seo table { border-collapse: collapse; width: 100%; }
+.w-seo td { border-top: 1px solid #c9d4ee; padding: 4px 6px; vertical-align: top; }
+.w-seo td:first-child { white-space: nowrap; font-weight: 700; width: 1%; }
+.w-seo .bad { color: var(--ask); font-weight: 700; }
+.w-seo ul { margin: 0; padding-left: 18px; }
+.w-ask { color: var(--ask); font-weight: 600; background: #f7e9e9; padding: 0 4px; }
+
+/* Место под фото/видео/схему: роль, а не «картинка» */
+.w-media { background: repeating-linear-gradient(45deg, var(--fill), var(--fill) 10px, var(--fill2) 10px, var(--fill2) 20px);
+  border: 1px solid var(--line); min-height: 220px; display: grid; place-items: center; text-align: center; padding: 16px;
+  color: var(--muted); font-size: 14px; }
+.w-media::before { content: "▣ "; }
+.w-media.small { min-height: 120px; }
+
+/* Кнопки */
+.w-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 22px; border: 2px solid var(--ink);
+  background: var(--ink); color: #fff; font-weight: 600; text-decoration: none; border-radius: 6px; cursor: pointer; font-size: 16px; }
+.w-btn.ghost { background: transparent; color: var(--ink); }
+.w-btn[disabled] { opacity: .45; cursor: not-allowed; }
+.w-hint { font-size: 13px; color: var(--muted); }
+
+/* Шапка */
+.w-header .w-wrap { display: flex; flex-wrap: wrap; gap: 10px 20px; align-items: center; justify-content: space-between; padding-block: 12px; }
+.w-logo { border: 2px solid var(--ink); padding: 6px 10px; font-weight: 700; }
+.w-descr { font-size: 13.5px; color: var(--muted); max-width: 34ch; }
+.w-contacts-top { display: grid; gap: 2px; font-size: 14px; text-align: right; }
+.w-nav { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 14.5px; border-top: 1px solid var(--line); padding-block: 8px; }
+
+/* Первый экран */
+.w-hero { display: grid; grid-template-columns: 1.1fr .9fr; gap: 32px; align-items: center; }
+.w-hero ul { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+.w-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+
+/* Сетки и карточки */
+.w-grid { display: grid; grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr)); gap: 14px; }
+.w-card { border: 1px solid var(--line); padding: 16px; display: grid; gap: 8px; align-content: start; min-width: 0; }
+.w-card .w-media { min-height: 140px; }
+.w-price { font-weight: 700; }
+
+/* Этапы */
+.w-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr)); gap: 14px; counter-reset: st; }
+.w-steps li { border: 1px solid var(--line); padding: 14px; counter-increment: st; display: grid; gap: 6px; }
+.w-steps li::before { content: counter(st); font-weight: 700; font-size: 22px; }
+
+/* Таблица */
+.w-table-wrap { overflow-x: auto; }
+.w-table { width: 100%; border-collapse: collapse; font-size: 15px; }
+.w-table th, .w-table td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+.w-table th { background: var(--fill2); }
+
+/* FAQ */
+.w-faq details { border: 1px solid var(--line); padding: 12px 14px; }
+.w-faq details + details { border-top: 0; }
+.w-faq summary { font-weight: 600; cursor: pointer; }
+
+/* Форма */
+.w-form { border: 2px solid var(--ink); padding: 18px; display: grid; gap: 12px; max-width: 520px; }
+.w-field { display: grid; gap: 4px; font-size: 14px; }
+.w-field input, .w-field select { min-height: 44px; border: 1px solid var(--ink); padding: 0 10px; font: inherit; background: #fff; }
+.w-check { display: flex; gap: 8px; align-items: flex-start; font-size: 13.5px; }
+
+/* Полоса призыва */
+.w-cta { background: var(--fill); padding: 24px; display: flex; flex-wrap: wrap; gap: 14px; align-items: center; justify-content: space-between; }
+/* Плашка призыва между блоками: section.w-block.w-cta-strip с одной строкой предложения и кнопкой или мини-формой (карточка prizyv-mezhdu-blokami) */
+.w-block.w-cta-strip { padding-block: 16px; }
+.w-cta-strip .w-cta { padding: 14px 18px; }
+.w-cta-strip .w-cta p { margin: 0; font-weight: 600; }
+
+/* Состояние формы после отправки (карточка stranica-spasibo-sleduyushchiy-shag): видно по переключателю «После отправки» */
+.w-success { display: none; border: 2px dashed var(--ink); padding: 14px; background: var(--fill); }
+.w-success p { margin: 0 0 6px; }
+body.show-success .w-success { display: block; }
+
+/* Подвал */
+.w-footer { background: var(--fill2); border-top: 1px solid var(--line); padding-block: 28px; font-size: 14px; }
+
+/* Липкая панель действий на телефоне */
+.w-sticky { display: none; }
+header.w-block { padding-block: 0; border-top: 0; }
+header.w-block > .w-logic { margin: 8px auto; max-width: var(--wrap); }
+
+@media (max-width: 760px) {
+  .w-hide-m { display: none !important; }
+  /* Мобильная шапка: логотип, короткий дескриптор и «Меню»; звонок и мессенджеры – в липкой панели снизу */
+  .w-header .w-wrap { flex-wrap: nowrap; padding-block: 8px; gap: 10px; }
+  .w-header .w-contacts-top, .w-header .w-wrap > .w-btn, .w-nav { display: none !important; }
+  .w-header .w-descr { font-size: 12px; line-height: 1.3; }
+  .w-header > .w-wrap:first-of-type::after { content: "☰ Меню"; margin-left: auto; border: 1px solid var(--ink); padding: 6px 10px; font-size: 13px; white-space: nowrap; }
+  .w-hero .w-media, .w-block[data-n="1"] .w-media:first-of-type { min-height: 160px; }
+  .w-bar .w-wrap { padding-block: 4px; gap: 4px 10px; font-size: 11px; }
+  .w-hero { grid-template-columns: 1fr; }
+  .w-grid { grid-template-columns: repeat(var(--cols-m, 2), minmax(0, 1fr)); }
+  .w-steps { grid-template-columns: 1fr; }
+  .w-contacts-top { text-align: left; }
+  .w-block { padding-block: 28px; }
+  .w-sticky { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+    padding: 8px max(12px, env(safe-area-inset-right, 0px)) calc(8px + env(safe-area-inset-bottom, 0px)) max(12px, env(safe-area-inset-left, 0px));
+    background: #fff; border-top: 1px solid var(--line); }
+  body { padding-bottom: 72px; }
+}
+@media (max-width: 420px) { .w-grid.one-m { grid-template-columns: 1fr; } }
+</style>
+<style>
+/* Дополнения прототипа – только серое, без бренда */
+.w-big { font-size: clamp(30px, 4.4vw, 48px); font-weight: 800; line-height: 1.05; }
+.w-lead { font-size: 18px; }
+.w-split { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
+.w-split.media-left { grid-template-columns: .9fr 1.1fr; }
+.w-widget { border: 2px solid var(--ink); padding: 18px; display: grid; gap: 6px; align-content: start; }
+.w-tag { font: 12px/1.3 var(--mono); text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.w-num { font: 700 13px/1 var(--mono); border: 1px solid var(--ink); padding: 4px 6px; justify-self: start; }
+.w-list { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+.w-plan-steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.w-plan-steps li { display: grid; grid-template-columns: 44px 1fr; gap: 10px; align-items: start; }
+.w-plan-steps b.n { font: 800 22px/1 var(--mono); }
+.w-case-hero { border: 2px solid var(--ink); padding: 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.w-compare td:first-child { color: var(--muted); }
+.w-form { max-width: none; }
+.w-form select { min-height: 44px; border: 1px solid var(--ink); padding: 0 10px; font: inherit; background: #fff; }
+@media (min-width: 761px) { .w-hero > .w-media { min-height: 440px; } }
+.w-foot-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 760px) {
+  .w-split, .w-split.media-left, .w-case-hero, .w-foot-grid { grid-template-columns: 1fr; gap: 16px; }
+  .w-lead { font-size: 16px; }
+  .w-big { font-size: 30px; }
+  .w-widget { padding: 12px; }
+}
+</style>
+<!-- Виджеты страницы (окна, ярлычок, боковая панель мессенджеров, нижняя панель телефона) – модуль tema-mail/vidzhety.
+     Набор под страницу – в комментарии дизайнеру у шапки. Чтобы включить – раскомментировать это и блок «Виджеты: подключение» в конце,
+     положить рядом vidzhety-flowers.json. Образец – ~/Sites/sayty-agent/prototipy/gaz-mag/.
+<link rel="stylesheet" href="https://tema-mail.github.io/vidzhety/vidzhety.css">
+<style>
+:root { --w-accent: #141414; --w-accent-2: #5f5f5f; --w-radius: 6px; --w-wa: #3d3d3d; --w-tg: #3d3d3d; --w-max: #3d3d3d; }
+body.vz-has-sticky .w-sticky { display: none !important; }
+</style>
+-->
+</head>
+<body>
+<div class="w-bar"><div class="w-wrap">
+  <b>Прототип v2 · TargetFactory · /flowers/razbory · 28.10.2026</b>
+  <label><input type="checkbox" id="t-logic"> Логика блоков</label>
+  <label><input type="checkbox" id="t-notes"> Комментарии дизайнеру</label>
+  <label><input type="checkbox" id="t-seo"> SEO страницы</label>
+  <label><input type="checkbox" id="t-success"> После отправки</label>
+  <span>Меток «запросить»: <b id="ask-count">0</b></span>
+</div></div>
+
+<!-- SEO-задания от site-seo нет: title и description – черновик прототипировщика по тексту страницы, перед версткой отдать site-seo. -->
+<script type="application/json" id="w-seo">{"title": "Разборы продвижения цветочных магазинов – TargetFactory", "description": "Видео-разборы: реклама ВКонтакте, группа и сайт цветочного магазина. Смотрите до созвона.", "h1": "Разборы: как продвигать цветочный магазин", "zapros": "черновик, SEO-задания нет", "schema": "VideoObject по каждому видео", "links": ["../ – главная лендинга"]}</script>
+<div class="w-seo" id="w-seo-box"></div>
+
+<header class="w-header w-block" data-n="0" data-name="Шапка" data-question="Куда я попал и как быстро связаться?" data-proof="TargetFactory, Telegram и MAX Дениса, телефон с главной targetfactory.ru">
+  <div class="w-wrap">
+    <span class="w-logo">TargetFactory</span>
+    <span class="w-descr">Реклама и сайты для цветочных магазинов</span>
+    <span class="w-contacts-top"><a href="tel:+79132090181">+7 (913) 209-01-81</a><span class="w-muted"><a href="https://t.me/korotaev_denis">Telegram</a> · <a href="https://max.ru/u/f9LHodD0cOLcKLkeG8Hr_oFXFF0snzqnNOGgHN2cX0meUwSiovnBh1wb8xM">MAX</a></span></span>
+    <a class="w-btn ghost" href="../#plan">План роста магазина</a>
+  </div>
+  <nav class="w-wrap w-nav"><a href="../razbory/" style="color:#d00;font-weight:700">● Смотреть разбор</a><a href="../#keysy">Кейсы</a><a href="../#pochemu">Почему мы</a><a href="../otzyvy/">Видео-отзывы</a><a href="../#prazdniki">Праздники</a><a href="../#ceny">Цены</a><a href="../#sayty">Сайты</a><a href="../#voprosy">Вопросы</a></nav>
+  <div class="w-wrap"><p class="w-note">Телефон взят с главной targetfactory.ru – на текущей /flowers телефона нет, только Telegram и MAX. Виджеты страницы: боковая панель связи справа (Telegram, MAX, телефон, «Перезвоните мне»); окно на уходе только на компьютере – «Подарок: бесплатный аудит рекламы и сайта» (уже есть на сайте, ExitGift); на телефоне снизу «Позвонить / Написать». Окна по времени нет. Почему так: форма плана роста стоит на самой странице и в первом экране есть кнопка к ней; окно через 20 секунд мешало бы дочитать кейсы, а подарок на уходе – вторая попытка не потерять владельца, который сравнивает агентства.</p></div>
+</header>
+
+<main>
+  <section class="w-block" data-n="1" data-name="Разборы" data-question="Что я узнаю, не созваниваясь?" data-proof="4 видео ВК с targetfactory.ru/flowers (блок «Ведем вас от первого сообщения…»)">
+    <div class="w-wrap w-stack">
+      <span class="w-tag">Разборы</span>
+      <h1>Разборы: как продвигать цветочный магазин</h1>
+      <p class="w-lead">Денис разбирает на видео рекламу, группу и сайт цветочных магазинов. Можно посмотреть до созвона и понять, как мы думаем.</p>
+      <div class="w-actions"><a class="w-btn" href="../#plan">Записаться на разбор своего магазина</a></div>
+      <div class="w-grid" style="--cols:2;--cols-m:1">
+        <article class="w-card"><iframe src="https://vkvideo.ru/video_ext.php?oid=-213005931&amp;id=456239237&amp;hash=c60fa8dc2cc59459" style="width:100%;aspect-ratio:16/9;border:0" allow="autoplay; encrypted-media; fullscreen" loading="lazy"></iframe><h3>Продвижение цветочного магазина: как стабильно привлекать новых клиентов, не сливая бюджет</h3><p class="w-muted">Что внутри: <span class="w-ask">[уточнить: 2–3 пункта, о чём видео]</span></p></article>
+        <article class="w-card"><iframe src="https://vkvideo.ru/video_ext.php?oid=-213005931&amp;id=456239247&amp;hash=9734c179c19c786a" style="width:100%;aspect-ratio:16/9;border:0" allow="autoplay; encrypted-media; fullscreen" loading="lazy"></iframe><h3>Продающий сайт для цветочного магазина в 2026 году</h3><p class="w-muted">Что внутри: <span class="w-ask">[уточнить]</span></p></article>
+        <article class="w-card"><iframe src="https://vkvideo.ru/video_ext.php?oid=-213005931&amp;id=456239251&amp;hash=2ae43b24d7ee38ce" style="width:100%;aspect-ratio:16/9;border:0" allow="autoplay; encrypted-media; fullscreen" loading="lazy"></iframe><h3><span class="w-ask">[уточнить: название видео]</span></h3><p class="w-muted">Что внутри: <span class="w-ask">[уточнить]</span></p></article>
+        <article class="w-card"><iframe src="https://vkvideo.ru/video_ext.php?oid=-213005931&amp;id=456239309&amp;hash=be4848695db1d9fd" style="width:100%;aspect-ratio:16/9;border:0" allow="autoplay; encrypted-media; fullscreen" loading="lazy"></iframe><h3><span class="w-ask">[уточнить: название видео]</span></h3><p class="w-muted">Что внутри: <span class="w-ask">[уточнить]</span></p></article>
+      </div>
+      <p class="w-note">Страница вынесена отдельно, в шапке – ссылка с красной точкой «Смотреть разбор». Видео 16:9, по два в ряд, на телефоне по одному. Под каждым – 2–3 пункта «что внутри», чтобы было понятно, какое смотреть первым. Названия 3 и 4 ВК не отдал скрипту – взять из плеера.</p>
+    </div>
+  </section>
+
+  <section class="w-block w-cta-strip" data-n="2" data-name="Призыв" data-question="Хочу такой разбор своего магазина" data-proof="форма плана роста на главной">
+    <div class="w-wrap"><div class="w-cta"><p>Разберём так же ваш магазин – бесплатно, за 30 минут, с вашими кабинетами на экране</p><a class="w-btn" href="../#plan">Записаться на разбор</a></div></div>
+  </section>
+</main>
+
+<footer class="w-footer"><div class="w-wrap w-stack">
+  <div class="w-foot-grid">
+    <div class="w-stack"><b>TargetFactory</b><span>Маркетинг для цветочных магазинов и не только: ВКонтакте, реклама, контент, сайты.</span></div>
+    <div class="w-stack"><a href="tel:+79132090181">+7 (913) 209-01-81</a><a href="https://t.me/korotaev_denis">Telegram</a><a href="https://max.ru/u/f9LHodD0cOLcKLkeG8Hr_oFXFF0snzqnNOGgHN2cX0meUwSiovnBh1wb8xM">MAX</a></div>
+    <div class="w-stack"><a href="#">Пользовательское соглашение</a><a href="#">Политика конфиденциальности</a><span>Реквизиты: <span class="w-ask">[запросить: реквизиты ИП или ООО для подвала]</span></span><span class="w-muted">Разработка сайта – Deford</span></div>
+  </div>
+</div></footer>
+
+<div class="w-sticky"><a class="w-btn" href="tel:+79132090181">Позвонить</a><a class="w-btn ghost" href="https://t.me/korotaev_denis">Написать</a></div>
+
+<script>
+document.querySelectorAll('.w-block').forEach(function (b) {
+  var d = b.dataset, el = document.createElement('div');
+  el.className = 'w-logic';
+  el.innerHTML = '<b>Блок ' + (d.n || '?') + ' · ' + (d.name || '') + '</b><br>Вопрос клиента: ' + (d.question || '–') + '<br>Опора: ' + (d.proof || '–');
+  if (b.tagName === 'HEADER') b.prepend(el); else (b.querySelector('.w-wrap') || b).prepend(el);
+});
+document.getElementById('t-logic').addEventListener('change', function (e) { document.body.classList.toggle('show-logic', e.target.checked); });
+document.getElementById('t-notes').addEventListener('change', function (e) { document.body.classList.toggle('show-notes', e.target.checked); });
+document.getElementById('t-seo').addEventListener('change', function (e) { document.body.classList.toggle('show-seo', e.target.checked); });
+document.getElementById('t-success').addEventListener('change', function (e) { document.body.classList.toggle('show-success', e.target.checked); });
+(function () {
+  var src = document.getElementById('w-seo'), box = document.getElementById('w-seo-box');
+  if (!src || !box) return;
+  var d = JSON.parse(src.textContent), esc = function (t) { return String(t).replace(/[&<>]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]; }); };
+  var len = function (t, max) { return ' <span class="' + (t.length > max ? 'bad' : '') + '">(' + t.length + ' / ' + max + ')</span>'; };
+  var heads = [].map.call(document.querySelectorAll('main h1, main h2, header h1'), function (h) { return '<li>' + h.tagName + ' – ' + esc(h.textContent.trim()) + '</li>'; }).join('');
+  var alts = [].map.call(document.querySelectorAll('.w-media[data-alt]'), function (m) { return '<li>' + esc(m.dataset.alt) + '</li>'; }).join('');
+  box.innerHTML = '<table><tr><td>title</td><td>' + esc(d.title) + len(d.title, 65) + '</td></tr><tr><td>description</td><td>' + esc(d.description) + len(d.description, 160) +
+    '</td></tr><tr><td>запрос</td><td>' + esc(d.zapros || '–') + '</td></tr><tr><td>заголовки</td><td><ul>' + heads + '</ul></td></tr><tr><td>alt</td><td><ul>' + (alts || '<li>–</li>') +
+    '</ul></td></tr><tr><td>разметка</td><td>' + esc(d.schema || '–') + '</td></tr><tr><td>ссылки</td><td><ul>' + (d.links || []).map(function (l) { return '<li>' + esc(l) + '</li>'; }).join('') + '</ul></td></tr></table>';
+})();
+document.getElementById('ask-count').textContent = document.querySelectorAll('.w-ask').length;
+document.querySelectorAll('form').forEach(function (f) {
+  var a = f.querySelector('[data-agree]'), btn = f.querySelector('button[type="submit"], button:not([type])');
+  if (a && btn) a.addEventListener('change', function () { btn.disabled = !a.checked; });
+});
+</script>
+<!-- Виджеты: подключение (раскомментировать вместе с блоком в head).
+<div data-vidzhety data-src="vidzhety-flowers.json"></div>
+<script src="https://tema-mail.github.io/vidzhety/vidzhety.js"></script>
+-->
+</body>
+</html>

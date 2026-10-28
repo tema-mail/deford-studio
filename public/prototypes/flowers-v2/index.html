@@ -1,0 +1,560 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Прототип – TargetFactory /flowers v2</title>
+<style>/* Комплект чёрно-белого прототипа (маркетолог → site-prototype).
+   Прототип показывает смысл, текст, порядок и действие – не дизайн. Цвета только серые; дизайнер делает визуал после «да» владельца.
+   Блок: <section class="w-block" data-n="1" data-name="Первый экран" data-question="вопрос клиента" data-proof="опора"> */
+:root {
+  --ink: #141414; --muted: #5f5f5f; --line: #b9b9b9; --fill: #ececec; --fill2: #f6f6f6; --paper: #ffffff;
+  --note: #fff6c8; --note-line: #c9b44a; --ask: #7a1f1f;
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --mono: ui-monospace, Menlo, Consolas, monospace;
+  --wrap: 1180px;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.55 var(--font); }
+img { max-width: 100%; }
+a { color: var(--ink); }
+h1, h2, h3 { margin: 0; line-height: 1.2; text-wrap: balance; }
+h1 { font-size: clamp(28px, 4.2vw, 46px); }
+h2 { font-size: clamp(22px, 3vw, 32px); }
+h3 { font-size: 18px; }
+p { margin: 0; }
+.w-wrap { max-width: var(--wrap); margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.w-stack { display: grid; gap: 14px; }
+.w-muted { color: var(--muted); }
+
+/* Панель прототипа: переключатели «Логика» и «Комментарии» */
+.w-bar { position: sticky; top: 0; z-index: 50; background: var(--ink); color: #fff; font: 13px/1.3 var(--mono); }
+.w-bar .w-wrap { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; padding-block: 8px; }
+.w-bar b { font-weight: 600; }
+.w-bar label { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; }
+
+/* Блок и его подпись логики */
+.w-block { border-top: 1px dashed var(--line); padding-block: 40px; position: relative; }
+.w-logic { display: none; font: 12.5px/1.45 var(--mono); background: var(--fill2); border: 1px solid var(--line); padding: 8px 10px; margin-bottom: 18px; }
+body.show-logic .w-logic { display: block; }
+.w-logic b { font-weight: 700; }
+.w-note { display: none; background: var(--note); border: 1px dashed var(--note-line); padding: 8px 10px; font-size: 13.5px; margin-top: 12px; }
+body.show-notes .w-note { display: block; }
+.w-note::before { content: "Дизайнеру: "; font-weight: 700; }
+.w-seo { display: none; font: 13px/1.5 var(--mono); background: #eef3ff; border: 1px solid #8aa0d6; padding: 12px 14px; margin: 12px auto; max-width: var(--wrap); }
+body.show-seo .w-seo { display: block; }
+.w-seo table { border-collapse: collapse; width: 100%; }
+.w-seo td { border-top: 1px solid #c9d4ee; padding: 4px 6px; vertical-align: top; }
+.w-seo td:first-child { white-space: nowrap; font-weight: 700; width: 1%; }
+.w-seo .bad { color: var(--ask); font-weight: 700; }
+.w-seo ul { margin: 0; padding-left: 18px; }
+.w-ask { color: var(--ask); font-weight: 600; background: #f7e9e9; padding: 0 4px; }
+
+/* Место под фото/видео/схему: роль, а не «картинка» */
+.w-media { background: repeating-linear-gradient(45deg, var(--fill), var(--fill) 10px, var(--fill2) 10px, var(--fill2) 20px);
+  border: 1px solid var(--line); min-height: 220px; display: grid; place-items: center; text-align: center; padding: 16px;
+  color: var(--muted); font-size: 14px; }
+.w-media::before { content: "▣ "; }
+.w-media.small { min-height: 120px; }
+
+/* Кнопки */
+.w-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 22px; border: 2px solid var(--ink);
+  background: var(--ink); color: #fff; font-weight: 600; text-decoration: none; border-radius: 6px; cursor: pointer; font-size: 16px; }
+.w-btn.ghost { background: transparent; color: var(--ink); }
+.w-btn[disabled] { opacity: .45; cursor: not-allowed; }
+.w-hint { font-size: 13px; color: var(--muted); }
+
+/* Шапка */
+.w-header .w-wrap { display: flex; flex-wrap: wrap; gap: 10px 20px; align-items: center; justify-content: space-between; padding-block: 12px; }
+.w-logo { border: 2px solid var(--ink); padding: 6px 10px; font-weight: 700; }
+.w-descr { font-size: 13.5px; color: var(--muted); max-width: 34ch; }
+.w-contacts-top { display: grid; gap: 2px; font-size: 14px; text-align: right; }
+.w-nav { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 14.5px; border-top: 1px solid var(--line); padding-block: 8px; }
+
+/* Первый экран */
+.w-hero { display: grid; grid-template-columns: 1.1fr .9fr; gap: 32px; align-items: center; }
+.w-hero ul { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+.w-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+
+/* Сетки и карточки */
+.w-grid { display: grid; grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr)); gap: 14px; }
+.w-card { border: 1px solid var(--line); padding: 16px; display: grid; gap: 8px; align-content: start; min-width: 0; }
+.w-card .w-media { min-height: 140px; }
+.w-price { font-weight: 700; }
+
+/* Этапы */
+.w-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr)); gap: 14px; counter-reset: st; }
+.w-steps li { border: 1px solid var(--line); padding: 14px; counter-increment: st; display: grid; gap: 6px; }
+.w-steps li::before { content: counter(st); font-weight: 700; font-size: 22px; }
+
+/* Таблица */
+.w-table-wrap { overflow-x: auto; }
+.w-table { width: 100%; border-collapse: collapse; font-size: 15px; }
+.w-table th, .w-table td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+.w-table th { background: var(--fill2); }
+
+/* FAQ */
+.w-faq details { border: 1px solid var(--line); padding: 12px 14px; }
+.w-faq details + details { border-top: 0; }
+.w-faq summary { font-weight: 600; cursor: pointer; }
+
+/* Форма */
+.w-form { border: 2px solid var(--ink); padding: 18px; display: grid; gap: 12px; max-width: 520px; }
+.w-field { display: grid; gap: 4px; font-size: 14px; }
+.w-field input, .w-field select { min-height: 44px; border: 1px solid var(--ink); padding: 0 10px; font: inherit; background: #fff; }
+.w-check { display: flex; gap: 8px; align-items: flex-start; font-size: 13.5px; }
+
+/* Полоса призыва */
+.w-cta { background: var(--fill); padding: 24px; display: flex; flex-wrap: wrap; gap: 14px; align-items: center; justify-content: space-between; }
+/* Плашка призыва между блоками: section.w-block.w-cta-strip с одной строкой предложения и кнопкой или мини-формой (карточка prizyv-mezhdu-blokami) */
+.w-block.w-cta-strip { padding-block: 16px; }
+.w-cta-strip .w-cta { padding: 14px 18px; }
+.w-cta-strip .w-cta p { margin: 0; font-weight: 600; }
+
+/* Состояние формы после отправки (карточка stranica-spasibo-sleduyushchiy-shag): видно по переключателю «После отправки» */
+.w-success { display: none; border: 2px dashed var(--ink); padding: 14px; background: var(--fill); }
+.w-success p { margin: 0 0 6px; }
+body.show-success .w-success { display: block; }
+
+/* Подвал */
+.w-footer { background: var(--fill2); border-top: 1px solid var(--line); padding-block: 28px; font-size: 14px; }
+
+/* Липкая панель действий на телефоне */
+.w-sticky { display: none; }
+header.w-block { padding-block: 0; border-top: 0; }
+header.w-block > .w-logic { margin: 8px auto; max-width: var(--wrap); }
+
+@media (max-width: 760px) {
+  .w-hide-m { display: none !important; }
+  /* Мобильная шапка: логотип, короткий дескриптор и «Меню»; звонок и мессенджеры – в липкой панели снизу */
+  .w-header .w-wrap { flex-wrap: nowrap; padding-block: 8px; gap: 10px; }
+  .w-header .w-contacts-top, .w-header .w-wrap > .w-btn, .w-nav { display: none !important; }
+  .w-header .w-descr { font-size: 12px; line-height: 1.3; }
+  .w-header > .w-wrap:first-of-type::after { content: "☰ Меню"; margin-left: auto; border: 1px solid var(--ink); padding: 6px 10px; font-size: 13px; white-space: nowrap; }
+  .w-hero .w-media, .w-block[data-n="1"] .w-media:first-of-type { min-height: 160px; }
+  .w-bar .w-wrap { padding-block: 4px; gap: 4px 10px; font-size: 11px; }
+  .w-hero { grid-template-columns: 1fr; }
+  .w-grid { grid-template-columns: repeat(var(--cols-m, 2), minmax(0, 1fr)); }
+  .w-steps { grid-template-columns: 1fr; }
+  .w-contacts-top { text-align: left; }
+  .w-block { padding-block: 28px; }
+  .w-sticky { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+    padding: 8px max(12px, env(safe-area-inset-right, 0px)) calc(8px + env(safe-area-inset-bottom, 0px)) max(12px, env(safe-area-inset-left, 0px));
+    background: #fff; border-top: 1px solid var(--line); }
+  body { padding-bottom: 72px; }
+}
+@media (max-width: 420px) { .w-grid.one-m { grid-template-columns: 1fr; } }
+</style>
+<style>
+/* Дополнения прототипа – только серое, без бренда */
+.w-big { font-size: clamp(30px, 4.4vw, 48px); font-weight: 800; line-height: 1.05; }
+.w-lead { font-size: 18px; }
+.w-split { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
+.w-split.media-left { grid-template-columns: .9fr 1.1fr; }
+.w-widget { border: 2px solid var(--ink); padding: 18px; display: grid; gap: 6px; align-content: start; }
+.w-tag { font: 12px/1.3 var(--mono); text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.w-num { font: 700 13px/1 var(--mono); border: 1px solid var(--ink); padding: 4px 6px; justify-self: start; }
+.w-list { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+.w-plan-steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.w-plan-steps li { display: grid; grid-template-columns: 44px 1fr; gap: 10px; align-items: start; }
+.w-plan-steps b.n { font: 800 22px/1 var(--mono); }
+.w-case-hero { border: 2px solid var(--ink); padding: 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.w-compare td:first-child { color: var(--muted); }
+.w-form { max-width: none; }
+.w-form select { min-height: 44px; border: 1px solid var(--ink); padding: 0 10px; font: inherit; background: #fff; }
+@media (min-width: 761px) { .w-hero > .w-media { min-height: 440px; } }
+.w-foot-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 760px) {
+  .w-split, .w-split.media-left, .w-case-hero, .w-foot-grid { grid-template-columns: 1fr; gap: 16px; }
+  .w-lead { font-size: 16px; }
+  .w-big { font-size: 30px; }
+  .w-widget { padding: 12px; }
+}
+</style>
+<!-- Виджеты страницы (окна, ярлычок, боковая панель мессенджеров, нижняя панель телефона) – модуль tema-mail/vidzhety.
+     Набор под страницу – в комментарии дизайнеру у шапки. Чтобы включить – раскомментировать это и блок «Виджеты: подключение» в конце,
+     положить рядом vidzhety-flowers.json. Образец – ~/Sites/sayty-agent/prototipy/gaz-mag/.
+<link rel="stylesheet" href="https://tema-mail.github.io/vidzhety/vidzhety.css">
+<style>
+:root { --w-accent: #141414; --w-accent-2: #5f5f5f; --w-radius: 6px; --w-wa: #3d3d3d; --w-tg: #3d3d3d; --w-max: #3d3d3d; }
+body.vz-has-sticky .w-sticky { display: none !important; }
+</style>
+-->
+</head>
+<body>
+<div class="w-bar"><div class="w-wrap">
+  <b>Прототип · TargetFactory · /flowers v2 · 28.10.2026</b>
+  <label><input type="checkbox" id="t-logic"> Логика блоков</label>
+  <label><input type="checkbox" id="t-notes"> Комментарии дизайнеру</label>
+  <label><input type="checkbox" id="t-seo"> SEO страницы</label>
+  <label><input type="checkbox" id="t-success"> После отправки</label>
+  <span>Меток «запросить»: <b id="ask-count">0</b></span>
+</div></div>
+
+<!-- SEO-задания от site-seo нет: title и description – черновик прототипировщика по тексту страницы, перед версткой отдать site-seo. -->
+<script type="application/json" id="w-seo">{"title": "Маркетинг для цветочных магазинов – TargetFactory", "description": "Реклама ВКонтакте, контент и сайты для цветочных магазинов по всей России. Кейсы из кабинета: 209 обращений по 251 ₽. Бесплатный план роста.", "h1": "Маркетинг для цветочных магазинов: продаём холодильник, а не списываем", "zapros": "маркетинг для цветочных магазинов (черновик – SEO-задания от site-seo нет)", "schema": "Organization (TargetFactory), Service (маркетинг для цветочных магазинов), FAQPage – по блоку вопросов", "links": ["https://targetfactory.ru/ – главная агентства", "vc.ru – три кейса цветочных (ссылки в блоке 4)", "milovinisamara.ru, compliment-32.ru, holiflori.ru – сайты, которые сделали"]}</script>
+<div class="w-seo" id="w-seo-box"></div>
+
+<header class="w-header w-block" data-n="0" data-name="Шапка" data-question="Куда я попал и как быстро связаться?" data-proof="TargetFactory, Telegram и MAX Дениса, телефон с главной targetfactory.ru">
+  <div class="w-wrap">
+    <span class="w-logo">TargetFactory</span>
+    <span class="w-descr">Маркетинг для цветочных магазинов по всей России: ВКонтакте, реклама, контент, сайт</span>
+    <span class="w-contacts-top"><a href="tel:+79132090181">+7 (913) 209-01-81</a><span class="w-muted"><a href="https://t.me/korotaev_denis">Telegram</a> · <a href="https://max.ru/u/f9LHodD0cOLcKLkeG8Hr_oFXFF0snzqnNOGgHN2cX0meUwSiovnBh1wb8xM">MAX</a></span></span>
+    <a class="w-btn ghost" href="#plan">План роста магазина</a>
+  </div>
+  <nav class="w-wrap w-nav"><a href="#keysy">Кейсы</a><a href="#pochemu">Почему мы</a><a href="#otzyvy">Видео-отзывы</a><a href="#prazdniki">Праздники</a><a href="#ceny">Цены</a><a href="#sayty">Сайты</a><a href="#voprosy">Вопросы</a></nav>
+  <div class="w-wrap"><p class="w-note">Телефон взят с главной targetfactory.ru – на текущей /flowers телефона нет, только Telegram и MAX. Виджеты страницы: боковая панель связи справа (Telegram, MAX, телефон, «Перезвоните мне»); окно на уходе только на компьютере – «Подарок: бесплатный аудит рекламы и сайта» (уже есть на сайте, ExitGift); на телефоне снизу «Позвонить / Написать». Окна по времени нет. Почему так: форма плана роста стоит на самой странице и в первом экране есть кнопка к ней; окно через 20 секунд мешало бы дочитать кейсы, а подарок на уходе – вторая попытка не потерять владельца, который сравнивает агентства.</p></div>
+</header>
+
+<main>
+  <section class="w-block" data-n="1" data-name="Первый экран" data-question="Это агентство понимает цветочный бизнес и поможет мне продавать больше?" data-proof="оффер про списания – боль владельца; цветы в кадре; личная ответственность основателя">
+    <div class="w-wrap">
+      <div class="w-hero">
+        <div class="w-stack">
+          <span class="w-tag">Для владельцев цветочных магазинов</span>
+          <h1>Маркетинг для цветочных магазинов: продаём холодильник, а не списываем</h1>
+          <p class="w-lead">Ведём ВКонтакте, рекламу, контент и сайт цветочных по всей России. Считаем маржу и средний чек, а не лайки. За результат лично отвечает основатель – Денис Коротаев.</p>
+          <div class="w-actions"><a class="w-btn" href="#plan">Получить план роста магазина</a><a class="w-btn ghost w-hide-m" href="https://t.me/korotaev_denis">Написать Денису</a></div>
+          <p class="w-hint">Бесплатный созвон 30 минут: откроем реальные рекламные кабинеты, покажем цифры и что делать в вашем городе. Ни к чему не обязывает.</p>
+        </div>
+        <div class="w-media" data-alt="Флорист со сборным букетом у холодильной витрины цветочного магазина">Живой флорист (не ИИ-лицо) держит большой сборный букет; за спиной – холодильная витрина, полная цветов, в глубину. Доказывает: здесь понимают цветочный бизнес, а не «маркетинг вообще»</div>
+      </div>
+      <p class="w-note">Главная претензия заказчика – «ультраплоско, мелкий серый текст». Фон за человеком – объёмный: холодильник или стеллаж с цветами с глубиной резкости, как у ЦветBiz. Текст оффера тёмный на светлом, крупный (H1 от 44 px на компьютере), подзаголовок не светлее #333. Окупаемость «х3–х15» из старого H1 убрали: на странице нет кейса цветочного с окупаемостью – вернуть, если Денис даст расчёт.</p>
+    </div>
+  </section>
+
+  <section class="w-block" data-n="2" data-name="Три виджета" data-question="Почему вам вообще можно верить?" data-proof="главная targetfactory.ru: 200+ проектов, 500+ млн ₽ бюджетов за 2 года, 90% клиентов годами">
+    <div class="w-wrap w-stack">
+      <h2 class="w-hide-m">Коротко о нас – в трёх цифрах</h2>
+      <div class="w-grid" style="--cols:3;--cols-m:1">
+        <article class="w-widget"><span class="w-big">90%</span><b>клиентов работают с нами годами</b><span class="w-muted">Без текучки: магазины не уходят через два месяца</span></article>
+        <article class="w-widget"><span class="w-big">500+ млн ₽</span><b>рекламных бюджетов за 2 года</b><span class="w-muted">Больше 200 проектов в разных нишах</span></article>
+        <article class="w-widget"><span class="w-big">Вся Россия</span><b>цветочные в любом городе</b><span class="w-muted">Ведём цветочные с <span class="w-ask">[запросить: с какого года ведёте цветочные магазины]</span></span></article>
+      </div>
+      <p class="w-note">Вместо шести тёмных карточек «Ошибки в маркетинге» – три лаконичных виджета, как у ЦветBiz. Крупная цифра, одна строка, без фото на чёрном. На телефоне – столбиком, компактно; можно сделать полосой из трёх иконок-цветков. Расхождение на главной: «200+ проектов» и «500+ проектов», «90% клиентов годами» и «90% окупаем» – уточнить у Дениса, какую цифру ставить.</p>
+    </div>
+  </section>
+
+  <section class="w-block" data-n="3" data-name="Боли владельца" data-question="Вы понимаете, что болит у меня в магазине?" data-proof="текущая страница («В праздники не справляетесь…», база без рассылок), чат-бот и рассылки из кейсов; скрины переписок">
+    <div class="w-wrap w-stack">
+      <span class="w-tag">Маркетинг – прибыльный, работа – спокойная</span>
+      <h2>Холодильник пустеет от продаж, а флорист собирает букеты, а не отвечает в личке</h2>
+      <div class="w-grid" style="--cols:3;--cols-m:1">
+        <article class="w-card"><div class="w-media small" data-alt="Ведро роз в холодильнике цветочного магазина">Ведро с розами в холодильнике крупно – то, что завтра уйдёт в списание, если не продать</div><span class="w-num">01</span><h3>Цветы уходят в букеты, а не в списание</h3><p>Закупили под выходные, а заказов нет – цветок на выброс. Подстраиваем рекламу по району и рассылку по базе под ваш закуп: есть что продать – есть предложение.</p></article>
+        <article class="w-card"><div class="w-media small" data-alt="Флорист собирает букет, телефон лежит в стороне">Флорист собирает букет двумя руками, телефон с уведомлениями лежит в стороне</div><span class="w-num">02</span><h3>Флорист – за столом, а не в переписке</h3><p>Чат-бот и автоответы берут первые вопросы: цена, доставка, сроки. Ставим его бесплатно в пакетах с ведением рекламы.</p></article>
+        <article class="w-card"><div class="w-media small" data-alt="Календарь цветочного года с отмеченными праздниками">Календарь года: 14 февраля, 8 Марта, 1 сентября, День матери и ровные недели между ними</div><span class="w-num">03</span><h3>Праздник – без завала, будни – без пустоты</h3><p>8 Марта и 14 февраля – две недели в году. Готовим праздник заранее и держим спрос остальные 10 месяцев, а не работаем вполсилы.</p></article>
+      </div>
+      <div class="w-media" data-alt="Скрины переписок владельцев цветочных с TargetFactory">Коллаж 2–3 скринов переписок владельцев с Денисом: «заказы пошли», «холодильник ушёл» – с размытыми именами. Доказывает, что это не слова агентства. <span class="w-ask">[запросить: 2–3 скрина переписок с клиентами-цветочными и разрешение показать]</span></div>
+      <p class="w-note">Три карточки с цветами в кадре, не иконки. Текст карточки – 17–18 px, тёмный. Скрины переписок – наклонённой «стопкой» с тенью, чтобы был объём.</p>
+    </div>
+  </section>
+
+  <section class="w-block" id="keysy" data-n="4" data-name="Главный кейс: выручка" data-question="А у таких, как я, правда выросла выручка?" data-proof="кейс Тольятти – выручка и средний чек только от Дениса, цифры ЦветBiz не берём">
+    <div class="w-wrap w-stack">
+      <span class="w-tag">Кейсы</span>
+      <h2>Реальные цифры цветочных магазинов – прямо из рекламного кабинета</h2>
+      <div class="w-case-hero">
+        <div class="w-stack">
+          <span class="w-tag">Главный кейс · Тольятти</span>
+          <h3>Выручка магазина до и после: <span class="w-ask">[запросить: выручка в месяц до / после по Тольятти, средний чек до / после, период]</span></h3>
+          <p>Сколько работаем вместе: <span class="w-ask">[запросить: срок работы с магазином в Тольятти и можно ли назвать магазин]</span></p>
+          <a class="w-btn" href="#plan">Хочу так же в своём городе</a>
+        </div>
+        <div class="w-media" data-alt="График выручки цветочного магазина до и после работы с TargetFactory">График «до / после» по месяцам: выручка и средний чек, праздники отмечены. Доказывает рост деньгами, а не заявками</div>
+      </div>
+      <p class="w-note">Главный кейс показываем, только если Денис даст выручку по Тольятти; иначе страница идёт сразу к трём кейсам ниже. График – крупно, объёмной карточкой на фоне букета.</p>
+    </div>
+  </section>
+
+  <section class="w-block" data-n="4б" data-name="Три кейса из кабинета" data-question="Сколько стоит заявка у цветочных?" data-proof="три кейса на vc.ru: 209 обращений по 251 ₽, лид 1 500–2 000 → 400 ₽, 215 обращений по 245 ₽">
+    <div class="w-wrap w-stack">
+      <h2>Ещё три цветочных – цифры из кабинета ВКонтакте</h2>
+      <div class="w-grid" style="--cols:3;--cols-m:1">
+        <article class="w-card"><div class="w-media small" data-alt="Скрин рекламного кабинета ВКонтакте: 209 обращений по 251 ₽">Скрин кабинета ВК крупно: 209 обращений, цена 251 ₽ обведена</div><span class="w-big">251 ₽</span><h3>209 тёплых обращений</h3><p>Реклама по району, чат-бот, рассылка и ретаргетинг. Вместо заявок по 2 500–3 000 ₽.</p><p class="w-muted">Город: <span class="w-ask">[запросить: город и магазин в кейсах vc.ru, можно ли назвать]</span></p><a href="https://vc.ru/id3572167/3150153-effektivnaya-reklama-tsvetochnogo-magazina-vkontakte">Читать кейс на vc.ru</a></article>
+        <article class="w-card"><div class="w-media small" data-alt="Скрин кабинета ВКонтакте: стоимость заявки 400 ₽">Скрин кабинета: стоимость заявки 400 ₽ рядом со старой 1 500–2 000 ₽</div><span class="w-big">400 ₽</span><h3>заявка вместо 1 500–2 000 ₽</h3><p>Разобрали сообщество, настроили чат-бота и воронку, протестировали аудитории.</p><a href="https://vc.ru/marketing/3150040-reklama-vkontakte-dlya-tsvetochnogo-magazina">Читать кейс на vc.ru</a></article>
+        <article class="w-card"><div class="w-media small" data-alt="Скрин кабинета ВКонтакте: 215 обращений по 245 ₽ без сайта">Скрин кабинета: 215 обращений по 245 ₽, подпись «без сайта»</div><span class="w-big">245 ₽</span><h3>215 обращений без сайта</h3><p>Две связки с чат-ботом во ВКонтакте – заказы шли без сайта.</p><a href="https://vc.ru/id3572167/3150182-kak-privelch-klientov-v-tsvetochnyj-magazin-cherez-vkontakte">Читать кейс на vc.ru</a></article>
+      </div>
+      <p class="w-note">Сейчас кейсы «очень плоско». Сделать объёмнее: скрин кабинета в рамке ноутбука или телефона, на фоне букета; цифра 48+ px. Подача ЦветBiz (город, «до/после», кнопка под кейсом) – да, их цифры – нет: ставим только то, что есть в кабинете. На телефоне скрин кабинета – над цифрой, карточки столбиком.</p>
+    </div>
+  </section>
+
+  <section class="w-block w-cta-strip" data-n="4а" data-name="Плашка после кейсов" data-question="Мне уже интересно – что дальше?" data-proof="кейсы выше; ближайший праздник – День матери 29.11.2026">
+    <div class="w-wrap"><div class="w-cta"><p>До Дня матери – месяц. Разберём, сколько заказов реально взять в вашем городе</p><a class="w-btn" href="#plan">Подготовить День матери</a></div></div>
+  </section>
+
+  <section class="w-block" id="pochemu" data-n="5" data-name="Почему мы, а не типичное агентство" data-question="Чем вы лучше агентства, которое работает только с цветами?" data-proof="голосовое Дениса (11б): личная ответственность, клиенты годами, маржа; главная: работаем в вашем кабинете, ниши авто и товарка, 6+ лет в digital">
+    <div class="w-wrap w-stack">
+      <span class="w-tag">Почему мы</span>
+      <h2>Не типичное агентство: за результат отвечаю лично я – Денис Коротаев</h2>
+      <div class="w-split media-left">
+        <div class="w-stack">
+          <div class="w-media" data-alt="Денис Коротаев, основатель TargetFactory">Денис за рабочим столом, на экране открыт кабинет клиента-цветочного; рядом букет. Живое фото. Доказывает: основатель сам сидит в кабинетах. <span class="w-ask">[запросить: фото Дениса – живое, не студийное]</span></div>
+          <p><b>Денис Коротаев</b>, основатель TargetFactory. Сертифицированный таргетолог и партнёр ВКонтакте, больше 6 лет в digital-продвижении малого и среднего бизнеса.</p>
+          <p class="w-muted">«Я не просто запускаю рекламу – я погружаюсь в ваш бизнес: изучаю цели, аудиторию и продукт, чтобы выстроить систему, которая начнёт приносить заявки уже в первый месяц.»</p>
+        </div>
+        <div class="w-table-wrap">
+          <table class="w-table w-compare">
+            <tr><th>Как часто бывает</th><th>Как у нас</th></tr>
+            <tr><td>Руководитель не открывает кабинет и не знает, что там происходит</td><td><b>Я сам в кабинетах клиентов</b> и отвечаю головой за результат</td></tr>
+            <tr><td>Клиенты уходят через пару месяцев – текучка</td><td><b>90% клиентов работают с нами годами</b></td></tr>
+            <tr><td>«Скидка 40% на цветы» и розыгрыши ради заявок</td><td><b>Считаем маржу:</b> ДРР, окупаемость, средний чек. Акция не должна съедать прибыль</td></tr>
+            <tr><td>Знают только цветы – взгляд замылен</td><td><b>Приносим рабочие приёмы из автобизнеса и товарки</b> – то, чего нет у узких агентств</td></tr>
+            <tr><td>Кабинет у подрядчика: уйдёт – заберёт всё</td><td><b>Работаем в вашем кабинете</b> – у вас полный доступ и контроль</td></tr>
+          </table>
+        </div>
+      </div>
+      <p>И мы из тех, кто знает, что у пионов есть сезон, гортензия пьёт много воды, а лилии нужен косой срез.</p>
+      <div class="w-actions"><a class="w-btn" href="#plan">Разобрать мой магазин с Денисом</a></div>
+      <p class="w-note">Этого нет ни в одном блоке сейчас – это главный довод против ЦветBiz. Конкурентов не называем (ни ЦветBiz, ни xlab): левый столбец – «как часто бывает». Таблица на телефоне – карточками «было – у нас» по строке. Фото Дениса – крупно, с объёмом (рабочее место, цветы), не вырезанный силуэт на плоском фоне.</p>
+    </div>
+  </section>
+
+  <section class="w-block" id="otzyvy" data-n="6" data-name="Видео-отзывы" data-question="Что говорят те, кто уже с вами работает?" data-proof="11 видео-отзывов на Kinescope с текущей страницы; новый заголовок – комментарий 4">
+    <div class="w-wrap w-stack">
+      <span class="w-tag">Видео-отзывы</span>
+      <h2>С цветами работаем <span class="w-ask">[запросить: сколько лет ведёте цветочные]</span> лет – скопили опыт, кейсы и слова благодарности</h2>
+      <p class="w-lead">Посмотрите видео-отзывы наших клиентов.</p>
+      <div class="w-grid" style="--cols:3;--cols-m:1">
+        <article class="w-card"><div class="w-media small" data-alt="Видео-отзыв владелицы цветочного магазина">Обложка видео: владелица в своём магазине на фоне витрины, кнопка «смотреть»</div><b>Имя, магазин, город</b><p class="w-muted">Подпись: что изменилось у неё в одной строке</p></article>
+        <article class="w-card"><div class="w-media small" data-alt="Видео-отзыв клиента TargetFactory">Обложка видео: клиент за прилавком с букетами</div><b>Имя, магазин, город</b><p class="w-muted">Подпись: результат в одной строке</p></article>
+        <article class="w-card"><div class="w-media small" data-alt="Видео-отзыв клиента TargetFactory">Обложка видео: клиент в мастерской, флористы на заднем плане</div><b>Имя, магазин, город</b><p class="w-muted">Подпись: результат в одной строке</p></article>
+      </div>
+      <p><span class="w-ask">[запросить: какие из 11 видео-отзывов на странице – от цветочных магазинов; имя, магазин, город и одна строка результата к каждому]</span></p>
+      <p class="w-note">Старый заголовок «Смотрите, как это работает изнутри» не про отзывы – заменён по комментарию 4. Обложки – живые кадры магазинов с цветами, не тёмные стоп-кадры YouTube. На телефоне – 3 обложки столбиком, остальные 8 – «Показать ещё».</p>
+    </div>
+  </section>
+
+  <section class="w-block" id="prazdniki" data-n="7" data-name="Праздники и несезон" data-question="Поможете ли вы на 8 Марта и что делать в несезон?" data-proof="текущая страница: «8 Марта и День влюблённых – 2 недели в году, остальные 10 месяцев вполсилы»; комментарий 5 – упор на праздники">
+    <div class="w-wrap w-stack">
+      <span class="w-tag">Праздники</span>
+      <h2>Праздник – это выручка года. Готовим его заранее, а не в последний день</h2>
+      <div class="w-split">
+        <div class="w-stack">
+          <div class="w-grid" style="--cols:2;--cols-m:2">
+            <article class="w-widget"><b>14 февраля</b><span class="w-muted">мужчины заказывают онлайн</span></article>
+            <article class="w-widget"><b>8 Марта</b><span class="w-muted">главный пик года</span></article>
+            <article class="w-widget"><b>1 сентября</b><span class="w-muted">букеты учителям</span></article>
+            <article class="w-widget"><b>День матери</b><span class="w-muted">29 ноября – ближайший</span></article>
+          </div>
+          <ul class="w-list">
+            <li><b>До праздника</b> – прогреваем базу и делаем рассылку, чтобы заказы пришли заранее</li>
+            <li><b>В пик</b> – реклама по району, чат-бот отвечает, пока флористы собирают</li>
+            <li><b>В несезон</b> – держим спрос рассылками по базе и рекламой, без «скидки 40%»</li>
+          </ul>
+          <div class="w-actions"><a class="w-btn" href="#plan">Хочу отработать праздник лучше</a></div>
+        </div>
+        <div class="w-media" data-alt="Пустой холодильник цветочного магазина после 8 Марта">Холодильник клиента вечером 8 Марта – пустые вёдра, «sold out». Доказывает: праздник отработан, а не списан. <span class="w-ask">[запросить: фото холодильника клиента после праздника]</span></div>
+      </div>
+      <p class="w-note">Крючок для цветочников (комментарий 5). Даты – крупными «бирками» с цветком праздника (тюльпаны, розы, гладиолусы, хризантемы). Подпись «мужчины заказывают онлайн» – наш тезис, Денису сверить.</p>
+    </div>
+  </section>
+
+  <section class="w-block" data-n="8" data-name="Было / стало" data-question="Что поменяется у меня в магазине?" data-proof="ошибки с текущей страницы (одно объявление месяцами, база без рассылок, нет отчётов и кабинета) и наш порядок работы">
+    <div class="w-wrap w-stack">
+      <h2>Что меняется, когда маркетинг ведёт команда, а не «таргетолог на веру»</h2>
+      <div class="w-split">
+        <div class="w-card"><span class="w-tag">Раньше</span>
+          <ul class="w-list">
+            <li>Одно объявление крутится месяцами, без тестов</li>
+            <li>База в 10 тысяч человек – ни одной рассылки за три года</li>
+            <li>Заказы есть только в праздники</li>
+            <li>Отчётов нет, доступа к кабинету нет</li>
+            <li>Флорист отвечает в личке вместо букетов</li>
+          </ul>
+        </div>
+        <div class="w-card"><span class="w-tag">С TargetFactory</span>
+          <ul class="w-list">
+            <li>Тестируем связки и каждую неделю приходим с идеями</li>
+            <li>Рассылки и ретаргетинг по тем, кто уже покупал</li>
+            <li>Стратегия под сезон – готовим праздники заранее</li>
+            <li>Отчёты каждый день, неделю и месяц, кабинет – ваш</li>
+            <li>Чат-бот и автоворонка снимают переписку с флориста</li>
+          </ul>
+          <div class="w-media small" data-alt="Флористы клиента TargetFactory собирают букеты в мастерской">Флористы клиента собирают сборные букеты в мастерской, много цветов на столе. <span class="w-ask">[запросить: живые фото флористов у клиентов с разрешением]</span></div>
+        </div>
+      </div>
+      <p class="w-note">Две колонки: левая приглушённая, правая – светлая, с фото флористов и цветами (у ЦветBiz – фото флористов + скрины отзывов). Цифр «на 50% больше» не ставим – их нет.</p>
+    </div>
+  </section>
+
+  <section class="w-block" data-n="9" data-name="Этапы коротко" data-question="Как начнём и не будет ли сложно?" data-proof="текущий блок «Этапы работы»: созвон и аудит, рабочий чат и договор с ЭДО, запуск, отчёты">
+    <div class="w-wrap w-stack">
+      <h2>Четыре шага от созвона до первых заказов</h2>
+      <ol class="w-steps" style="--cols:4">
+        <li><b>Бесплатный созвон и аудит</b><span>Разбираем рекламу и магазин, показываем ошибки и что можно сделать</span></li>
+        <li><b>Рабочий чат и договор</b><span>Сразу понятно, кто за что отвечает. Договор, работаем с ЭДО</span></li>
+        <li><b>Подготовка и запуск</b><span>Сообщество, кабинет, объявления – показываем, что и почему настроили</span></li>
+        <li><b>Отчёты и улучшения</b><span>Каждую неделю – отчёт простым языком и идеи, что улучшить</span></li>
+      </ol>
+      <p class="w-note">Было: длинный блок «Посмотрите, как мы работаем» с четырьмя карточками-фото – сжали до одной строки шагов. Под ним – баннер-плашка с цветами (комментарий 6).</p>
+    </div>
+  </section>
+
+  <section class="w-block w-cta-strip" data-n="9а" data-name="Плашка-баннер после этапов" data-question="С чего начать прямо сейчас?" data-proof="бесплатный аудит на созвоне – шаг 1 выше">
+    <div class="w-wrap"><div class="w-cta"><p>Ваша группа и реклама готовы к праздникам? Проверим бесплатно на созвоне</p><a class="w-btn" href="#plan">Проверить мою группу</a></div>
+    <p class="w-note">Баннер как у ЦветBiz «Ваш ассортимент готов к конкуренции?» – широкая полоса с букетами по краю, не серая плашка.</p></div>
+  </section>
+
+  <section class="w-block" id="ceny" data-n="10" data-name="Пакеты и цена" data-question="Сколько это стоит и что входит?" data-proof="пакеты с главной targetfactory.ru: 15 000 / 30 000 / от 60 000 ₽, подарки, договор, ЭДО; бюджет от 30 000 ₽ из FAQ">
+    <div class="w-wrap w-stack">
+      <span class="w-tag">Цены</span>
+      <h2>Отдел маркетинга цветочного – по цене, известной заранее</h2>
+      <p>Для цветочных: <span class="w-ask">[запросить: цены для цветочных те же, что на главной, или отдельные]</span></p>
+      <div class="w-grid" style="--cols:3;--cols-m:1">
+        <article class="w-card"><span class="w-tag">Разобраться самому</span><h3>Консультация по рекламе ВКонтакте</h3><span class="w-big">15 000 ₽</span>
+          <ul class="w-list"><li>Аудит рекламного кабинета: аудитории, тексты, креативы</li><li>Рекомендации по группе, контенту и заявкам</li><li>Онлайн-сессия 1,5–2 часа</li></ul>
+          <p class="w-muted">Чёткий план: запустите рекламу сами или будете контролировать таргетолога</p><a class="w-btn ghost" href="#plan">Записаться</a></article>
+        <article class="w-card"><span class="w-tag">Запустить рекламу</span><h3>Настройка таргетированной рекламы</h3><span class="w-big">30 000 ₽</span>
+          <ul class="w-list"><li>Аудит группы, стратегия, сбор аудитории</li><li>Кабинет, креативы и тексты</li><li>Запуск и ведение рекламы – 1 месяц</li></ul>
+          <p><b>В подарок:</b> оформление группы, чат-бот, рекомендации по продажам</p><a class="w-btn" href="#plan">Обсудить запуск</a></article>
+        <article class="w-card"><span class="w-tag">Отдать маркетинг целиком</span><h3>Под ключ – «Таргет + СММ»</h3><span class="w-big">от 60 000 ₽/мес</span>
+          <ul class="w-list"><li>Всё из пакета по таргету</li><li>20–30 постов в месяц</li><li>Контент-план под ваших покупателей и праздники</li></ul>
+          <p class="w-muted">Вы продаёте букеты – остальное берём на себя</p><a class="w-btn ghost" href="#plan">Обсудить ведение</a></article>
+      </div>
+      <p class="w-muted">Рекламный бюджет – отдельно: оптимальный старт от 30 000 ₽ в месяц, кабинет можно пополнять частями; для городов до 100 тысяч человек считаем отдельно. Работаем по договору, оплата на расчётный счёт или СБП, с ИП и ООО – ЭДО.</p>
+      <p class="w-note">У ЦветBiz – «отдел маркетинга по цене одного флориста» с ценами специалистов. Наш аргумент – три понятных пакета и подарки (дизайн группы, за который другие берут 5–15 тыс. ₽). Средняя карточка – выделенная и выше. Цена – самый крупный текст карточки.</p>
+    </div>
+  </section>
+
+  <section class="w-block" id="sayty" data-n="11" data-name="Сайты для цветочных" data-question="А сайт вы тоже сделаете – и он будет продавать?" data-proof="текущие блоки «Сайты» и «Интернет-магазины, которые мы создали»: Milovini (Самара), Compliment (Брянск), HoliFlori (Сергиев Посад)">
+    <div class="w-wrap w-stack">
+      <span class="w-tag">Сайты</span>
+      <h2>Делаем интернет-магазины для цветочных салонов с упором на маркетинг и продажи</h2>
+      <p class="w-lead">Мы не только приводим трафик, но и создаём сайты, которые продают. За плечами – больше 10 лет опыта. Вот сайты, которые мы недавно сдали.</p>
+      <div class="w-grid" style="--cols:3;--cols-m:1">
+        <article class="w-card"><div class="w-media small" data-alt="Сайт Milovini Flowers, Самара, на ноутбуке и телефоне">Первый экран сайта в мокапе ноутбук + телефон, на столе рядом букет</div><h3>Milovini Flowers</h3><p class="w-muted">Интернет-магазин цветов, Самара</p><a href="https://milovinisamara.ru/">Перейти на сайт</a></article>
+        <article class="w-card"><div class="w-media small" data-alt="Сайт Compliment, Брянск, на ноутбуке и телефоне">Первый экран сайта в мокапе ноутбук + телефон, рядом букет</div><h3>Compliment</h3><p class="w-muted">Интернет-магазин цветов, Брянск</p><a href="https://compliment-32.ru/">Перейти на сайт</a></article>
+        <article class="w-card"><div class="w-media small" data-alt="Сайт HoliFlori, Сергиев Посад, на ноутбуке и телефоне">Первый экран сайта в мокапе ноутбук + телефон, рядом букет</div><h3>HoliFlori</h3><p class="w-muted">Интернет-магазин цветов, Сергиев Посад</p><a href="https://holiflori.ru/">Перейти на сайт</a></article>
+      </div>
+      <p class="w-note">Заказчик: «тут всё круто, но картинка плоская». Вместо плоских скриншотов – мокапы с наклоном и тенью, букет в кадре. «10 лет» – опыт команды сайтов, а не Дениса (у него 6+ лет в digital) – формулировку сверить, чтобы не спорили между собой.</p>
+    </div>
+  </section>
+
+  <section class="w-block" data-n="12" data-name="6 причин сделать сайт" data-question="Зачем мне новый сайт, если есть группа ВК?" data-proof="текущий блок «6 причин» (согласован владельцем; 1000 продаж и штрафы 2027 – от Артёма)">
+    <div class="w-wrap w-stack">
+      <h2>6 причин сделать новый сайт уже в этом месяце</h2>
+      <div class="w-split">
+        <div class="w-card"><span class="w-tag">Если сайт есть</span>
+          <ul class="w-list">
+            <li><b>Сайты 5–10-летней давности уже не работают.</b> Каталог-«портянка» не продаёт: покупатель теряется и уходит.</li>
+            <li><b>Штрафы до 3 млн ₽ в 2027 году.</b> По нашей оценке, больше 80% сайтов не готовы к законам 2026 года.</li>
+            <li><b>Сделаны без маркетинга.</b> Витрина без сценария заказа, аналитики и связки с рекламой.</li>
+          </ul></div>
+        <div class="w-card"><span class="w-tag">Если сайта нет</span>
+          <ul class="w-list">
+            <li><b>Теряете тех, кто покупает онлайн.</b> Каждый месяц мы приводим клиентам из интернета 1000 продаж.</li>
+            <li><b>Сложно удерживать клиентов.</b> Нет истории заказов, бонусов и напоминаний о важных датах.</li>
+            <li><b>Оплата в соцсетях – риск.</b> Переводы без чека – штраф до 100% суммы. Сайт с онлайн-кассой принимает платежи законно.</li>
+          </ul></div>
+      </div>
+      <p class="w-note">Две колонки по три пункта, крупные заголовки пунктов. Тексты – как на текущей странице, владелец доволен.</p>
+    </div>
+  </section>
+
+  <section class="w-block w-cta-strip" data-n="12а" data-name="Подарок: аудит сайта" data-question="У меня уже есть сайт, но он не приносит заказов – что делать?" data-proof="текущий блок «Подарок» (владелец: «норм»)">
+    <div class="w-wrap"><div class="w-cta"><p>У вас уже есть сайт, но он не приносит заказов? Подарок – бесплатный разбор сайта или 30-минутный созвон: покажем, где сайт теряет заказы</p><a class="w-btn" href="#plan">Забрать подарок</a></div></div>
+  </section>
+
+  <section class="w-block" id="plan" data-n="13" data-name="Форма «план роста»" data-question="Как сделать первый шаг и что я получу?" data-proof="созвон 30 минут с реальными кабинетами (текущая страница); «сколько заявок реально получить и какой бюджет нужен» (главная)">
+    <div class="w-wrap w-stack">
+      <h2>Составим план роста выручки вашего цветочного</h2>
+      <div class="w-split media-left">
+        <div class="w-stack">
+          <div class="w-media w-hide-m" data-alt="Сборный букет в вазе на столе цветочного магазина">Сборный букет в стеклянной вазе крупно, рядом блокнот с планом. Даёт «надежду»: здесь составят план, а не продадут пакет</div>
+          <ol class="w-plan-steps">
+            <li><b class="n">01</b><span><b>Оставляете заявку</b> – имя, телефон, город и примерный оборот</span></li>
+            <li><b class="n">02</b><span><b>Собираем ссылки</b> на ваши площадки: группа ВК, сайт, карты</span></li>
+            <li><b class="n">03</b><span><b>Заранее смотрим</b> ваши площадки и конкурентов в городе</span></li>
+            <li><b class="n">04</b><span><b>Созвон 30 минут:</b> откроем реальные кабинеты и покажем план – ближайший праздник и несезон</span></li>
+          </ol>
+        </div>
+        <form class="w-form" onsubmit="event.preventDefault()">
+          <p>Покажем, сколько заказов реально получить в вашем городе и какой бюджет нужен для старта. Бесплатно и ни к чему не обязывает.</p>
+          <label class="w-field">Имя<input autocomplete="name" name="name"></label>
+          <label class="w-field">Телефон<input type="tel" inputmode="tel" name="phone" placeholder="+7 (___) ___-__-__"></label>
+          <label class="w-field">Город<input name="city" autocomplete="address-level2"></label>
+          <label class="w-field">Оборот в месяц
+            <select name="oborot"><option value="">Выберите</option><option>до 150 тыс. ₽</option><option>150–500 тыс. ₽</option><option>500 тыс. – 1 млн ₽</option><option>1–3 млн ₽</option><option>больше 3 млн ₽</option></select></label>
+          <label class="w-check"><input type="checkbox" data-agree> <span>Я ознакомлен(а) с <a href="#">Политикой обработки персональных данных</a> и даю согласие на их обработку</span></label>
+          <button class="w-btn" type="submit" disabled>Получить план роста</button>
+          <p class="w-hint">После нажатия с вами свяжутся в Telegram, MAX или по телефону и договоримся о времени созвона.</p>
+          <div class="w-success">
+            <p><b>Заявка принята – спасибо!</b></p>
+            <p>Свяжемся с вами: <span class="w-ask">[запросить: кто связывается (Денис или менеджер) и срок ответа]</span></p>
+            <p>Срочно – <a href="https://t.me/korotaev_denis">написать Денису в Telegram</a> или <a href="tel:+79132090181">позвонить</a></p>
+            <p>К созвону подготовьте: ссылки на группу ВК, сайт и карточки на картах, средний чек и даты закупа под ближайший праздник. Пока ждёте – <a href="https://vc.ru/id3572167/3150153-effektivnaya-reklama-tsvetochnogo-magazina-vkontakte">кейс: 209 обращений по 251 ₽</a>.</p>
+          </div>
+        </form>
+      </div>
+      <p class="w-note">Как у ЦветBiz: цветы в вазе + шаги 01–04 + форма. Номера шагов крупно. На телефоне фото вазы скрыто, шаги – над формой, форма во всю ширину. Галочка пустая, кнопка неактивна до отметки. Обещания «удвоим выручку» нет – только план.</p>
+    </div>
+  </section>
+
+  <section class="w-block" id="voprosy" data-n="14" data-name="Вопросы-возражения" data-question="Что меня ещё останавливает?" data-proof="FAQ текущей страницы и главной; возражения цветочных из FAQ ЦветBiz (навязывание, скоропорт, маленький город)">
+    <div class="w-wrap w-stack w-faq">
+      <h2>Этот блок для вас, если остались сомнения</h2>
+      <details><summary>Боюсь, что после созвона будете навязывать услуги</summary><p>Созвон бесплатный и ни к чему не обязывает. Даже если не станете клиентом, уйдёте с пониманием, что делать.</p></details>
+      <details><summary>Цветы – скоропорт. Их вообще можно продавать через рекламу?</summary><p>Можно – и как раз поэтому реклама и рассылки идут под то, что есть в холодильнике и под ближайший повод. В кейсах выше – обращения по 245–251 ₽ и заявка за 400 ₽.</p></details>
+      <details><summary>У меня маленький город. Есть смысл?</summary><p>Да. У нас есть клиенты из небольших городов, которым не нужен большой поток. Для городов до 100 тысяч человек бюджет считаем отдельно – он может быть меньше.</p></details>
+      <details><summary>Предложите «скидку 40%» и розыгрыш, а мне нужна прибыль</summary><p>Нет. Мы считаем ДРР, окупаемость и средний чек – акция, которая съедает маржу, нам не подходит так же, как вам.</p></details>
+      <details><summary>Уже работали с таргетологом – бюджет слили. Почему с вами будет иначе?</summary><p>Мы не действуем наугад: анализируем нишу, аудиторию и конкурентов и тестируем варианты. Вы видите отчёты, статистику, креативы и расходы. Если что-то не даёт отклика – быстро меняем стратегию. Мы сопровождаем проект до результата и отвечаем за каждое действие.</p></details>
+      <details><summary>Сколько стоит и какой нужен рекламный бюджет?</summary><p>Пакеты – 15 000 ₽, 30 000 ₽ и от 60 000 ₽ в месяц (блок «Цены»). Бюджет на рекламу – отдельно: оптимальный старт от 30 000 ₽ в месяц, примерно 1 000 ₽ в сутки; кабинет можно пополнять частями.</p></details>
+      <details><summary>Когда будут первые заявки?</summary><p>Цветы – быстрый спрос: заявки могут прийти в первые часы после запуска. Стабильный поток – за 1–2 недели, когда протестируем креативы и найдём лучшие связки.</p></details>
+      <details><summary>Кабинет и база останутся у меня?</summary><p>Да. Работаем в вашем кабинете – у вас полный доступ и контроль.</p></details>
+      <details><summary>Можно ли отказаться в любой момент?</summary><p>Да. Достаточно предупредить за 7 дней – мы корректно завершим процессы и передадим рекомендации по дальнейшему ведению.</p></details>
+      <details><summary>В каких городах вы работаете?</summary><p>По всей России и СНГ, онлайн: все созвоны – по видеосвязи.</p></details>
+      <p class="w-note">Вопросы – словами владельца цветочного, крупно (18 px), ответы короткие. Список не обрывает страницу: после него – финальный призыв и подвал (комментарий 11).</p>
+    </div>
+  </section>
+
+  <section class="w-block w-cta-strip" data-n="14а" data-name="Финальный призыв" data-question="Остались вопросы – кому написать?" data-proof="личный Telegram Дениса">
+    <div class="w-wrap"><div class="w-cta"><p>Остался вопрос? Напишите Денису напрямую – ответит сам</p><a class="w-btn" href="https://t.me/korotaev_denis">Написать в Telegram</a><a class="w-btn ghost" href="#plan">Получить план роста</a></div></div>
+  </section>
+</main>
+
+<footer class="w-footer"><div class="w-wrap w-stack">
+  <div class="w-foot-grid">
+    <div class="w-stack"><b>TargetFactory</b><span>Маркетинг для цветочных магазинов и не только: ВКонтакте, реклама, контент, сайты.</span></div>
+    <div class="w-stack"><a href="tel:+79132090181">+7 (913) 209-01-81</a><a href="https://t.me/korotaev_denis">Telegram</a><a href="https://max.ru/u/f9LHodD0cOLcKLkeG8Hr_oFXFF0snzqnNOGgHN2cX0meUwSiovnBh1wb8xM">MAX</a></div>
+    <div class="w-stack"><a href="#">Пользовательское соглашение</a><a href="#">Политика конфиденциальности</a><span>Реквизиты: <span class="w-ask">[запросить: реквизиты ИП или ООО для подвала]</span></span><span class="w-muted">Разработка сайта – Deford</span></div>
+  </div>
+</div></footer>
+
+<div class="w-sticky"><a class="w-btn" href="tel:+79132090181">Позвонить</a><a class="w-btn ghost" href="https://t.me/korotaev_denis">Написать</a></div>
+
+<script>
+document.querySelectorAll('.w-block').forEach(function (b) {
+  var d = b.dataset, el = document.createElement('div');
+  el.className = 'w-logic';
+  el.innerHTML = '<b>Блок ' + (d.n || '?') + ' · ' + (d.name || '') + '</b><br>Вопрос клиента: ' + (d.question || '–') + '<br>Опора: ' + (d.proof || '–');
+  if (b.tagName === 'HEADER') b.prepend(el); else (b.querySelector('.w-wrap') || b).prepend(el);
+});
+document.getElementById('t-logic').addEventListener('change', function (e) { document.body.classList.toggle('show-logic', e.target.checked); });
+document.getElementById('t-notes').addEventListener('change', function (e) { document.body.classList.toggle('show-notes', e.target.checked); });
+document.getElementById('t-seo').addEventListener('change', function (e) { document.body.classList.toggle('show-seo', e.target.checked); });
+document.getElementById('t-success').addEventListener('change', function (e) { document.body.classList.toggle('show-success', e.target.checked); });
+(function () {
+  var src = document.getElementById('w-seo'), box = document.getElementById('w-seo-box');
+  if (!src || !box) return;
+  var d = JSON.parse(src.textContent), esc = function (t) { return String(t).replace(/[&<>]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]; }); };
+  var len = function (t, max) { return ' <span class="' + (t.length > max ? 'bad' : '') + '">(' + t.length + ' / ' + max + ')</span>'; };
+  var heads = [].map.call(document.querySelectorAll('main h1, main h2, header h1'), function (h) { return '<li>' + h.tagName + ' – ' + esc(h.textContent.trim()) + '</li>'; }).join('');
+  var alts = [].map.call(document.querySelectorAll('.w-media[data-alt]'), function (m) { return '<li>' + esc(m.dataset.alt) + '</li>'; }).join('');
+  box.innerHTML = '<table><tr><td>title</td><td>' + esc(d.title) + len(d.title, 65) + '</td></tr><tr><td>description</td><td>' + esc(d.description) + len(d.description, 160) +
+    '</td></tr><tr><td>запрос</td><td>' + esc(d.zapros || '–') + '</td></tr><tr><td>заголовки</td><td><ul>' + heads + '</ul></td></tr><tr><td>alt</td><td><ul>' + (alts || '<li>–</li>') +
+    '</ul></td></tr><tr><td>разметка</td><td>' + esc(d.schema || '–') + '</td></tr><tr><td>ссылки</td><td><ul>' + (d.links || []).map(function (l) { return '<li>' + esc(l) + '</li>'; }).join('') + '</ul></td></tr></table>';
+})();
+document.getElementById('ask-count').textContent = document.querySelectorAll('.w-ask').length;
+document.querySelectorAll('form').forEach(function (f) {
+  var a = f.querySelector('[data-agree]'), btn = f.querySelector('button[type="submit"], button:not([type])');
+  if (a && btn) a.addEventListener('change', function () { btn.disabled = !a.checked; });
+});
+</script>
+<!-- Виджеты: подключение (раскомментировать вместе с блоком в head).
+<div data-vidzhety data-src="vidzhety-flowers.json"></div>
+<script src="https://tema-mail.github.io/vidzhety/vidzhety.js"></script>
+-->
+</body>
+</html>

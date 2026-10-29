@@ -1,0 +1,49 @@
+---
+/* «Разборы» – внутренняя страница лендинга /flowers.
+   Видео – четыре ролика ВК с главной (блок «Разборы»),
+   названия сняты с плееров ВК 29.10.2026. */
+import SubPage from '../../components/flowers/SubPage.astro';
+
+const videos = [
+  ['456239237', 'c60fa8dc2cc59459', 'Как найти клиентов цветочному магазину? Продвижение цветов через таргет ВКонтакте'],
+  ['456239247', '9734c179c19c786a', 'Реклама для магазинов цветов. Как продвигать цветочный магазин?'],
+  ['456239251', '2ae43b24d7ee38ce', 'Цветочный бизнес: где брать клиентов и как продвигать магазин ВКонтакте?'],
+  ['456239309', 'be4848695db1d9fd', 'Как должен выглядеть продающий сайт для цветочного магазина в 2026 году?'],
+];
+
+const vk = (id: string, hash: string) =>
+  `https://vkvideo.ru/video_ext.php?oid=-213005931&id=${id}&hash=${hash}`;
+---
+
+<SubPage
+  slug="breakdowns"
+  title="Разборы: как продвигать цветочный магазин – TargetFactory"
+  description="Видео-разборы продвижения цветочных магазинов: реклама ВКонтакте, где брать клиентов, каким должен быть продающий сайт в 2026 году."
+>
+  <section class="fs-section fs-section--first">
+    <div class="fs-wrap fs-stack">
+      <nav class="fs-crumbs" aria-label="Хлебные крошки"><a href="/flowers/">Главная</a> / Разборы</nav>
+      <h1>Как продвигаем цветочные магазины</h1>
+      <p class="fs-lead">Разбираем на видео рекламу, группу и сайт цветочных магазинов. Можно посмотреть до созвона и понять, как мы думаем.</p>
+      <div class="fs-actions"><a class="fs-btn" href="#popup:myform">Записаться на разбор своего магазина</a></div>
+    </div>
+  </section>
+
+  <section class="fs-section fs-section--dark">
+    <div class="fs-wrap fs-stack">
+      <div class="fs-grid" style="--cols: 2; --cols-t: 1;">
+        {videos.map(([id, hash, title]) => (
+          <article class="fs-card fs-card--dark">
+            <iframe class="fs-video fs-video--wide" src={vk(id, hash)} allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen loading="lazy" title={title}></iframe>
+            <h3>{title}</h3>
+          </article>
+        ))}
+      </div>
+
+      <div class="fs-strip" style="margin-top: 30px; background: #2b2b2b;">
+        <p>Разберём так же <b>ваш магазин</b> – бесплатно, за 30 минут, с вашими кабинетами на экране</p>
+        <a class="fs-btn fs-btn--lime" href="#popup:myform">Записаться на разбор</a>
+      </div>
+    </div>
+  </section>
+</SubPage>

@@ -1,0 +1,38 @@
+---
+/** Обёртка внутренних страниц /flowers (why-us, prices, reviews,
+    breakdowns): та же шапка, подвал, попап заявки и cookie, что
+    на главной лендинга. Кнопки «#popup:myform» открывают ту же
+    форму, заявки уходят туда же. Контент страницы – в слоте,
+    секциями .fs-section из styles/flowers-sub.css. */
+import Flowers from '../../layouts/Flowers.astro';
+import Nav from './Nav.astro';
+import Footer from './Footer.astro';
+import CookieNotice from './CookieNotice.astro';
+import Popup from './Popup.astro';
+import DocPopups from './DocPopups.astro';
+import '../../styles/flowers-sub.css';
+
+interface Props {
+  title: string;
+  description: string;
+  slug: string;
+}
+
+const { title, description, slug } = Astro.props;
+---
+
+<Flowers
+  title={title}
+  description={description}
+  canonical={`https://targetfactory.ru/flowers/${slug}/`}
+>
+  <div id="rec4182986301"><Nav /></div>
+  <main class="fs">
+    <slot />
+  </main>
+  <div id="rec4182946901"><a name="contacts" style="font-size: 0;"></a></div>
+  <div id="rec4182947001"><Footer /></div>
+  <div id="rec4182947101"><CookieNotice /></div>
+  <div id="rec4182986701"><Popup /></div>
+  <DocPopups />
+</Flowers>

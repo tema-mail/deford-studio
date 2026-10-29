@@ -1,0 +1,636 @@
+/* ==========================================================
+   Внутренние страницы лендинга /flowers: «Почему мы», «Цены»,
+   «Видео-отзывы», «Разборы» (прототип flowers v2, 29.10.2026).
+
+   Стилистика – с главной /flowers: подложки секций #dbdbdb,
+   #202020 и #f4f4f4 с крупным скруглением и зазором 15px,
+   белый ярлык-пилюля, заголовки Inter Tight 600 с плотным
+   трекингом, лаймовый акцент #cefe46, кнопка-пилюля с кругом
+   и стрелкой. Модель размеров внутри – border-box: базовый
+   content-box лендинга нужен только его секциям.
+   ========================================================== */
+
+.fs {
+  --fs-dark: #202020;
+  --fs-gray: #dbdbdb;
+  --fs-light: #f4f4f4;
+  --fs-lime: #cefe46;
+  --fs-muted: #6b6b6b;
+  --fs-radius: clamp(36px, 6.25vw, 120px);
+
+  font-family: 'Inter Tight', Inter, Arial, sans-serif;
+  color: var(--fs-dark);
+  background: #fff;
+}
+
+.fs *,
+.fs *::before,
+.fs *::after {
+  box-sizing: border-box;
+}
+
+.fs a {
+  color: inherit;
+}
+
+/* СЕКЦИИ */
+.fs-section {
+  margin-top: 15px;
+  padding: 88px 0;
+  border-radius: var(--fs-radius);
+  background: var(--fs-gray);
+}
+
+.fs-section--first {
+  margin-top: 0;
+  padding-top: 130px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.fs-section--dark {
+  background: var(--fs-dark);
+  color: #fff;
+}
+
+.fs-section--light {
+  background: var(--fs-light);
+}
+
+.fs-wrap {
+  width: min(1080px, 100% - 36px);
+  margin: 0 auto;
+}
+
+.fs-stack {
+  display: grid;
+  gap: 18px;
+}
+
+.fs-center {
+  text-align: center;
+  justify-items: center;
+}
+
+/* ХЛЕБНЫЕ КРОШКИ И ЯРЛЫК */
+.fs-crumbs {
+  font-size: 13px;
+  color: var(--fs-muted);
+}
+
+.fs-crumbs a {
+  text-decoration: none;
+}
+
+.fs-crumbs a:hover {
+  color: var(--fs-dark);
+}
+
+.fs-tag {
+  width: max-content;
+  padding: 7px 12px;
+  border: 1px solid #ededee;
+  border-radius: 100px;
+  background: #fff;
+  color: var(--fs-dark);
+  font-size: 12px;
+  line-height: 1.1;
+}
+
+/* ЗАГОЛОВКИ И ТЕКСТ */
+.fs h1,
+.fs h2,
+.fs h3 {
+  margin: 0;
+  font-weight: 600;
+  text-wrap: balance;
+}
+
+.fs h1 {
+  max-width: 900px;
+  font-size: clamp(32px, 4.4vw, 54px);
+  line-height: 1.02;
+  letter-spacing: -1.4px;
+}
+
+.fs h2 {
+  max-width: 820px;
+  font-size: clamp(27px, 3.2vw, 40px);
+  line-height: 1.05;
+  letter-spacing: -1px;
+}
+
+.fs h3 {
+  font-size: 20px;
+  line-height: 1.15;
+  letter-spacing: -0.3px;
+}
+
+.fs p {
+  margin: 0;
+}
+
+.fs-lead {
+  max-width: 640px;
+  color: var(--fs-muted);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.fs-section--dark .fs-lead,
+.fs-section--dark .fs-muted {
+  color: #a9a9a9;
+}
+
+.fs-muted {
+  color: var(--fs-muted);
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+/* КНОПКИ: пилюля с кругом-стрелкой, как на первом экране */
+.fs-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.fs-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 13px;
+  min-height: 55px;
+  padding: 5px 5px 5px 25px;
+  border-radius: 100px;
+  background: var(--fs-dark);
+  color: #fff !important;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: transform 0.2s ease;
+}
+
+.fs-btn::after {
+  content: '';
+  flex: 0 0 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--fs-lime)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Cpath d='M16 28L28 16M20 16H28V24' fill='none' stroke='%23202020' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    center / 44px no-repeat;
+}
+
+.fs-btn:hover {
+  transform: translateY(-2px);
+}
+
+.fs-btn--lime {
+  background: var(--fs-lime);
+  color: var(--fs-dark) !important;
+}
+
+.fs-btn--lime::after {
+  background-color: var(--fs-dark);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Cpath d='M16 28L28 16M20 16H28V24' fill='none' stroke='%23cefe46' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+.fs-btn--ghost {
+  padding-right: 25px;
+  border: 1px solid var(--fs-dark);
+  background: transparent;
+  color: var(--fs-dark) !important;
+}
+
+.fs-btn--ghost::after {
+  display: none;
+}
+
+.fs-link {
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* СЕТКИ И КАРТОЧКИ */
+.fs-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr));
+  gap: 14px;
+  width: 100%;
+}
+
+.fs-card {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  padding: 28px;
+  border-radius: 28px;
+  background: #fff;
+  color: var(--fs-dark);
+}
+
+.fs-card--dark {
+  background: #2b2b2b;
+  color: #fff;
+}
+
+.fs-card--dark .fs-muted {
+  color: #a9a9a9;
+}
+
+.fs-card--lime {
+  background: var(--fs-lime);
+}
+
+.fs-card--lime .fs-muted {
+  color: #3c3c3c;
+}
+
+.fs-num {
+  color: var(--fs-dark);
+  font-size: clamp(34px, 4vw, 48px);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -1.2px;
+}
+
+.fs-card--dark .fs-num,
+.fs-section--dark .fs-num {
+  color: var(--fs-lime);
+}
+
+.fs-step {
+  display: inline-grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--fs-dark);
+  color: var(--fs-lime);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.fs-gift {
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: var(--fs-lime);
+  color: var(--fs-dark);
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.fs-price {
+  font-size: 30px;
+  font-weight: 600;
+  letter-spacing: -0.8px;
+  line-height: 1.05;
+}
+
+.fs-card .fs-btn {
+  justify-self: start;
+  margin-top: 6px;
+}
+
+/* ДВЕ КОЛОНКИ: текст + фото */
+.fs-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.fs-photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  object-fit: cover;
+  border-radius: 32px;
+  background: #cfcfcf;
+}
+
+/* ТАБЛИЦА СРАВНЕНИЯ: на телефоне – карточками по строке */
+.fs-compare {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.fs-compare th {
+  padding: 0 24px 4px;
+  font-size: 13px;
+  font-weight: 500;
+  text-align: left;
+  color: var(--fs-muted);
+}
+
+.fs-compare td {
+  width: 50%;
+  padding: 22px 24px;
+  vertical-align: top;
+  background: #fff;
+}
+
+.fs-compare td:first-child {
+  border-radius: 22px 0 0 22px;
+  color: #555;
+}
+
+.fs-compare td:last-child {
+  border-radius: 0 22px 22px 0;
+  background: var(--fs-dark);
+  color: #fff;
+}
+
+.fs-compare td:last-child b {
+  color: var(--fs-lime);
+  font-weight: 600;
+}
+
+.fs-compare td:first-child b {
+  color: var(--fs-dark);
+}
+
+/* ТАБЛИЦА НАЙМА */
+.fs-hire {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+
+.fs-hire th,
+.fs-hire td {
+  padding: 14px 0;
+  border-bottom: 1px solid #e3e3e3;
+  text-align: left;
+  vertical-align: top;
+}
+
+.fs-hire th {
+  color: var(--fs-muted);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.fs-hire td:last-child,
+.fs-hire th:last-child {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.fs-total {
+  padding: 16px 20px;
+  border-radius: 18px;
+  background: var(--fs-dark);
+  color: #fff;
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+.fs-total b {
+  color: var(--fs-lime);
+}
+
+/* СПИСОК С ГАЛОЧКАМИ */
+.fs-list {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.fs-list li {
+  position: relative;
+  padding-left: 30px;
+}
+
+.fs-list li::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--fs-lime)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M6 10.5l2.6 2.5L14 7.5' fill='none' stroke='%23202020' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    center / 20px no-repeat;
+}
+
+/* ОКНО ЧАТА: пример отчёта в рабочем чате */
+.fs-chat {
+  display: grid;
+  gap: 10px;
+  padding: 20px;
+  border-radius: 28px;
+  background: #ecedf0;
+  color: var(--fs-dark);
+  box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.35);
+  font-size: 14px;
+  line-height: 1.45;
+  transform: rotate(-1.2deg);
+}
+
+.fs-chat__head {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #d9dade;
+  font-weight: 600;
+}
+
+.fs-chat__head span {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--fs-dark);
+  color: var(--fs-lime);
+  font-size: 12px;
+}
+
+.fs-chat__msg {
+  max-width: 88%;
+  padding: 10px 14px;
+  border-radius: 18px 18px 18px 6px;
+  background: #fff;
+}
+
+.fs-chat__msg--me {
+  justify-self: end;
+  border-radius: 18px 18px 6px 18px;
+  background: var(--fs-lime);
+}
+
+.fs-chat__time {
+  display: block;
+  margin-top: 4px;
+  color: #8a8a8a;
+  font-size: 11px;
+  text-align: right;
+}
+
+/* ВИДЕО */
+.fs-video {
+  display: block;
+  width: 100%;
+  border: 0;
+  border-radius: 24px;
+  background: #000;
+}
+
+.fs-video--tall {
+  aspect-ratio: 9 / 16;
+  max-height: 560px;
+}
+
+.fs-video--wide {
+  aspect-ratio: 16 / 9;
+}
+
+.fs-quote {
+  margin: 0;
+  padding-left: 16px;
+  border-left: 3px solid var(--fs-lime);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* ЛАЙМОВАЯ ПЛАШКА-ПРИЗЫВ */
+.fs-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px 28px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 26px 26px 26px 36px;
+  border-radius: 32px;
+  background: var(--fs-dark);
+  color: #fff;
+}
+
+.fs-strip p {
+  max-width: 620px;
+  font-size: 18px;
+  line-height: 1.4;
+}
+
+.fs-strip b {
+  color: var(--fs-lime);
+}
+
+/* ПЛАНШЕТ */
+@media (max-width: 979px) {
+  .fs-grid {
+    grid-template-columns: repeat(var(--cols-t, 2), minmax(0, 1fr));
+  }
+
+  .fs-split {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ТЕЛЕФОН */
+@media (max-width: 640px) {
+  .fs-section {
+    padding: 52px 0;
+  }
+
+  .fs-section--first {
+    padding-top: 110px;
+  }
+
+  .fs-grid {
+    grid-template-columns: repeat(var(--cols-m, 1), minmax(0, 1fr));
+  }
+
+  .fs-card {
+    padding: 22px;
+    border-radius: 24px;
+  }
+
+  .fs-btn {
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .fs-btn--ghost {
+    justify-content: center;
+  }
+
+  .fs-photo {
+    min-height: 240px;
+    border-radius: 24px;
+  }
+
+  .fs-compare,
+  .fs-compare tbody,
+  .fs-compare tr,
+  .fs-compare td {
+    display: block;
+    width: 100%;
+  }
+
+  .fs-compare tr:first-child {
+    display: none;
+  }
+
+  .fs-compare tr {
+    margin-bottom: 12px;
+  }
+
+  .fs-compare td {
+    padding: 18px 20px;
+  }
+
+  .fs-compare td:first-child {
+    border-radius: 20px 20px 0 0;
+  }
+
+  .fs-compare td:last-child {
+    border-radius: 0 0 20px 20px;
+  }
+
+  .fs-compare td::before {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 12px;
+    color: #8a8a8a;
+  }
+
+  .fs-compare td:first-child::before {
+    content: attr(data-label);
+  }
+
+  .fs-compare td:last-child::before {
+    content: attr(data-label);
+    color: #a9a9a9;
+  }
+
+  .fs-hire td:nth-child(2),
+  .fs-hire th:nth-child(2) {
+    display: none;
+  }
+
+  .fs-strip {
+    padding: 24px;
+  }
+
+  .fs-strip p {
+    font-size: 16px;
+  }
+
+  .fs-video--tall {
+    max-height: 480px;
+  }
+}

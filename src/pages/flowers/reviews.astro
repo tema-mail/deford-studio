@@ -1,0 +1,145 @@
+---
+/* «Видео-отзывы» – внутренняя страница лендинга /flowers.
+   Тексты – прототип flowers v2 (страница otzyvy): три отзыва
+   расшифрованы (docs/flowers-v2/otzyvy-rasshifrovki.md), остальные
+   восемь – видео с главной, подписи к ним ждут от Дениса. */
+import SubPage from '../../components/flowers/SubPage.astro';
+
+const kinescope = (id: string) => `https://kinescope.io/embed/${id}?preload=0`;
+
+const top = [
+  {
+    id: 'qanCz44Rme7zJXBcPZJFEH',
+    who: 'Алексей, цветочный магазин, Тюмень',
+    meta: 'Работаем с октября 2025',
+    quote: '«При выборе таргетолога я смотрел на результат и ответственность человека. Человек постоянно на связи, вопросы решаем сразу».',
+    main: 'продажи из ВКонтакте и подробный отчёт каждую неделю и каждый месяц',
+  },
+  {
+    id: 'pB2kHWLuyFSAMz9HB5YH5f',
+    who: 'Антон Зайцев, цветочный магазин, Нижний Новгород',
+    meta: 'Работаем 7–8 месяцев',
+    quote: '«Нравится, что от меня не требуют постоянно делать креативы. Ребята сами берут посты, которые зашли, и сами придумывают тексты и картинки».',
+    main: 'маркетинг целиком, а не только настройка – владелец пишет преимущества магазина один раз',
+  },
+  {
+    id: 'sdDRmLfYR18D3GDpCJG4vD',
+    who: 'Руслан, сеть салонов Boombox, Пенза',
+    meta: 'Работаем с августа 2025',
+    quote: '«У меня уже был таргетолог, его работа не очень устраивала. Решил попробовать, как будет вести сообщество Денис».',
+    main: 'пришёл от другого таргетолога и остался – больше года вместе',
+  },
+];
+
+const proof = [
+  ['<b>Отчёты:</b> каждый день – доступ к статистике, каждую неделю – отчёт понятным языком, каждый месяц – разбор и план', 'Алексей, Тюмень: «развёрнутый отчёт как за неделю, так и за месяц»'],
+  ['<b>Постоянно на связи</b>, рабочий чат с первого дня', 'Алексей, Тюмень: «вопросы решаем сразу»'],
+  ['<b>Команда под каждую задачу:</b> ВКонтакте, сайт, трафик, контент', 'Антон, Нижний Новгород: «полностью маркетингом занимаются, а не только технической частью»'],
+  ['<b>Бесплатный аудит перед стартом</b> с ошибками и рекомендациями', 'Антон, Нижний Новгород: «провёл аудит, указал на слабые стороны»'],
+  ['<b>Знаем, какие связки работают</b>, не тестируем с нуля за ваш счёт', 'Руслан, Пенза: ушёл от прошлого таргетолога, работаем с августа 2025'],
+];
+
+const rest = [
+  '0DDkK6usr84CzqDyPL2zie',
+  'dtV6t7PJdoHRWad68dpeyx',
+  'nJA9jKxcViLGXi8G6tbuWL',
+  '7sVM9Wdirgj9oYH8kY7v6b',
+  '7MaLKyTXqmzmvRCkNqDcMB',
+  'iWkWZbpzChETV2sSHtTXu7',
+  'quWW8R9xdAsyVxFzQ4Yi5n',
+  'e9pEhQjUi5jhEqvC3zfvAt',
+];
+
+const allow = 'autoplay; fullscreen; picture-in-picture; encrypted-media';
+---
+
+<SubPage
+  slug="reviews"
+  title="Видео-отзывы владельцев цветочных – TargetFactory"
+  description="Видео-отзывы владельцев цветочных магазинов о работе с TargetFactory: Тюмень, Нижний Новгород, Пенза и другие города."
+>
+  <section class="fs-section fs-section--first">
+    <div class="fs-wrap fs-stack">
+      <nav class="fs-crumbs" aria-label="Хлебные крошки"><a href="/flowers/">Главная</a> / Видео-отзывы</nav>
+      <h1>Владельцы цветочных – о работе с TargetFactory</h1>
+      <p class="fs-lead">Записали сами, на телефон, без сценария. Сначала – три отзыва и главное из каждого, ниже – остальные.</p>
+      <div class="fs-actions"><a class="fs-btn" href="#popup:myform">Получить план роста магазина</a></div>
+
+      <div class="fs-grid" style="--cols: 3; --cols-t: 1; margin-top: 30px;">
+        {top.map((item) => (
+          <article class="fs-card">
+            <iframe class="fs-video fs-video--tall" src={kinescope(item.id)} allow={allow} allowfullscreen loading="lazy" title={`Видео-отзыв: ${item.who}`}></iframe>
+            <h3>{item.who}</h3>
+            <p class="fs-muted">{item.meta}</p>
+            <p class="fs-quote">{item.quote}</p>
+            <p class="fs-gift"><b>Главное:</b> {item.main}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="fs-section fs-section--dark">
+    <div class="fs-wrap fs-stack">
+      <span class="fs-tag">Разбор отзыва</span>
+      <h2>Нижний Новгород: что было, что сделали, что получил владелец</h2>
+      <div class="fs-split" style="margin-top: 14px; align-items: start;">
+        <div class="fs-grid" style="--cols: 2; --cols-t: 2;">
+          <article class="fs-card fs-card--dark"><span class="fs-step">01</span><h3>Было</h3><p class="fs-muted">Реклама во ВКонтакте на 2–4 объявлениях, которые крутились очень долго. Результат скакал: то хорошо, то не очень.</p></article>
+          <article class="fs-card fs-card--dark"><span class="fs-step">02</span><h3>Как нашёл</h3><p class="fs-muted">В октябре 2025 увидел наше видео с кейсом цветочного в другом городе.</p></article>
+          <article class="fs-card fs-card--dark" style="grid-column: 1 / -1;">
+            <span class="fs-step">03</span><h3>Что сделали</h3>
+            <ul class="fs-list">
+              <li>Аудит рекламы: показали слабые места, дали рекомендации по группе</li>
+              <li>Объявления делаем из постов, которые уже зашли у подписчиков</li>
+              <li>Тексты и картинки придумываем сами, в том числе с помощью нейросетей</li>
+              <li>От владельца – один раз преимущества магазина и иногда видео, которые он и так снимает</li>
+            </ul>
+          </article>
+          <article class="fs-card fs-card--lime" style="grid-column: 1 / -1;">
+            <span class="fs-step">04</span><h3>Что получил</h3>
+            <p>Рекламу и маркетинг без своего участия каждый день. Работают 7–8 месяцев и продолжают.</p>
+            <p class="fs-muted">Честно из отзыва: «в старом кабинете ВК результаты были прям очень хорошие, в новом чуть похуже – это связано с самой платформой». Не прячем.</p>
+          </article>
+        </div>
+        <div class="fs-stack">
+          <iframe class="fs-video fs-video--tall" src={kinescope('pB2kHWLuyFSAMz9HB5YH5f')} allow={allow} allowfullscreen loading="lazy" title="Видео-отзыв: Антон Зайцев, Нижний Новгород"></iframe>
+          <a class="fs-btn fs-btn--lime" href="#popup:myform">Хочу такой же разбор своей рекламы</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="fs-section fs-section--light">
+    <div class="fs-wrap fs-stack">
+      <span class="fs-tag">Обещания и факты</span>
+      <h2>Что обещаем на сайте – и кто это подтверждает</h2>
+      <table class="fs-compare" style="margin-top: 10px;">
+        <tr><th>Обещаем</th><th>Подтверждает</th></tr>
+        {proof.map(([promise, who]) => (
+          <tr>
+            <td data-label="Обещаем" set:html={promise} />
+            <td data-label="Подтверждает">{who}</td>
+          </tr>
+        ))}
+      </table>
+    </div>
+  </section>
+
+  <section class="fs-section">
+    <div class="fs-wrap fs-stack">
+      <span class="fs-tag">Все отзывы</span>
+      <h2>Ещё 50+ видео-отзывов клиентов, которым мы каждый день приносим результат</h2>
+      <div class="fs-grid" style="--cols: 4; --cols-t: 3; --cols-m: 2; margin-top: 14px;">
+        {rest.map((id, i) => (
+          <iframe class="fs-video fs-video--tall" src={kinescope(id)} allow={allow} allowfullscreen loading="lazy" title={`Видео-отзыв ${i + 4}`}></iframe>
+        ))}
+      </div>
+
+      <div class="fs-strip" style="margin-top: 30px;">
+        <p>Хотите, чтобы через полгода такой отзыв записали вы? Начнём с <b>бесплатного разбора</b> вашего магазина</p>
+        <a class="fs-btn fs-btn--lime" href="#popup:myform">Получить план роста</a>
+      </div>
+    </div>
+  </section>
+</SubPage>

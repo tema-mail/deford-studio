@@ -236,6 +236,10 @@
   color: #fff;
 }
 
+.fs-section--dark .fs-card:not(.fs-card--dark) .fs-muted {
+  color: var(--fs-muted);
+}
+
 .fs-card--dark .fs-muted {
   color: #a9a9a9;
 }
@@ -422,6 +426,12 @@
   border-radius: 50%;
   background: var(--fs-lime)
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M6 10.5l2.6 2.5L14 7.5' fill='none' stroke='%23202020' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    center / 20px no-repeat;
+}
+
+.fs-list--minus li::before {
+  background: #e6e6e6
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M6 10h8' fill='none' stroke='%23202020' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E")
     center / 20px no-repeat;
 }
 

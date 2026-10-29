@@ -1,0 +1,158 @@
+---
+/* «Цены» – внутренняя страница лендинга /flowers.
+   Тексты – прототип flowers v2 (страница ceny), цены – от Артёма
+   29.10.2026. Зарплаты в найме не ставим, пока не сверены
+   (api.hh.ru без ключа отдаёт 403). */
+import SubPage from '../../components/flowers/SubPage.astro';
+
+const roles = [
+  ['Таргетолог ВКонтакте', 'Реклама и рассылки во ВКонтакте'],
+  ['Директолог', 'Реклама в поиске Яндекса'],
+  ['Специалист по картам', 'Карточка в Яндекс Бизнесе и 2ГИС, отзывы'],
+  ['SMM и дизайнер', 'Посты, сторис, оформление группы'],
+  ['Разработчик и SEO', 'Сайт, каталог, место в поиске'],
+];
+
+const ads = [
+  {
+    title: 'Таргетированная реклама ВКонтакте',
+    text: 'Стратегия, аудитории, объявления, чат-бот, запуск и ведение. Отчёт каждую неделю.',
+    gift: 'упаковка группы – оформление, обложка, меню',
+    price: 'от 30 000 ₽',
+  },
+  {
+    title: 'Яндекс Директ',
+    text: 'Реклама в поиске и сетях Яндекса: «доставка цветов» и «купить букет» в вашем городе.',
+    price: 'от 30 000 ₽',
+  },
+  {
+    title: 'Яндекс Бизнес',
+    text: 'Реклама магазина на Картах и в поиске Яндекса для тех, кто рядом.',
+    gift: 'упаковка карточки Яндекс Бизнеса – фото, описание, витрина букетов',
+    price: 'от 15 000 ₽',
+  },
+];
+
+const sites = [
+  {
+    title: 'Интернет-магазины и сайты',
+    text: 'Каталог букетов, корзина, оплата и доставка. Примеры – Milovini, Compliment, HoliFlori.',
+    price: 'от 50 000 ₽',
+  },
+  {
+    title: 'Личный кабинет и система лояльности',
+    text: 'Бонусы, история заказов, напоминания о датах – чтобы покупатель возвращался.',
+    price: 'от 30 000 ₽',
+  },
+  {
+    title: 'SEO-продвижение',
+    text: 'Сайт в поиске Яндекса и Google по запросам вашего города.',
+    price: 'от 15 000 ₽ в месяц',
+  },
+];
+---
+
+<SubPage
+  slug="prices"
+  title="Цены на продвижение цветочного магазина – TargetFactory"
+  description="Реклама ВКонтакте и Яндекс Директ от 30 000 ₽, Яндекс Бизнес от 15 000 ₽, сайты от 50 000 ₽, личный кабинет от 30 000 ₽, SEO от 15 000 ₽ в месяц, брендинг от 15 000 ₽."
+>
+  <section class="fs-section fs-section--first">
+    <div class="fs-wrap fs-stack">
+      <nav class="fs-crumbs" aria-label="Хлебные крошки"><a href="/flowers/">Главная</a> / Цены</nav>
+      <h1>Цены на продвижение цветочного магазина</h1>
+      <p class="fs-lead">Реклама, сайты, SEO, брендинг – можно взять одну услугу или всё вместе. Рекламный бюджет оплачивается отдельно, прямо в рекламный кабинет.</p>
+      <div class="fs-actions"><a class="fs-btn" href="#popup:myform">Бесплатный аудит</a></div>
+
+      <h2 style="margin-top: 44px;">Сколько людей нужно, чтобы магазин продавал онлайн</h2>
+      <div class="fs-grid" style="--cols: 2; --cols-t: 1; margin-top: 10px;">
+        <article class="fs-card">
+          <h3>Собирать команду самому</h3>
+          <table class="fs-hire">
+            <tr><th>Кто</th><th>Что делает</th></tr>
+            {roles.map(([who, what]) => <tr><td><b>{who}</b></td><td>{what}</td></tr>)}
+          </table>
+          <p class="fs-muted">Пять зарплат и налоги – каждый месяц. А ещё:</p>
+          <ul class="fs-list fs-list--minus">
+            <li>Искать каждого и проверять, умеет ли он работать с цветами</li>
+            <li>Ставить задачи пятерым и сводить их отчёты</li>
+            <li>Отпуск или увольнение – реклама стоит</li>
+          </ul>
+        </article>
+        <article class="fs-card fs-card--dark">
+          <h3>Работать с TargetFactory</h3>
+          <ul class="fs-list">
+            <li>Все эти роли – в одной команде, которая уже работает с цветочными</li>
+            <li>Один рабочий чат и один отчёт каждую неделю</li>
+            <li>За результат отвечает основатель, Денис Коротаев</li>
+            <li>Платите за услуги, которые нужны сейчас, – можно начать с одной</li>
+          </ul>
+          <p class="fs-total">Итого: <b>от 30 000 ₽</b> – настройка и месяц ведения рекламы ВКонтакте</p>
+          <a class="fs-btn fs-btn--lime" href="#popup:myform">Посчитать для моего магазина</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="fs-section fs-section--dark">
+    <div class="fs-wrap fs-stack">
+      <span class="fs-tag">Реклама</span>
+      <h2>Реклама</h2>
+      <div class="fs-grid" style="--cols: 3; --cols-t: 1; margin-top: 14px;">
+        {ads.map((item) => (
+          <article class="fs-card">
+            <h3>{item.title}</h3>
+            <p class="fs-muted">{item.text}</p>
+            {item.gift && <p class="fs-gift"><b>В подарок:</b> {item.gift}</p>}
+            <span class="fs-price">{item.price}</span>
+            <a class="fs-btn" href="#popup:myform">Обсудить</a>
+          </article>
+        ))}
+      </div>
+      <p class="fs-muted" style="margin-top: 10px;">Нужна только консультация – 15 000 ₽: аудит кабинета и план, 1,5–2 часа. Реклама и контент под ключ – от 60 000 ₽ в месяц.</p>
+    </div>
+  </section>
+
+  <section class="fs-section fs-section--light">
+    <div class="fs-wrap fs-stack">
+      <span class="fs-tag">Сайты</span>
+      <h2>Сайты и поиск</h2>
+      <div class="fs-grid" style="--cols: 3; --cols-t: 1; margin-top: 14px;">
+        {sites.map((item) => (
+          <article class="fs-card">
+            <h3>{item.title}</h3>
+            <p class="fs-muted">{item.text}</p>
+            <span class="fs-price">{item.price}</span>
+            <a class="fs-btn" href="#popup:myform">Обсудить</a>
+          </article>
+        ))}
+      </div>
+      <div class="fs-grid" style="--cols: 3; --cols-m: 1; margin-top: 6px;">
+        <img class="fs-photo" style="min-height: 0; aspect-ratio: 1440 / 820;" src="/img/flowers/shop-milovini.jpg" alt="Интернет-магазин Milovini Flowers, Самара" loading="lazy" />
+        <img class="fs-photo" style="min-height: 0; aspect-ratio: 1440 / 820;" src="/img/flowers/shop-compliment.jpg" alt="Интернет-магазин Compliment, Брянск" loading="lazy" />
+        <img class="fs-photo" style="min-height: 0; aspect-ratio: 1440 / 820;" src="/img/flowers/shop-holiflori.jpg" alt="Интернет-магазин HoliFlori, Сергиев Посад" loading="lazy" />
+      </div>
+    </div>
+  </section>
+
+  <section class="fs-section">
+    <div class="fs-wrap fs-stack">
+      <span class="fs-tag">Брендинг</span>
+      <h2>Брендинг и упаковка</h2>
+      <div class="fs-split" style="margin-top: 14px;">
+        <article class="fs-card fs-card--lime">
+          <h3>Брендинг и упаковка магазина</h3>
+          <p class="fs-muted">Логотип, фирменный стиль, оформление соцсетей и карточек – чтобы магазин узнавали и в ленте, и на витрине.</p>
+          <span class="fs-price">от 15 000 ₽</span>
+          <a class="fs-btn" href="#popup:myform">Обсудить</a>
+        </article>
+        <img class="fs-photo" src="/img/flowers/37373233-ChatGPT_Image_15__20.png" alt="Сборный букет в крафтовой упаковке" loading="lazy" style="height: 420px; object-position: center 72%;" />
+      </div>
+
+      <div class="fs-strip" style="margin-top: 30px;">
+        <p>Не знаете, с чего начать? На <b>бесплатном аудите</b> скажем, какая услуга даст заказы первой</p>
+        <a class="fs-btn fs-btn--lime" href="#popup:myform">Бесплатный аудит</a>
+      </div>
+    </div>
+  </section>
+</SubPage>

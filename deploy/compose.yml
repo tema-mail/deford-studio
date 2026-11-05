@@ -1,5 +1,5 @@
-# Сайт Дефорда на VPS Beget: статика из /opt/deford-site/releases/current, наружу – через общий Caddy.
-# Порты не публикуются: Caddy ходит к контейнеру по сети dzenbot_default.
+# Сайт Дефорда на FirstVDS 168.113.179.49 (Beget умер 02.11.2026): статика из /opt/deford-site/releases/current, наружу – через общий Caddy.
+# Порты не публикуются: Caddy ходит к контейнеру по сети caddy.
 name: deford-site
 services:
   deford-site-web:
@@ -22,4 +22,4 @@ services:
 networks:
   proxy:
     external: true
-    name: dzenbot_default
+    name: caddy

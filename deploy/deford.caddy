@@ -1,5 +1,11 @@
 # >>> deford-site: сайт Дефорда – блок добавляет deploy/install.sh репозитория deford-studio
 deford.ru {
+	# порт 80 сервера держит nginx ispmanager (301 на https) – сертификат только через 443
+	tls {
+		issuer acme {
+			disable_http_challenge
+		}
+	}
 	encode gzip zstd
 	header {
 		Strict-Transport-Security "max-age=31536000"
@@ -10,6 +16,11 @@ deford.ru {
 	reverse_proxy deford-site-web:8080
 }
 www.deford.ru {
+	tls {
+		issuer acme {
+			disable_http_challenge
+		}
+	}
 	redir https://deford.ru{uri} permanent
 }
 # <<< deford-site

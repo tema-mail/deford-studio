@@ -1,7 +1,7 @@
-name: Сборка и выкладка на Beget
+name: Сборка и выкладка на сервер
 
 # Код живёт здесь, на сервере – только готовые файлы. Каждый пуш в main собирает сайт и выкладывает его на
-# VPS Beget (deford.ru за общим Caddy). Ключ выкладки умеет только загрузить сборку, включить её и откатить
+# FirstVDS (deford.ru за общим Caddy). Ключ выкладки умеет только загрузить сборку, включить её и откатить
 # (deploy/receive.sh на сервере); последние 5 выкладок хранятся для отката (workflow «Откат сайта»).
 
 on:
@@ -13,7 +13,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: deploy-beget
+  group: deploy-server
   cancel-in-progress: false
 
 jobs:
@@ -47,9 +47,9 @@ jobs:
           printf '%s\n' "$DEPLOY_KEY" > ~/.ssh/deploy && chmod 600 ~/.ssh/deploy
           printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
       - name: Загрузить сборку (только изменённые файлы)
-        run: rsync -a --delete --link-dest=/releases/current -e "ssh -i ~/.ssh/deploy -o BatchMode=yes" dist/ deford-deploy@45.12.72.227:incoming/
+        run: rsync -a --delete --link-dest=/releases/current -e "ssh -i ~/.ssh/deploy -o BatchMode=yes" dist/ deford-deploy@168.113.179.49:incoming/
       - name: Включить выкладку
-        run: ssh -i ~/.ssh/deploy -o BatchMode=yes deford-deploy@45.12.72.227 "activate ${GITHUB_SHA::12}"
+        run: ssh -i ~/.ssh/deploy -o BatchMode=yes deford-deploy@168.113.179.49 "activate ${GITHUB_SHA::12}"
       - name: Проверить сайт снаружи
         run: |
           code=$(curl -s -o /dev/null -w "%{http_code}" --retry 3 --retry-delay 5 https://deford.ru/)

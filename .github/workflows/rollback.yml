@@ -10,7 +10,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: deploy-beget
+  group: deploy-server
   cancel-in-progress: false
 
 jobs:
@@ -27,5 +27,5 @@ jobs:
           printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
       - name: Откатить
         run: |
-          ssh -i ~/.ssh/deploy -o BatchMode=yes deford-deploy@45.12.72.227 rollback
-          ssh -i ~/.ssh/deploy -o BatchMode=yes deford-deploy@45.12.72.227 status
+          ssh -i ~/.ssh/deploy -o BatchMode=yes deford-deploy@168.113.179.49 rollback
+          ssh -i ~/.ssh/deploy -o BatchMode=yes deford-deploy@168.113.179.49 status

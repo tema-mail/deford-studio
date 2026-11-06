@@ -7,7 +7,7 @@
 Сайт: **https://deford.ru/** (домен на reg.ru, DNS → GitHub Pages; старый адрес
 tema-mail.github.io/deford-studio/ переадресует сюда) – пересобирается
 автоматически при каждом пуше в `main` (`.github/workflows/deploy.yml`).
-Копия закрыта от поисковиков через `robots.txt`, canonical ведёт на боевой домен.
+Сайт открыт для поиска с 06.11.2026 (слово владельца). Черновики, прототипы и кабинет закрыты в `public/robots.txt`, карта сайта – `scripts/sitemap.mjs`. Схема: deford.ru – РФ, deford.by – РБ, deford-studio.ru – маркетинг и Новосибирск.
 
 Пути в разметке корневые. Префикс подпапки `/deford-studio` (`scripts/rebase-dist.mjs`)
 сборка ставит, только если у Pages не задан свой домен; с deford.ru пути остаются

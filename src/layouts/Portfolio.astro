@@ -18,7 +18,7 @@ interface Props {
 }
 
 const { slug, title, description = '', ogTitle = '', ogImage = '' } = Astro.props;
-const canonical = `https://deford-studio.ru/${slug}`;
+const canonical = `https://deford.ru/${slug}/`;
 const attrs = (s: string) => Object.fromEntries([...s.matchAll(/([\w-]+)="([^"]*)"/g)].map((m) => [m[1], m[2]]));
 const allrecords = { ...attrs(shell.allrecords), 'data-tilda-page-alias': slug };
 const footer = attrs(shell.footer);

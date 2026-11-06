@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /drafts/
+Disallow: /prototypes/
+Disallow: /destroy.html
+
+Sitemap: https://deford.ru/sitemap.xml

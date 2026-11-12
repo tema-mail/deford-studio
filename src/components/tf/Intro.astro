@@ -377,7 +377,7 @@ const notes = [
 
     var demo = box.classList.contains('tfintro--demo');
 
-    /* На боевой странице заставка идёт один раз за сеанс: вернувшемуся
+    /* На боевой странице заставка идёт только при первом заходе с устройства (localStorage, правило владельца 13.11.2026): вернувшемуся
        человеку не нужно ждать её снова. ?intro — показать принудительно. */
     if (!demo) {
       var KEY = 'tf-intro-shown';
@@ -385,7 +385,7 @@ const notes = [
       var seen = false;
 
       try {
-        seen = sessionStorage.getItem(KEY) === '1';
+        seen = localStorage.getItem(KEY) === '1';
       } catch (e) {}
 
       if (seen && !force) {
@@ -394,7 +394,7 @@ const notes = [
       }
 
       try {
-        sessionStorage.setItem(KEY, '1');
+        localStorage.setItem(KEY, '1');
       } catch (e) {}
     }
 

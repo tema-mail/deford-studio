@@ -14,7 +14,7 @@
     и лежат снизу, ранункулюсы мелкие и сверху, одинаковые рядом не встают.
     Отсчёт стартует, когда цветы загрузились (но не позже 1,5 с).
 
-    Показ: один раз за сеанс, клик или Esc – пропустить, ?intro – показать снова.
+    Показ: только при первом заходе с устройства (localStorage, правило владельца 13.11.2026), клик или Esc – пропустить, ?intro – показать снова.
     Без скрипта заставки нет. Пока она идёт, анимация первого экрана стоит
     на паузе и стартует, когда заставка начинает уходить. */
 ---
@@ -33,11 +33,11 @@
     var force = /[?&]intro\b/.test(location.search);
     var seen = false;
     try {
-      seen = sessionStorage.getItem(KEY) === '1';
+      seen = localStorage.getItem(KEY) === '1';
     } catch (e) {}
     if (seen && !force) return;
     try {
-      sessionStorage.setItem(KEY, '1');
+      localStorage.setItem(KEY, '1');
     } catch (e) {}
 
     var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;

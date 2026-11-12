@@ -1033,10 +1033,10 @@ document.documentElement.classList.add('df-preload-lock');
 
   /*
    * false = показывать при каждом заходе
-   * true = только один раз за сессию
+   * true = только при первом заходе с устройства (localStorage) – правило владельца 13.11.2026
    */
 
-  const SHOW_ONCE = false;
+  const SHOW_ONCE = true;
 
   const KEY =
     'df-wow-loader-seen';
@@ -1044,7 +1044,7 @@ document.documentElement.classList.add('df-preload-lock');
 
   if (
     SHOW_ONCE &&
-    sessionStorage.getItem(KEY)
+    localStorage.getItem(KEY)
   ) {
 
     loader.remove();
@@ -1080,7 +1080,7 @@ document.documentElement.classList.add('df-preload-lock');
 
     if (SHOW_ONCE) {
 
-      sessionStorage.setItem(
+      localStorage.setItem(
         KEY,
         '1'
       );

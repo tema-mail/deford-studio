@@ -2,6 +2,7 @@ User-agent: *
 Disallow: /admin/
 Disallow: /drafts/
 Disallow: /prototypes/
+Disallow: /planner/
 Disallow: /destroy.html
 
 Sitemap: https://deford.ru/sitemap.xml

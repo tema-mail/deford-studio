@@ -5,7 +5,7 @@ import path from 'node:path';
 
 const SITE = 'https://deford.ru';
 const DIST = 'dist';
-const CLOSED = ['admin', 'drafts', 'prototypes'];
+const CLOSED = ['admin', 'drafts', 'prototypes', 'planner'];
 
 function pages(dir) {
   return readdirSync(dir, { withFileTypes: true }).flatMap((e) => {

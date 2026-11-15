@@ -258,6 +258,8 @@ dialog::backdrop{background:rgba(10,12,20,.45)}
 .login{max-width:380px;margin:8vh auto 0}
 .login form{display:flex;flex-direction:column;gap:10px;margin-top:12px}
 .login input{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:9px 11px;font:inherit;color:inherit}
+.login .remember{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
+.login .remember input{width:16px;height:16px;margin:0;padding:0}
 .login .err{color:var(--danger);min-height:1.2em;margin:0}
 </style>
 </head>
@@ -376,7 +378,14 @@ async function write(fn, okMsg){
 const COLS = { projects:'projects', tasks:'tasks', statuses:'statuses', team:'team', logs:'timelogs', comments:'comments', settings:'settings' };
 /* ---------- backend: Supabase (one table "docs" + private bucket "files"), shaped like the collection/doc API the views use ---------- */
 const CFG = window.PLANNER_CONFIG || {};
-const sb = (window.supabase && CFG.supabaseUrl && !/ВСТАВЬТЕ/.test(CFG.supabaseUrl)) ? window.supabase.createClient(CFG.supabaseUrl, CFG.supabaseAnonKey) : null;
+// «Запомнить меня»: галочка стоит – вход хранится в браузере и переживает закрытие; снята – до закрытия вкладки.
+function rememberMe(){ try{ return localStorage.getItem('sp.remember') !== '0'; }catch(e){ return true; } }
+const authStore = {
+  getItem(k){ try{ return (rememberMe() ? localStorage : sessionStorage).getItem(k); }catch(e){ return null; } },
+  setItem(k, v){ try{ (rememberMe() ? localStorage : sessionStorage).setItem(k, v); }catch(e){} },
+  removeItem(k){ try{ localStorage.removeItem(k); sessionStorage.removeItem(k); }catch(e){} },
+};
+const sb = (window.supabase && CFG.supabaseUrl && !/ВСТАВЬТЕ/.test(CFG.supabaseUrl)) ? window.supabase.createClient(CFG.supabaseUrl, CFG.supabaseAnonKey, { auth: { storage: authStore } }) : null;
 const cache = {};      // collection -> Map(id -> row)
 const subs = {};       // collection -> [callback]
 const BUCKET = 'files';
@@ -495,11 +504,12 @@ function renderLogin(){
   chrome.forEach(el => el.style.visibility = 'hidden');
   const m = document.getElementById('main');
   m.innerHTML = `<div class="notice login"><h3>Вход в планёрку</h3><p class="muted">Введите общий пароль студии.</p>
-    <form id="loginForm"><input type="password" id="pw" autocomplete="current-password" placeholder="Пароль" required autofocus><button class="btn primary">Войти</button><p class="err" id="loginErr"></p></form></div>`;
+    <form id="loginForm"><input type="password" id="pw" autocomplete="current-password" placeholder="Пароль" required autofocus><label class="remember"><input type="checkbox" id="remember" ${rememberMe() ? 'checked' : ''}> Запомнить меня</label><button class="btn primary">Войти</button><p class="err" id="loginErr"></p></form></div>`;
   m.querySelector('#loginForm').addEventListener('submit', async e => {
     e.preventDefault();
     const btn = e.target.querySelector('button'), err = m.querySelector('#loginErr');
     btn.disabled = true; err.textContent = '';
+    try{ localStorage.setItem('sp.remember', m.querySelector('#remember').checked ? '1' : '0'); }catch(e){}
     const { error } = await sb.auth.signInWithPassword({ email: CFG.studioEmail, password: m.querySelector('#pw').value });
     btn.disabled = false;
     if(error){ err.textContent = /invalid/i.test(error.message) ? 'Неверный пароль' : 'Не получилось войти: ' + error.message; return; }

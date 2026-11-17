@@ -3,14 +3,14 @@
 // Репозиторий и показ публичные, сервера нет: сборка с выгрузкой аналитики рисует разделы целиком,
 // этот скрипт вынимает их разметку из dist, шифрует (PBKDF2-SHA256 + AES-256-GCM, как расшифровывает
 // src/components/admin/Vault.astro) и кладёт в public/admin/vault/<раздел>.json – его можно коммитить.
-// Логин и пароль – scripts/admin-crypto.mjs (~/.config/deford/admin-login, admin-pass). Открытые страницы
+// Логин и пароль – scripts/admin-crypto.mjs (~/.config/deford/admin-login, admin-pass; второй вход – СВЕРХ админ). Открытые страницы
 // разделов из dist удаляются.
 //   node scripts/seal-admin.mjs            – собрать сайт и зашифровать
 //   node scripts/seal-admin.mjs --no-build – взять уже собранный dist
 import { execSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
-import { credentials, secretOf, seal } from './admin-crypto.mjs';
+import { makeRing, sealRing, secrets } from './admin-crypto.mjs';
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 const NAMES = ['metrika'];  // разделы с цифрами; seo и tochka-a добавятся, когда будут собраны
@@ -20,7 +20,7 @@ if (!process.argv.includes('--no-build')) {
   execSync('npm run build', { cwd: ROOT, stdio: 'inherit' });
 }
 
-const secret = secretOf(credentials());
+const ring = makeRing(secrets()); // владелец + СВЕРХ админ (admin-crypto.mjs)
 fs.mkdirSync(OUT, { recursive: true });
 let failed = 0;
 for (const name of NAMES) {
@@ -32,7 +32,7 @@ for (const name of NAMES) {
     failed++;
     continue;
   }
-  fs.writeFileSync(path.join(OUT, `${name}.json`), JSON.stringify(seal(m[1], secret)));
+  fs.writeFileSync(path.join(OUT, `${name}.json`), JSON.stringify(sealRing(m[1], ring)));
   fs.rmSync(path.dirname(file), { recursive: true, force: true }); // открытые цифры не оставлять в dist
   console.log(`  ${name}: ${(m[1].length / 1024).toFixed(0)} КБ разметки → public/admin/vault/${name}.json`);
 }

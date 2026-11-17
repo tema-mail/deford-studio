@@ -7,7 +7,8 @@
     "dev": "astro dev",
     "build": "astro build && node scripts/sitemap.mjs",
     "preview": "astro preview",
-    "shots": "node scripts/shots.mjs"
+    "shots": "node scripts/shots.mjs",
+    "test": "node --test scripts/*.test.mjs"
   },
   "dependencies": {
     "@astrojs/preact": "^6.1.0",

@@ -607,6 +607,7 @@ function cardHtml(t){
 function filterTasks(list){
   return list.filter(t => (!UI.fProject || t.projectId === UI.fProject) && (!UI.fPerson || t.assigneeId === UI.fPerson));
 }
+function myTails(){ const m = me(), today = todayIso(); return m ? S.tasks.filter(t => t.day && t.day < today && !isDone(t) && t.assigneeId === m) : []; }
 function sortCol(list){ return list.sort((a,b) => (isDone(a) - isDone(b)) || ((a.order??0)-(b.order??0))); }
 
 /* ---------- week ---------- */
@@ -617,13 +618,14 @@ function viewWeek(){
   const days = LS.get('weekend', false) ? 7 : 5;
   const ws = UI.weekStart, today = todayIso();
   const tasks = filterTasks(S.tasks);
-  const hub = sortCol(tasks.filter(t => !t.day));
-  const tails = S.tasks.filter(t => t.day && t.day < today && !isDone(t));
+  const hubAll = tasks.filter(t => !t.day), hubDone = hubAll.filter(isDone).length;
+  const hub = sortCol(UI.hubDone ? hubAll : hubAll.filter(t => !isDone(t)));
+  const tails = myTails();
   const projOpts = activeProjects().map(p => `<option value="${esc(p.id)}"${p.id===UI.quickProject?' selected':''}>${esc(projLabel(p))}</option>`).join('');
   const quickWho = UI.quickWho || me();
   const whoOpts = `<option value="">Ответственный…</option>` + teamSorted().map(u => `<option value="${esc(u.id)}"${u.id===quickWho?' selected':''}>${esc(u.name)}</option>`).join('');
   let cols = `<section class="col hub" data-day="" style="--cc:var(--s-gray)">
-    <div class="colhead"><b>Хаб</b><span class="cnt">${hub.filter(t => !isDone(t)).length}</span><span class="sum" data-live-col="">${fmtClock(0)}</span></div>
+    <div class="colhead"><b>Хаб</b><span class="cnt">${hubAll.length - hubDone}</span><span class="sum" data-live-col="">${fmtClock(0)}</span></div>
     <div class="colbody">
     ${readOnly ? '' : `<form class="quick" id="quickAdd">
       <input type="text" id="qTitle" placeholder="Новая задача…" autocomplete="off" required>
@@ -633,7 +635,8 @@ function viewWeek(){
       </div>
       <button class="btn primary" ${activeProjects().length?'':'disabled'}>Добавить в хаб</button>
     </form>`}
-    ${tails.length && !readOnly ? `<button class="addbtn" data-tails>↩ Вернуть в хаб незавершённое прошлых дней: ${tails.length}</button>` : ''}
+    ${tails.length && !readOnly ? `<button class="addbtn" data-tails>↩ Вернуть в хаб мои незавершённые прошлых дней: ${tails.length}</button>` : ''}
+    ${hubDone ? `<button class="addbtn" data-hub-done>${UI.hubDone ? 'Скрыть завершённые' : 'Показать завершённые: '+hubDone}</button>` : ''}
     <div class="cards">${hub.map(cardHtml).join('') || '<div class="empty">Хаб пуст. Новые задачи всех проектов появятся здесь.</div>'}</div>
     </div>
   </section>`;
@@ -1204,7 +1207,7 @@ async function moveTask(taskId, day, beforeId){
 /* ---------- events ---------- */
 const main = document.getElementById('main');
 main.addEventListener('click', async e => {
-  const el = e.target.closest('[data-open-task],[data-timer],[data-done],[data-new-project],[data-open-project],[data-edit-project],[data-new-task],[data-back],[data-week],[data-tails],[data-status-color],[data-status-move],[data-status-del],[data-person-del],[data-photo],[data-photo-del],[data-sumweek],[data-logout]');
+  const el = e.target.closest('[data-open-task],[data-timer],[data-done],[data-new-project],[data-open-project],[data-edit-project],[data-new-task],[data-back],[data-week],[data-tails],[data-hub-done],[data-status-color],[data-status-move],[data-status-del],[data-person-del],[data-photo],[data-photo-del],[data-sumweek],[data-logout]');
   if(!el) return;
   const ds = el.dataset;
   if('openTask' in ds){ e.preventDefault(); const t = byId(S.tasks, ds.openTask); if(t) taskDialog(t); }
@@ -1218,8 +1221,10 @@ main.addEventListener('click', async e => {
   else if('back' in ds){ UI.openProject = null; render(); }
   else if('sumweek' in ds){ UI.sumWeek = ds.sumweek === '0' ? mondayOf(parseIso(workDayIso(Date.now()))) : addDays(UI.sumWeek || mondayOf(parseIso(workDayIso(Date.now()))), 7*Number(ds.sumweek)); render(); }
   else if('week' in ds){ UI.weekStart = ds.week === '0' ? mondayOf(new Date()) : addDays(UI.weekStart, 7*Number(ds.week)); render(); }
+  else if('hubDone' in ds){ UI.hubDone = !UI.hubDone; render(); }
   else if('tails' in ds){
-    const tails = S.tasks.filter(t => t.day && t.day < todayIso() && !isDone(t));
+    const tails = myTails();
+    if(!tails.length) return;
     await write(async () => { let o = nextOrder(null); for(const t of tails){ await db.doc('tasks/'+t.id).update({ day:null, order:o }); o += 1000; } }, 'Возвращено в хаб: '+tails.length);
   }
   else if('statusColor' in ds) write(() => db.doc('statuses/'+ds.statusColor).update({ color: ds.c }));

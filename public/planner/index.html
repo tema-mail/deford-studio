@@ -102,6 +102,11 @@ main{padding-block:16px 40px}
 .avbtn{position:relative;border:0;padding:0;background:transparent;cursor:pointer;border-radius:50%}
 .avbtn::after{content:"＋";position:absolute;right:-3px;bottom:-3px;width:15px;height:15px;border-radius:50%;background:var(--accent);color:var(--accent-fg);font-size:11px;line-height:15px;text-align:center;opacity:0;transition:opacity .15s}
 .avbtn:hover::after,.avbtn:focus-visible::after{opacity:1}
+.pic{width:1.35em;height:1.35em;border-radius:4px;object-fit:cover;vertical-align:-.3em;flex:none}
+.card .proj .em .pic{display:block;width:20px;height:20px}
+.emprev{width:44px;height:44px;border-radius:8px;border:1px solid var(--line);display:grid;place-items:center;font-size:24px;overflow:hidden;flex:none}
+.emprev .pic{width:100%;height:100%;border-radius:0}
+.embox{max-height:210px;overflow-y:auto;display:flex;flex-direction:column;gap:6px;padding:8px;border:1px solid var(--line);border-radius:6px}
 .emrow{display:flex;flex-wrap:wrap;gap:4px}
 .emrow button{width:32px;height:32px;border-radius:6px;border:1px solid var(--line);background:var(--surface);font-size:17px;cursor:pointer;padding:0;transition:transform .12s var(--ease),border-color .12s}
 .emrow button:hover{transform:scale(1.12)}
@@ -337,8 +342,19 @@ function sortedStatuses(){ return [...S.statuses].sort((a,b) => (a.order??0) - (
 function activeProjects(){ return S.projects.filter(p => !p.archived).sort((a,b) => (a.name||'').localeCompare(b.name||'','ru')); }
 function teamSorted(){ return [...S.team].sort((a,b) => (a.name||'').localeCompare(b.name||'','ru')); }
 function me(){ return LS.get('me',''); }
-const EMOJIS = ['🎨','🖌️','✏️','📐','🖼️','📸','🎬','📦','🏷️','🛍️','🏠','🏢','☕','🍕','🍷','💄','👗','🌿','🌸','🚗','💻','📱','🌐','📰','🎵','🎓','⚽','🏥','💎','🔥','⭐','🚀'];
+const EMOJI_GROUPS = [
+  ["Дизайн и медиа", "🎨 🖌️ ✏️ 🖍️ 📐 📏 🖼️ 📸 📷 🎬 🎥 📺 🎙️ 🎧 🎵 🎸 🎹 🎭 📰 📚 📖 📝 💡 🧩"],
+  ["Бизнес и техника", "💼 📊 📈 💰 💳 🧾 📅 📌 📎 🔑 🔒 ⚙️ 🔧 🔨 💻 🖥️ 📱 ⌨️ 🌐 🤖 🛰️ 🔬 📡 📣 🎯 ✉️ 📞 🤝 ⚖️ 🎓"],
+  ["Магазины и товары", "📦 🏷️ 🛍️ 🛒 🎁 💎 💍 👑 ⌚ 👓 👗 👕 👖 👟 👠 👜 🧢 💄 💅 💇 🧴 🧸 🛋️ 🛏️ 🕯️ 🪴"],
+  ["Дома и места", "🏠 🏡 🏢 🏗️ 🏭 🏥 🏦 🏨 🏫 🏪 🏛️ 🏰 🌆 🏝️ 🏕️ ⛰️ 🗺️ 🧭"],
+  ["Еда и напитки", "☕ 🍵 🍕 🍔 🍟 🌮 🍣 🍜 🥗 🥩 🧀 🥐 🍞 🍰 🎂 🍩 🍪 🍫 🍦 🍎 🍋 🍓 🍇 🥑 🍷 🍸 🍺 🍯"],
+  ["Природа и животные", "🌿 🌱 🌳 🌲 🌵 🍀 🌸 🌹 🌷 🌻 💐 🍁 🌊 🌙 ☀️ ⛅ ❄️ 🌈 ⚡ 🐶 🐱 🦊 🐻 🐼 🦁 🐯 🐸 🦉 🦄 🐝 🦋 🐬"],
+  ["Транспорт и путешествия", "🚗 🏎️ 🚙 🚕 🚚 🚌 🏍️ 🚲 🛴 🛞 ⛽ 🚂 ✈️ 🚁 🚢 ⛵ 🧳 🚀"],
+  ["Спорт и отдых", "⚽ 🏀 🎾 🏐 🏓 🏒 🥊 🏋️ 🧘 🏃 🏊 🚴 ⛷️ 🏆 🥇 🎮 🎲 ♟️ 🎳 🎉 🎈 🎄"],
+  ["Люди, здоровье, знаки", "😀 😎 🤩 😍 🤓 🥳 😇 👶 👨‍👩‍👧 👩‍🍳 👷 💪 👍 👋 👀 🧠 🦷 💊 🩺 🔥 ⭐ ✨ 💥 ❤️ 🧡 💛 💚 💙 💜 🖤 ✅ ❗ ❓ ♻️ 🔔 🏁"]
+].map(([name, list]) => [name, list.split(' ')]);
 function emojiOf(p){ return (p && p.emoji) || '📁'; }
+function projIcon(p){ return p && p.photo ? `<img class="pic" src="${esc(p.photo)}" alt="">` : esc(emojiOf(p)); }
 function projLabel(p){ return emojiOf(p) + ' ' + (p ? p.name : 'Без проекта'); }
 function avatar(person, cls){
   if(!person) return '';
@@ -355,7 +371,8 @@ function photoToDataUrl(file){
     img.onload = () => {
       const N = 128, c = document.createElement('canvas'); c.width = c.height = N;
       const k = Math.min(img.width, img.height), sx = (img.width-k)/2, sy = (img.height-k)/2;
-      c.getContext('2d').drawImage(img, sx, sy, k, k, 0, 0, N, N);
+      const g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, N, N);
+      g.drawImage(img, sx, sy, k, k, 0, 0, N, N);
       URL.revokeObjectURL(url); res(c.toDataURL('image/jpeg', .85));
     };
     img.onerror = () => { URL.revokeObjectURL(url); rej(new Error('bad image')); };
@@ -590,7 +607,7 @@ function cardHtml(t){
   const othersRun = S.logs.some(l => !l.end && l.taskId === t.id && l.personId !== mine);
   const late = t.deadline && t.deadline < todayIso() && !done;
   return `<article class="card${done?' done':''}" draggable="${readOnly?'false':'true'}" data-task="${esc(t.id)}">
-    <div class="proj" style="--h:${hue(p ? p.id : '')}" title="Проект"><span class="em">${esc(emojiOf(p))}</span><span>${esc(p ? p.name : 'Без проекта')}</span></div>
+    <div class="proj" style="--h:${hue(p ? p.id : '')}" title="Проект"><span class="em">${projIcon(p)}</span><span>${esc(p ? p.name : 'Без проекта')}</span></div>
     <div class="cardtop">
       <button class="chk" aria-pressed="${done}" data-done="${esc(t.id)}" title="${done?'Вернуть в работу':'Отметить выполненной'}" ${readOnly?'disabled':''}></button>
       <div class="ttl" data-open-task="${esc(t.id)}">${esc(t.title)}</div>
@@ -683,7 +700,7 @@ function viewProjects(){
   const cards = list.map(p => {
     const st = projectStats(p), late = p.deadline && p.deadline < todayIso() && st.open;
     return `<article class="pcard" data-open-project="${esc(p.id)}" tabindex="0" style="--h:${hue(p.id)}">
-      <h3>${esc(emojiOf(p))} ${esc(p.name)}${p.archived?' <span class="muted">(архив)</span>':''}</h3>
+      <h3>${projIcon(p)} ${esc(p.name)}${p.archived?' <span class="muted">(архив)</span>':''}</h3>
       ${p.description ? `<p class="desc">${esc(p.description.length > 140 ? p.description.slice(0,140)+'…' : p.description)}</p>` : ''}
       <dl class="kv">
         <dt>Сроки</dt><dd>${p.start ? fmtDate(p.start) : '—'} → <span class="${late?'dl late':''}">${p.deadline ? fmtDate(p.deadline) : '—'}</span></dd>
@@ -709,7 +726,7 @@ function viewProject(id){
   if(none.length) groups.unshift({ s:{name:'Без статуса', color:'gray'}, list:none });
   const rows = groups.filter(g => g.list.length).map(g => `<tr><td colspan="5"><span class="stsel" style="--c:var(--s-${esc(g.s.color)});background-image:none;padding-right:8px">${esc(g.s.name)}</span></td></tr>` +
     g.list.map(t => { const who = byId(S.team, t.assigneeId); return `<tr><td><a href="#" data-open-task="${esc(t.id)}">${esc(t.title)}</a></td><td>${esc(who?.name||'—')}</td><td>${t.day ? fmtDate(t.day) : 'в хабе'}</td><td class="${t.deadline && t.deadline<todayIso() && !isDone(t)?'dl late':''}">${t.deadline?fmtDate(t.deadline):'—'}</td><td class="n" data-live-task="${esc(t.id)}">${fmtClock(taskMs(t.id, Date.now()))}</td></tr>`; }).join('')).join('');
-  return `<div class="bar"><button class="btn ghost" data-back>← Все проекты</button><h2>${esc(emojiOf(p))} ${esc(p.name)}</h2><span class="spacer"></span>
+  return `<div class="bar"><button class="btn ghost" data-back>← Все проекты</button><h2>${projIcon(p)} ${esc(p.name)}</h2><span class="spacer"></span>
     ${readOnly?'':`<button class="btn" data-edit-project="${esc(p.id)}">Изменить</button><button class="btn primary" data-new-task="${esc(p.id)}">Задача в хаб</button>`}</div>
     <div class="two" style="margin-bottom:18px">
       <div class="panel">
@@ -799,7 +816,7 @@ function viewTaskDays(){
     const t = byId(S.tasks, tid), p = t ? byId(S.projects, t.projectId) : null;
     const cells = keys.map(k => { const ms = row[k]||0; colTot[k] += ms; return `<td class="n${ms?'':' zero'}${k===today?' today':''}">${ms ? fmtBoth(ms) : '—'}</td>`; }).join('');
     all += tot;
-    return `<tr><td class="tname">${t ? `<a href="#" data-open-task="${esc(t.id)}">${esc(t.title)}</a>` : '<span class="muted">Удалённая задача</span>'}<div class="muted small">${esc(projLabel(p))}</div></td>${cells}<td class="n"><b>${fmtBoth(tot)}</b></td></tr>`;
+    return `<tr><td class="tname">${t ? `<a href="#" data-open-task="${esc(t.id)}">${esc(t.title)}</a>` : '<span class="muted">Удалённая задача</span>'}<div class="muted small">${projIcon(p)} ${esc(p ? p.name : 'Без проекта')}</div></td>${cells}<td class="n"><b>${fmtBoth(tot)}</b></td></tr>`;
   }).join('');
   const label = k => k === today ? 'Сегодня' : k === yest ? 'Вчера' : null;
   const whoOpts = `<option value="">Вся студия</option>` + teamSorted().map(u => `<option value="${esc(u.id)}"${u.id===who?' selected':''}>${esc(u.name)}</option>`).join('');
@@ -818,7 +835,7 @@ function viewTime(){
   let money = 0;
   const pRows = [...byP].sort((x,y) => y[1]-x[1]).map(([pid, ms]) => {
     const p = byId(S.projects, pid), allMs = p ? projectMs(pid, now) : 0, sum = p?.rate ? ms/3600000*p.rate : 0; money += sum;
-    return `<tr><td><span class="pchip" style="--h:${hue(pid)}">${esc(p ? projLabel(p) : 'Удалённый проект')}</span></td><td class="n">${fmtClock(ms)}</td><td class="n">${fmtH(ms)}</td><td class="n">${p?.rate?fmtMoney(sum):'—'}</td><td class="n">${p?.hourLimit ? fmtH(allMs)+' / '+p.hourLimit : '—'}</td></tr>`;
+    return `<tr><td><span class="pchip" style="--h:${hue(pid)}">${p ? projIcon(p)+'&nbsp;'+esc(p.name) : 'Удалённый проект'}</span></td><td class="n">${fmtClock(ms)}</td><td class="n">${fmtH(ms)}</td><td class="n">${p?.rate?fmtMoney(sum):'—'}</td><td class="n">${p?.hourLimit ? fmtH(allMs)+' / '+p.hourLimit : '—'}</td></tr>`;
   }).join('');
   const uRows = [...byU].sort((x,y) => y[1]-x[1]).map(([uid, ms]) => `<tr><td>${esc(byId(S.team,uid)?.name||'Удалённый участник')}</td><td class="n">${fmtClock(ms)}</td><td class="n">${fmtH(ms)}</td><td class="n">${total?Math.round(ms/total*100)+'%':'—'}</td></tr>`).join('');
   const opts = [['today','Сегодня'],['week','Эта неделя'],['lastweek','Прошлая неделя'],['month','Этот месяц'],['lastmonth','Прошлый месяц'],['all','Всё время']].map(([v,t]) => `<option value="${v}"${v===UI.period?' selected':''}>${t}</option>`).join('');
@@ -890,9 +907,15 @@ function projectDialog(p){
     <div class="fields">
       <label class="full">Название<input type="text" id="pName" value="${esc(p.name)}" required></label>
       <div class="full" style="grid-column:1/-1;display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--muted)">
-        <span>Значок проекта (можно вписать свой эмодзи)</span>
-        <div class="row" style="display:flex;gap:8px;align-items:center"><input type="text" id="pEmoji" value="${esc(p.emoji||'')}" maxlength="8" placeholder="📁" style="width:64px;font-size:18px;text-align:center"></div>
-        <div class="emrow" id="pEmRow">${EMOJIS.map(e => `<button type="button" aria-pressed="${e===p.emoji}" data-em="${e}">${e}</button>`).join('')}</div>
+        <span>Значок проекта: эмодзи из списка, свой эмодзи или фото</span>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+          <span class="emprev" id="pPrev"></span>
+          <input type="text" id="pEmoji" value="${esc(p.emoji||'')}" maxlength="16" placeholder="📁" aria-label="Эмодзи проекта" style="width:64px;font-size:18px;text-align:center">
+          <button type="button" class="btn" id="pPhotoBtn">Загрузить фото</button>
+          <button type="button" class="btn ghost" id="pPhotoDel" hidden>Убрать фото</button>
+          <input type="file" id="pPhotoIn" accept="image/*" hidden>
+        </div>
+        <div class="embox" id="pEmRow">${EMOJI_GROUPS.map(([g, list]) => `<span>${esc(g)}</span><div class="emrow">${list.map(e => `<button type="button" aria-pressed="${e===p.emoji}" data-em="${e}">${e}</button>`).join('')}</div>`).join('')}</div>
       </div>
       <label class="full">Описание<textarea id="pDesc">${esc(p.description)}</textarea></label>
       <label>Дата начала<input type="date" id="pStart" value="${esc(p.start)}"></label>
@@ -909,15 +932,34 @@ function projectDialog(p){
   </form>`, d => {
     d.querySelector('[data-close]').onclick = closeDialog;
     const emIn = d.querySelector('#pEmoji');
+    // фото важнее эмодзи; выбор эмодзи убирает фото
+    let photo = p.photo || null, pickNo = 0, photoBusy = null;
+    const photoIn = d.querySelector('#pPhotoIn'), photoBtn = d.querySelector('#pPhotoBtn'), photoDel = d.querySelector('#pPhotoDel');
+    const showIcon = () => {
+      d.querySelector('#pPrev').innerHTML = projIcon({ photo, emoji: emIn.value.trim() });
+      photoBtn.textContent = photo ? 'Сменить фото' : 'Загрузить фото';
+      photoDel.hidden = !photo;
+      d.querySelectorAll('#pEmRow button').forEach(x => x.setAttribute('aria-pressed', !photo && x.dataset.em === emIn.value.trim()));
+    };
+    const dropPhoto = () => { pickNo++; photo = null; showIcon(); };
+    showIcon();
     d.querySelector('#pEmRow').onclick = e => {
       const b = e.target.closest('[data-em]'); if(!b) return;
-      emIn.value = b.dataset.em;
-      d.querySelectorAll('#pEmRow button').forEach(x => x.setAttribute('aria-pressed', x === b));
+      emIn.value = b.dataset.em; dropPhoto();
+    };
+    emIn.oninput = dropPhoto;
+    photoDel.onclick = dropPhoto;
+    photoBtn.onclick = () => { photoIn.value = ''; photoIn.click(); };
+    photoIn.onchange = () => {
+      const f = photoIn.files[0]; if(!f) return;
+      const n = ++pickNo;
+      photoBusy = photoToDataUrl(f).then(url => { if(n === pickNo){ photo = url; showIcon(); } }).catch(() => toast('Не получилось прочитать картинку'));
     };
     d.querySelector('#pForm').onsubmit = async e => {
       e.preventDefault();
+      await photoBusy;
       const num = v => v === '' ? null : Number(v);
-      const data = { name: d.querySelector('#pName').value.trim(), emoji: emIn.value.trim() || null, description: d.querySelector('#pDesc').value.trim(),
+      const data = { name: d.querySelector('#pName').value.trim(), emoji: emIn.value.trim() || null, photo, description: d.querySelector('#pDesc').value.trim(),
         start: d.querySelector('#pStart').value || null, deadline: d.querySelector('#pDeadline').value || null,
         rate: num(d.querySelector('#pRate').value), hourLimit: num(d.querySelector('#pLimit').value),
         archived: p.id ? d.querySelector('#pArch').checked : false };

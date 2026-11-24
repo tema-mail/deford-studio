@@ -137,6 +137,9 @@ main{padding-block:16px 40px}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
 .pcard{background:var(--surface);box-shadow:var(--shadow);border-radius:var(--r);padding:14px;display:flex;flex-direction:column;gap:10px;cursor:pointer;min-width:0;border-top:4px solid hsl(var(--h) 60% 55%)}
 .pcard:hover{box-shadow:0 3px 10px rgba(20,30,60,.16)}
+.site{align-self:flex-start;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--accent);font-weight:500;text-decoration:none}
+.site:hover,.site:focus-visible{text-decoration:underline}
+.pcard .site{padding:4px 0;margin:-6px 0}
 .pcard h3{margin:0;font-weight:700;font-size:15px;overflow-wrap:anywhere}
 .kv{display:grid;grid-template-columns:auto 1fr;gap:3px 12px;font-size:13px;margin:0}
 .kv dt{color:var(--muted)} .kv dd{margin:0;font-variant-numeric:tabular-nums;text-align:right}
@@ -355,6 +358,18 @@ const EMOJI_GROUPS = [
 ].map(([name, list]) => [name, list.split(' ')]);
 function emojiOf(p){ return (p && p.emoji) || '📁'; }
 function projIcon(p){ return p && p.photo ? `<img class="pic" src="${esc(p.photo)}" alt="">` : esc(emojiOf(p)); }
+// адрес сайта: дописывает https://, пропускает только http(s); '' – если это не ссылка
+function siteUrl(v){
+  v = String(v || '').trim(); if(!v) return '';
+  if(!/^[a-z][a-z0-9+.-]*:\/\//i.test(v)) v = 'https://' + v;
+  try{ const u = new URL(v); return /^https?:$/.test(u.protocol) && !u.username && /[^.]\.[^.]/.test(u.hostname) ? u.href : ''; }catch(e){ return ''; }
+}
+function siteLink(p){
+  const u = siteUrl(p && p.site); if(!u) return '';
+  // кириллические домены показываем как ввели, а не punycode
+  const label = p.site.trim().replace(/^https?:\/\//i,'').replace(/^www\./i,'').replace(/\/$/,'');
+  return `<a class="site" href="${esc(u)}" target="_blank" rel="noopener noreferrer" draggable="false" title="Открыть сайт: ${esc(p.site.trim())}">${esc(label)} ↗</a>`;
+}
 function projLabel(p){ return emojiOf(p) + ' ' + (p ? p.name : 'Без проекта'); }
 function avatar(person, cls){
   if(!person) return '';
@@ -701,6 +716,7 @@ function viewProjects(){
     const st = projectStats(p), late = p.deadline && p.deadline < todayIso() && st.open;
     return `<article class="pcard" data-open-project="${esc(p.id)}" tabindex="0" style="--h:${hue(p.id)}">
       <h3>${projIcon(p)} ${esc(p.name)}${p.archived?' <span class="muted">(архив)</span>':''}</h3>
+      ${siteLink(p)}
       ${p.description ? `<p class="desc">${esc(p.description.length > 140 ? p.description.slice(0,140)+'…' : p.description)}</p>` : ''}
       <dl class="kv">
         <dt>Сроки</dt><dd>${p.start ? fmtDate(p.start) : '—'} → <span class="${late?'dl late':''}">${p.deadline ? fmtDate(p.deadline) : '—'}</span></dd>
@@ -732,6 +748,7 @@ function viewProject(id){
       <div class="panel">
         ${p.description ? `<p class="desc">${esc(p.description)}</p>` : '<p class="desc">Описание не заполнено.</p>'}
         <dl class="kv">
+          ${siteLink(p) ? `<dt>Сайт</dt><dd style="min-width:0;overflow-wrap:anywhere">${siteLink(p)}</dd>` : ''}
           <dt>Начало</dt><dd>${p.start?fmtDate(p.start):'—'}</dd>
           <dt>Дедлайн</dt><dd>${p.deadline?fmtDate(p.deadline):'—'}</dd>
           <dt>Тариф</dt><dd>${p.rate?fmtMoney(p.rate)+' / ч':'—'}</dd>
@@ -917,6 +934,7 @@ function projectDialog(p){
         </div>
         <div class="embox" id="pEmRow">${EMOJI_GROUPS.map(([g, list]) => `<span>${esc(g)}</span><div class="emrow">${list.map(e => `<button type="button" aria-pressed="${e===p.emoji}" data-em="${e}">${e}</button>`).join('')}</div>`).join('')}</div>
       </div>
+      <label class="full">Ссылка на сайт<input type="text" inputmode="url" id="pSite" value="${esc(p.site||'')}" placeholder="example.ru" autocomplete="off" autocapitalize="off" spellcheck="false"></label>
       <label class="full">Описание<textarea id="pDesc">${esc(p.description)}</textarea></label>
       <label>Дата начала<input type="date" id="pStart" value="${esc(p.start)}"></label>
       <label>Дедлайн<input type="date" id="pDeadline" value="${esc(p.deadline)}"></label>
@@ -931,6 +949,7 @@ function projectDialog(p){
     </div>
   </form>`, d => {
     d.querySelector('[data-close]').onclick = closeDialog;
+    d.querySelector('#pSite').oninput = e => e.target.setCustomValidity('');
     const emIn = d.querySelector('#pEmoji');
     // фото важнее эмодзи; выбор эмодзи убирает фото
     let photo = p.photo || null, pickNo = 0, photoBusy = null;
@@ -957,9 +976,11 @@ function projectDialog(p){
     };
     d.querySelector('#pForm').onsubmit = async e => {
       e.preventDefault();
+      const siteIn = d.querySelector('#pSite'), site = siteIn.value.trim();
+      if(site && !siteUrl(site)){ siteIn.setCustomValidity('Похоже, это не адрес сайта. Пример: example.ru'); siteIn.reportValidity(); return; }
       await photoBusy;
       const num = v => v === '' ? null : Number(v);
-      const data = { name: d.querySelector('#pName').value.trim(), emoji: emIn.value.trim() || null, photo, description: d.querySelector('#pDesc').value.trim(),
+      const data = { name: d.querySelector('#pName').value.trim(), emoji: emIn.value.trim() || null, photo, site: site || null, description: d.querySelector('#pDesc').value.trim(),
         start: d.querySelector('#pStart').value || null, deadline: d.querySelector('#pDeadline').value || null,
         rate: num(d.querySelector('#pRate').value), hourLimit: num(d.querySelector('#pLimit').value),
         archived: p.id ? d.querySelector('#pArch').checked : false };
@@ -1249,6 +1270,7 @@ async function moveTask(taskId, day, beforeId){
 /* ---------- events ---------- */
 const main = document.getElementById('main');
 main.addEventListener('click', async e => {
+  if(e.target.closest('a.site')) return; // ссылка на сайт открывается сама, карточку не открываем
   const el = e.target.closest('[data-open-task],[data-timer],[data-done],[data-new-project],[data-open-project],[data-edit-project],[data-new-task],[data-back],[data-week],[data-tails],[data-hub-done],[data-status-color],[data-status-move],[data-status-del],[data-person-del],[data-photo],[data-photo-del],[data-sumweek],[data-logout]');
   if(!el) return;
   const ds = el.dataset;

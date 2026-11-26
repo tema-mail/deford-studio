@@ -228,6 +228,9 @@ dialog{width:min(720px,calc(100vw - 32px))}
 .pending{display:flex;flex-wrap:wrap;gap:6px}
 .chip{display:inline-flex;align-items:center;gap:4px;font-size:12px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:2px 4px 2px 10px}
 .chip.up{opacity:.7;padding-right:10px}
+.pnote{flex:none;width:18px;height:18px;border-radius:50%;padding:0;display:inline-grid;place-items:center;font-size:12px;font-weight:700;line-height:1;cursor:pointer;border:1.5px dashed var(--muted);background:transparent;color:var(--muted)}
+.pnote.has{border:0;background:var(--s-amber,#e8a33d);color:#fff}
+.pnote:hover{transform:scale(1.12)}
 .badge{font-size:12px;color:var(--muted);cursor:pointer}
 .warnbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:color-mix(in srgb,var(--warn) 16%,var(--surface));border-radius:8px;padding:10px 12px;margin-bottom:12px;box-shadow:var(--shadow)}
 /* Dialog */
@@ -341,6 +344,9 @@ function workDayIso(ms){ return iso(new Date(ms - shiftMs())); }
 function logMs(l, now){ return Math.max(0, (l.end || now) - l.start); }
 function statusOf(t){ return byId(S.statuses, t.statusId); }
 function isDone(t){ const s = statusOf(t); return !!(s && s.isDone); }
+// статус-пауза: переключатель в Настройках; пока его не трогали – по слову «пауза» в названии
+function statusPaused(s){ return !!s && !s.isDone && (s.isPaused ?? /пауз/i.test(s.name || '')); }
+function isPaused(t){ return statusPaused(statusOf(t)); }
 function sortedStatuses(){ return [...S.statuses].sort((a,b) => (a.order??0) - (b.order??0)); }
 function activeProjects(){ return S.projects.filter(p => !p.archived).sort((a,b) => (a.name||'').localeCompare(b.name||'','ru')); }
 function teamSorted(){ return [...S.team].sort((a,b) => (a.name||'').localeCompare(b.name||'','ru')); }
@@ -629,6 +635,7 @@ function cardHtml(t){
     </div>
     <div class="meta">
       ${statusSelect(t)}
+      ${isPaused(t) ? `<button type="button" class="pnote${t.pauseNote ? ' has' : ''}" data-note="${esc(t.id)}" title="${esc(t.pauseNote ? 'Почему на паузе: ' + t.pauseNote : 'Написать, почему на паузе')}" aria-label="${t.pauseNote ? 'Причина паузы' : 'Написать причину паузы'}">${t.pauseNote ? '!' : '+'}</button>` : ''}
       ${who ? avatar(who) : ''}
       ${t.deadline ? `<span class="dl${late?' late':''}" title="Дедлайн">до ${fmtDate(t.deadline)}</span>` : ''}
       ${(() => { const cs = S.comments.filter(c => c.taskId === t.id); if(!cs.length) return ''; const nf = cs.reduce((n,c) => n + (c.files||[]).length, 0); return `<span class="badge" data-open-task="${esc(t.id)}" title="Комментарии">💬 ${cs.length}${nf ? ' · 📎 '+nf : ''}</span>`; })()}
@@ -640,7 +647,7 @@ function filterTasks(list){
   return list.filter(t => (!UI.fProject || t.projectId === UI.fProject) && (!UI.fPerson || t.assigneeId === UI.fPerson));
 }
 function myTails(){ const m = me(), today = todayIso(); return m ? S.tasks.filter(t => t.day && t.day < today && !isDone(t) && t.assigneeId === m) : []; }
-function sortCol(list){ return list.sort((a,b) => (isDone(a) - isDone(b)) || ((a.order??0)-(b.order??0))); }
+function sortCol(list){ const rank = t => isDone(t) ? 2 : isPaused(t) ? 1 : 0; return list.sort((a,b) => (rank(a) - rank(b)) || ((a.order??0)-(b.order??0))); }
 
 /* ---------- week ---------- */
 function viewWeek(){
@@ -876,6 +883,7 @@ function viewSettings(){
       <input type="text" class="sname" value="${esc(s.name)}" data-status-name="${esc(s.id)}" aria-label="Название статуса" ${dis}>
       <span class="muted" title="Задач с этим статусом">${used}</span>
       <label class="fin" title="Галочка на карточке ставит этот статус"><input type="checkbox" data-status-done="${esc(s.id)}" ${s.isDone?'checked':''} ${dis}> Выполнено</label>
+      <label class="fin" title="Задачи с этим статусом уходят вниз колонки, на карточке появляется кружок для причины"><input type="checkbox" data-status-pause="${esc(s.id)}" ${statusPaused(s)?'checked':''} ${s.isDone||readOnly?'disabled':''}> Пауза</label>
       <button class="xbtn" data-status-del="${esc(s.id)}" data-used="${used}" ${dis} aria-label="Удалить статус" title="Удалить">✕</button>
     </div>`;
   }).join('');
@@ -886,7 +894,7 @@ function viewSettings(){
   const font = LS.get('font','Open Sans');
   return `<div class="two">
     <section class="panel"><h3 class="sec">Статусы задач</h3>
-      <p class="muted hint">Название меняется прямо в строке, цвет по клику на квадрат. Статус с переключателем «Выполнено» ставится галочкой на карточке.</p>
+      <p class="muted hint">Название меняется прямо в строке, цвет по клику на квадрат. Статус с переключателем «Выполнено» ставится галочкой на карточке. Задачи со статусом «Пауза» уходят вниз колонки, а в кружке на карточке можно написать причину.</p>
       ${sRows ? `<div class="slist">${sRows}</div>` : '<div class="empty">Статусов пока нет. Добавьте первый.</div>'}
       ${readOnly?'':`<form class="addrow" id="addStatus"><input type="text" id="newStatus" placeholder="Новый статус" required><button class="btn">+ Добавить</button></form>`}
     </section>
@@ -1107,6 +1115,25 @@ function dropPending(){
   UI.pendingFiles = [];
 }
 
+function noteDialog(t){
+  openDialog(`<form class="dlg" id="nForm" style="width:min(420px,calc(100vw - 32px))">
+    <h3>Почему на паузе</h3>
+    <p class="muted" style="margin:0">${esc(t.title)}</p>
+    <textarea id="nText" rows="4" placeholder="Например: ждём от клиента тексты и логотип" ${readOnly?'readonly':''}>${esc(t.pauseNote||'')}</textarea>
+    <div class="actions">
+      ${readOnly ? '' : '<button class="btn primary">Сохранить</button>'}<button type="button" class="btn" data-close>${readOnly ? 'Закрыть' : 'Отмена'}</button>
+      <span class="spacer"></span>
+      ${t.pauseNote && !readOnly ? '<button type="button" class="btn ghost" id="nClear">Очистить</button>' : ''}
+    </div>
+  </form>`, d => {
+    const ta = d.querySelector('#nText'); ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length);
+    d.querySelector('[data-close]').onclick = closeDialog;
+    const save = async v => { if(await write(() => db.doc('tasks/'+t.id).update({ pauseNote: v || null }), v ? 'Причина сохранена' : 'Причина убрана')) closeDialog(); };
+    d.querySelector('#nForm').onsubmit = e => { e.preventDefault(); if(!readOnly) save(ta.value.trim()); };
+    ta.onkeydown = e => { if(e.key === 'Enter' && (e.metaKey || e.ctrlKey)) d.querySelector('#nForm').requestSubmit(); };
+    const c = d.querySelector('#nClear'); if(c) c.onclick = () => save('');
+  });
+}
 function taskDialog(t, presetProject){
   t = t || { projectId: presetProject || UI.quickProject || '', assigneeId: UI.quickWho || me() || null, statusId: sortedStatuses()[0]?.id || null, day: null };
   UI.dialogTask = t.id || null; UI.pendingFiles = [];
@@ -1271,7 +1298,7 @@ async function moveTask(taskId, day, beforeId){
 const main = document.getElementById('main');
 main.addEventListener('click', async e => {
   if(e.target.closest('a.site')) return; // ссылка на сайт открывается сама, карточку не открываем
-  const el = e.target.closest('[data-open-task],[data-timer],[data-done],[data-new-project],[data-open-project],[data-edit-project],[data-new-task],[data-back],[data-week],[data-tails],[data-hub-done],[data-status-color],[data-status-move],[data-status-del],[data-person-del],[data-photo],[data-photo-del],[data-sumweek],[data-logout]');
+  const el = e.target.closest('[data-open-task],[data-timer],[data-done],[data-new-project],[data-open-project],[data-edit-project],[data-new-task],[data-back],[data-week],[data-tails],[data-hub-done],[data-note],[data-status-color],[data-status-move],[data-status-del],[data-person-del],[data-photo],[data-photo-del],[data-sumweek],[data-logout]');
   if(!el) return;
   const ds = el.dataset;
   if('openTask' in ds){ e.preventDefault(); const t = byId(S.tasks, ds.openTask); if(t) taskDialog(t); }
@@ -1285,6 +1312,7 @@ main.addEventListener('click', async e => {
   else if('back' in ds){ UI.openProject = null; render(); }
   else if('sumweek' in ds){ UI.sumWeek = ds.sumweek === '0' ? mondayOf(parseIso(workDayIso(Date.now()))) : addDays(UI.sumWeek || mondayOf(parseIso(workDayIso(Date.now()))), 7*Number(ds.sumweek)); render(); }
   else if('week' in ds){ UI.weekStart = ds.week === '0' ? mondayOf(new Date()) : addDays(UI.weekStart, 7*Number(ds.week)); render(); }
+  else if('note' in ds){ const t = byId(S.tasks, ds.note); if(t) noteDialog(t); }
   else if('hubDone' in ds){ UI.hubDone = !UI.hubDone; render(); }
   else if('tails' in ds){
     const tails = myTails();
@@ -1333,6 +1361,7 @@ main.addEventListener('change', e => {
   else if(t.id === 'qWho'){ UI.quickWho = t.value; LS.set('quickWho', t.value); }
   else if(t.dataset.statusSel){ write(() => db.doc('tasks/'+t.dataset.statusSel).update({ statusId: t.value || null })); }
   else if(t.dataset.statusName){ const v = t.value.trim(); t.defaultValue = t.value; if(v) write(() => db.doc('statuses/'+t.dataset.statusName).update({ name:v }), 'Статус переименован'); }
+  else if(t.dataset.statusPause){ write(() => db.doc('statuses/'+t.dataset.statusPause).update({ isPaused:t.checked })); }
   else if(t.dataset.statusDone){ write(() => db.doc('statuses/'+t.dataset.statusDone).update({ isDone:t.checked })); }
   else if(t.dataset.personName){ const v = t.value.trim(); t.defaultValue = t.value; if(v) write(() => db.doc('team/'+t.dataset.personName).update({ name:v }), 'Имя сохранено'); }
 });
